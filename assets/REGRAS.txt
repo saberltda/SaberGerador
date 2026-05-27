@@ -1,5 +1,3 @@
-# ⛔ ZONA DE SEGURANÇA (DO NOT DELETE)
-
 **AVISO PARA DESENVOLVEDORES E IA:**
 Este arquivo contém as "Leis da Física" do gerador.
 **É ESTRITAMENTE PROIBIDO** remover, resumir ou alterar as seções abaixo.

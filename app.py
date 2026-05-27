@@ -107,6 +107,19 @@ with col_esq:
     chaves_formatos = ["ALEATÓRIO"] + list(dict_formatos.keys())
     formato_selecionado = st.selectbox("Formato do Texto:", chaves_formatos, format_func=lambda x: "Sorteio Automático" if x == "ALEATÓRIO" else dict_formatos[x])
 
+    # CONFIGURAÇÃO DE TEMPO (REINSERIDA)
+    st.markdown("### Agendamento Cronológico")
+    usar_data_atual = st.toggle("Usar data e hora atual do sistema", value=True)
+    
+    if not usar_data_atual:
+        data_customizada = st.date_input("Data de Publicação:", datetime.date.today())
+        hora_customizada = st.time_input("Hora de Publicação (Fuso -03:00):", datetime.time(9, 0))
+        # Combina os inputs em um objeto datetime bruto
+        datetime_alvo = datetime.datetime.combine(data_customizada, hora_customizada)
+    else:
+        datetime_alvo = datetime.datetime.now(GenesisConfig.TZ_BRASILIA)
+
+    st.write("")
     btn_gerar = st.button("🚀 Processar Parâmetros e Gerar Pauta", use_container_width=True, type="primary")
 
 with col_dir:
@@ -115,7 +128,7 @@ with col_dir:
     if btn_gerar:
         with st.spinner("Processando arquitetura da pauta..."):
             
-            # 1. Empacota a escolha exata da pessoa usuária (Ajuste de Session State / Input)
+            # 1. Empacota as escolhas exatas feitas pelos operadores humanos
             user_inputs = {
                 'tipo_pauta': tipo_pauta,
                 'bairro_nome': bairro_selecionado,
@@ -130,25 +143,25 @@ with col_dir:
             # 2. Roda a Engine para resolver cruzamentos e alucinações geográficas
             pacote_final = engine.run(user_inputs)
             
-            # 3. Verifica colisões no Scanner (Foco geográfico e saturação)
+            # 3. Verifica colisões no Scanner (Evitar repetição biográfica de bairros)
             bairro_alvo = pacote_final['bairro']['nome']
             alerta_saturacao = ""
             if bairro_alvo not in ["Indaiatuba", "ALEATÓRIO", "FORCE_CITY_MODE"]:
                 if scanner.ja_publicado(bairro_alvo):
-                    alerta_saturacao = f"⚠️ **Aviso do Scanner:** O local '{bairro_alvo}' já foi citado em publicações recentes do blog. Recomenda-se cautela com repetição."
+                    alerta_saturacao = f"⚠️ **Aviso do Scanner:** O local '{bairro_alvo}' já possui registro de publicação indexada no feed. Avalie a necessidade de alternar a região geográfica."
             
-            # 4. Ajusta Datas
-            data_atual = datetime.datetime.now(GenesisConfig.TZ_BRASILIA)
-            data_pub = data_atual.strftime("%Y-%m-%dT%H:%M:%S") + GenesisConfig.FUSO_PADRAO
+            # 4. Formatação de Strings Temporais conforme ISO 8601 exigido pelo validador
+            data_pub = datetime_alvo.strftime("%Y-%m-%dT%H:%M:%S") + GenesisConfig.FUSO_PADRAO
+            data_mod = datetime.datetime.now(GenesisConfig.TZ_BRASILIA).strftime("%Y-%m-%dT%H:%M:%S") + GenesisConfig.FUSO_PADRAO
             
-            # 5. Injeta regras locais (Onde o texto de REGRAS ganha a variável {{BAIRRO}})
+            # 5. Injeta regras locais (Conversão das tags {{BAIRRO}} e {{LOCAL}})
             regras_injetadas = rules.get_for_prompt(bairro_alvo)
             
-            # 6. Constrói o Prompt Final
-            prompt_gerado = builder.build(pacote_final, data_pub, data_pub, regras_injetadas)
+            # 6. Constrói o Prompt Final estruturado em Markdown
+            prompt_gerado = builder.build(pacote_final, data_pub, data_mod, rules.raw_text)
             
             # 7. Exibição de Resumo de Sucesso
-            st.success("Pauta orquestrada com sucesso. Nenhuma anomalia de zona identificada.")
+            st.success("Parâmetros consolidados com sucesso. Filtros de segurança aplicados.")
             
             if alerta_saturacao:
                 st.warning(alerta_saturacao)
@@ -158,6 +171,7 @@ with col_dir:
                 st.write(f"**Desejo Alvo:** {pacote_final['persona']['desejo']}")
                 st.write(f"**Local/Zona:** {bairro_alvo} ({pacote_final['bairro'].get('zona_normalizada', 'N/A')})")
                 st.write(f"**Ativo Validado:** {pacote_final['ativo_definido']}")
+                st.write(f"**Data Injetada no Script:** `{data_pub}`")
             
             st.markdown("### Copie o Prompt Abaixo:")
             st.code(prompt_gerado, language="markdown")

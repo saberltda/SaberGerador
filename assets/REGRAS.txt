@@ -128,4 +128,3 @@ Insira este código exato ao final do conteúdo HTML, antes de fechar a div prin
 <div style="text-align:center; margin: 40px 0;">
 <script async data-uid="d188d73e78" src="[https://sabernovidades.kit.com/d188d73e78/index.js](https://sabernovidades.kit.com/d188d73e78/index.js)"></script>
 </div>
-# ⛔ FIM DA ZONA DE SEGURANÇA (DO NOT DELETE)

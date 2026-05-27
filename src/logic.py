@@ -36,6 +36,9 @@ class PlanoDiretor:
         is_rural = cluster == "RURAL_LIFESTYLE" or "chácara" in ativo_lower or "sítio" in ativo_lower or "haras" in ativo_lower
         is_industrial = cluster == "LOGISTICS" or "galpão" in ativo_lower or "industrial" in ativo_lower
         is_apartamento = "apartamento" in ativo_lower or "studio" in ativo_lower or "cobertura" in ativo_lower
+        
+        # NOVO: Sensor de imóveis de luxo (Barreira para bairros de classe média)
+        is_alto_padrao = cluster == "HIGH_END" or "alto padrão" in ativo_lower or "luxo" in ativo_lower or "mansão" in ativo_lower
 
         # 2. Aplicação de Barreiras Lógicas Rígidas
         if zona == "industrial":
@@ -47,9 +50,12 @@ class PlanoDiretor:
             if is_condominio:
                 ativo_final = "Casa de Rua / Sobrado Moderno"
                 obs = "Ajuste Automático: Bairro de malha aberta não comporta condomínio fechado."
-            if is_industrial:
+            elif is_industrial:
                 ativo_final = "Terreno Residencial"
                 obs = "Ajuste Automático: Bairro residencial não comporta pólos industriais."
+            elif is_alto_padrao:
+                ativo_final = "Casa Térrea com Quintal / Sobrado"
+                obs = "Ajuste Automático: Bairro de malha aberta padrão não comporta mansões ou altíssimo luxo."
                 
         elif zona == "residencial_fechado":
             # Em loteamento fechado, forçamos o rótulo de condomínio

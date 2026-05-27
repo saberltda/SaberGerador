@@ -2,7 +2,7 @@
 import datetime
 
 class GenesisConfig:
-    VERSION = "GERADOR V.70 (ALL PERSONAS UNLOCKED - HUMANIZED)"
+    VERSION = "GERADOR V.71 (REFACTORED - FOUNDATIONS)"
 
     # =====================================================
     # ⛔ CONFIGURAÇÃO CRÍTICA DE FUSO HORÁRIO
@@ -13,7 +13,7 @@ class GenesisConfig:
     # Cores e URLs
     COLOR_PRIMARY = "#003366"   # Azul Saber
     COLOR_ACTION  = "#28a745"   # Verde Ação
-    BLOG_URL = "https://blog.saber.imb.br"
+    BLOG_URL = "https://saber.imb.br/blog"
 
     # =====================================================
     # 1. IMOBILIÁRIA (MODO CORRETOR)
@@ -51,14 +51,16 @@ class GenesisConfig:
         "CHECKLIST_TECNICO": "📝 Checklist Técnico (Vistoria)"
     }
 
+    # PADRONIZAÇÃO ESTREITA: Chaves UPPERCASE, Valores em Title Case 
+    # para evitar conflitos de Case Sensitivity e melhorar exibição na UI.
     ASSETS_CATALOG = {
-        "HIGH_END": ["MANSÃO EM CONDOMÍNIO", "CASA TÉRREA ALTO PADRÃO", "TERRENO EM CONDOMÍNIO DE LUXO"],
-        "FAMILY": ["CASA EM CONDOMÍNIO FECHADO", "SOBRADO COM ÁREA GOURMET", "CASA TÉRREA COM QUINTAL"],
-        "URBAN": ["APARTAMENTO 3 DORMITÓRIOS", "STUDIO / LOFT MODERNO", "COBERTURA DUPLEX"],
-        "INVESTOR": ["TERRENO EM CONDOMÍNIO (LOTE)", "IMÓVEL PARA REFORMA (FLIP)", "KITNET PARA RENDA"],
-        "LOGISTICS": ["GALPÃO INDUSTRIAL AAA", "ÁREA PARA CD LOGÍSTICO", "TERRENO INDUSTRIAL"],
-        "RURAL_LIFESTYLE": ["CHÁCARA", "SÍTIO DE LAZER", "HARAS OU ESTÂNCIA"],
-        "CORPORATE": ["SALA COMERCIAL", "LAJE CORPORATIVA", "PRÉDIO MONOUSUÁRIO"]
+        "HIGH_END": ["Mansão Em Condomínio", "Casa Térrea Alto Padrão", "Terreno Em Condomínio De Luxo"],
+        "FAMILY": ["Casa Em Condomínio Fechado", "Sobrado Com Área Gourmet", "Casa Térrea Com Quintal"],
+        "URBAN": ["Apartamento 3 Dormitórios", "Studio / Loft Moderno", "Cobertura Duplex"],
+        "INVESTOR": ["Terreno Em Condomínio (Lote)", "Imóvel Para Reforma (Flip)", "Kitnet Para Renda"],
+        "LOGISTICS": ["Galpão Industrial AAA", "Área Para CD Logístico", "Terreno Industrial"],
+        "RURAL_LIFESTYLE": ["Chácara", "Sítio De Lazer", "Haras Ou Estância"],
+        "CORPORATE": ["Sala Comercial", "Laje Corporativa", "Prédio Monousuário"]
     }
 
     EMOTIONAL_TRIGGERS_MAP = {
@@ -197,8 +199,6 @@ class GenesisConfig:
     # ⚖️ REGRAS DE VOCABULÁRIO (HUMANIZAÇÃO ATIVA)
     # =====================================================
     RULES = {
-        # Lista flexibilizada: Adjetivos como "tranquilo", "lindo" e "maravilhoso" são PERMITIDOS.
-        # Proibidos apenas clichês de baixo valor que reduzem a autoridade do texto.
         "FORBIDDEN_WORDS": [
             "oportunidade única", 
             "venha conferir", 

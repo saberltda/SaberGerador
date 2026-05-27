@@ -107,9 +107,10 @@ with col_esq:
     chaves_formatos = ["ALEATÓRIO"] + list(dict_formatos.keys())
     formato_selecionado = st.selectbox("Formato do Texto:", chaves_formatos, format_func=lambda x: "Sorteio Automático" if x == "ALEATÓRIO" else dict_formatos[x])
 
-    # CONFIGURAÇÃO DE TEMPO (REINSERIDA)
+    # CONFIGURAÇÃO DE TEMPO (CORRIGIDA COMPATIBILIDADE)
     st.markdown("### Agendamento Cronológico")
-    usar_data_atual = st.toggle("Usar data e hora atual do sistema", value=True)
+    # Substituído st.toggle por st.checkbox para evitar quebra em versões antigas do Streamlit
+    usar_data_atual = st.checkbox("Usar data e hora atual do sistema", value=True)
     
     if not usar_data_atual:
         data_customizada = st.date_input("Data de Publicação:", datetime.date.today())
@@ -158,7 +159,8 @@ with col_dir:
             regras_injetadas = rules.get_for_prompt(bairro_alvo)
             
             # 6. Constrói o Prompt Final estruturado em Markdown
-            prompt_gerado = builder.build(pacote_final, data_pub, data_mod, rules.raw_text)
+            # CORREÇÃO CRÍTICA: A variável regras_injetadas agora é passada corretamente.
+            prompt_gerado = builder.build(pacote_final, data_pub, data_mod, regras_injetadas)
             
             # 7. Exibição de Resumo de Sucesso
             st.success("Parâmetros consolidados com sucesso. Filtros de segurança aplicados.")

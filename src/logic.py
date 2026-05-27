@@ -1,8 +1,20 @@
 # src/logic.py
 import random
 import time
-from pytrends.request import TrendReq
 from .config import GenesisConfig
+
+# ====================================================
+# TENTATIVA SEGURA DE IMPORTAÇÃO (Graceful Fallback)
+# Evita que o app quebre no Streamlit Cloud se a 
+# biblioteca pytrends não for instalada corretamente.
+# ====================================================
+try:
+    from pytrends.request import TrendReq
+    HAS_PYTRENDS = True
+except ImportError:
+    HAS_PYTRENDS = False
+    print("Aviso: Biblioteca pytrends não encontrada. O SEOHeatmap operará em modo offline (sorteio).")
+
 
 class PlanoDiretor:
     """
@@ -67,13 +79,15 @@ class SEOHeatmap:
     Descobre qual bairro de Indaiatuba está com maior volume de pesquisa.
     """
     def __init__(self):
-        try:
-            # Conecta ao Google Trends (Idioma PT-BR, Fuso horário de Brasília)
-            self.pytrends = TrendReq(hl='pt-BR', tz=180, retries=2, backoff_factor=0.5)
-            self.ativo = True
-        except Exception as e:
-            print(f"Aviso: Não foi possível conectar ao Google Trends: {e}")
-            self.ativo = False
+        self.ativo = False
+        if HAS_PYTRENDS:
+            try:
+                # Conecta ao Google Trends (Idioma PT-BR, Fuso horário de Brasília)
+                self.pytrends = TrendReq(hl='pt-BR', tz=180, retries=2, backoff_factor=0.5)
+                self.ativo = True
+            except Exception as e:
+                print(f"Aviso: Não foi possível conectar ao Google Trends: {e}")
+                self.ativo = False
 
     def get_bairro_quente(self, lista_bairros_obj):
         """

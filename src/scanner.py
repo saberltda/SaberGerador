@@ -2,25 +2,25 @@
 import json
 import urllib.request
 import ssl
+import re
 from .config import GenesisConfig
-from .utils import slugify
 
 class BlogScanner:
     """
-    O 'Espião'.
-    Acessa o feed público do Blogger para mapear o que já foi postado.
-    Evita repetição de pautas recentes.
+    O 'Espião' (Versão Refatorada).
+    Acessa o feed público do Blogger para mapear publicações.
+    Usa extração de Tags (Categories) para precisão absoluta e regex estrito como fallback.
     """
     
     def __init__(self):
         base_url = GenesisConfig.BLOG_URL
         self.feed_url = f"{base_url}/feeds/posts/default?alt=json&max-results=9999"
-        self.bairros_publicados = set()
-        self.todos_titulos = []
+        self.titulos_publicados = []
+        self.tags_publicadas = set()
 
     def mapear(self):
-        self.bairros_publicados = set()
-        self.todos_titulos = []
+        self.titulos_publicados = []
+        self.tags_publicadas = set()
         
         try:
             ctx = ssl.create_default_context()
@@ -34,29 +34,42 @@ class BlogScanner:
                     if "feed" in data and "entry" in data["feed"]:
                         for entry in data["feed"]["entry"]:
                             titulo = entry["title"]["$t"]
-                            self.todos_titulos.append(titulo)
-                            # Guarda slug com separadores para evitar match parcial
-                            # Ex: "_jardim_pau_preto_"
-                            self.bairros_publicados.add(f"_{slugify(titulo)}_")
+                            self.titulos_publicados.append(titulo)
                             
+                            # Extrai as tags exatas (precisão máxima contra falsos positivos)
+                            if "category" in entry:
+                                for cat in entry["category"]:
+                                    tag = cat.get("term", "").strip().lower()
+                                    if tag:
+                                        self.tags_publicadas.add(tag)
+                                        
         except Exception as e:
-            print(f"Aviso: Não foi possível escanear o blog. Erro: {e}")
+            print(f"Aviso: Não foi possível escanear o feed do blog. Erro: {e}")
 
     def ja_publicado(self, nome_bairro: str) -> bool:
         """
-        Verifica com precisão se o bairro já foi citado.
-        Usa técnica de 'Boundary Matching' (Bordas).
+        Verifica se a localidade já foi pauta recente.
+        Blindado contra colisões parciais (ex: 'Vista' não dará match em 'Bela Vista').
         """
-        # Cria o slug do bairro também com separadores
-        slug_bairro = f"_{slugify(nome_bairro)}_"
+        if not nome_bairro or nome_bairro.lower() == "indaiatuba":
+            return False
+            
+        bairro_lower = nome_bairro.lower().strip()
         
-        for post_slug in self.bairros_publicados:
-            # Agora "Vista" (_vista_) NÃO dá match em "Bela Vista" (_bela_vista_)
-            # Mas "Pau Preto" (_pau_preto_) dá match em "Jardim Pau Preto" (_jardim_pau_preto_)
-            if slug_bairro in post_slug:
+        # 1. Validação Primária: Busca Exata nas Tags do Post
+        # Se a pauta foi sobre "Bela Vista", a tag será "bela vista". 
+        # Uma busca isolada por "vista" retornará False, evitando colisões.
+        if bairro_lower in self.tags_publicadas:
+            return True
+
+        # 2. Validação Secundária: Expressão Regular no Título
+        # Fallback seguro que exige limites claros de palavra (\b)
+        padrao = r'\b' + re.escape(nome_bairro) + r'\b'
+        for titulo in self.titulos_publicados:
+            if re.search(padrao, titulo, re.IGNORECASE):
                 return True
+                
         return False
 
     def get_ultimos_titulos(self, limite=10):
-        return self.todos_titulos[:limite]
-
+        return self.titulos_publicados[:limite]

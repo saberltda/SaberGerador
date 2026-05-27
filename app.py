@@ -107,15 +107,13 @@ with col_esq:
     chaves_formatos = ["ALEATÓRIO"] + list(dict_formatos.keys())
     formato_selecionado = st.selectbox("Formato do Texto:", chaves_formatos, format_func=lambda x: "Sorteio Automático" if x == "ALEATÓRIO" else dict_formatos[x])
 
-    # CONFIGURAÇÃO DE TEMPO (CORRIGIDA COMPATIBILIDADE)
+    # CONFIGURAÇÃO DE TEMPO
     st.markdown("### Agendamento Cronológico")
-    # Substituído st.toggle por st.checkbox para evitar quebra em versões antigas do Streamlit
     usar_data_atual = st.checkbox("Usar data e hora atual do sistema", value=True)
     
     if not usar_data_atual:
         data_customizada = st.date_input("Data de Publicação:", datetime.date.today())
         hora_customizada = st.time_input("Hora de Publicação (Fuso -03:00):", datetime.time(9, 0))
-        # Combina os inputs em um objeto datetime bruto
         datetime_alvo = datetime.datetime.combine(data_customizada, hora_customizada)
     else:
         datetime_alvo = datetime.datetime.now(GenesisConfig.TZ_BRASILIA)
@@ -144,14 +142,14 @@ with col_dir:
             # 2. Roda a Engine para resolver cruzamentos e alucinações geográficas
             pacote_final = engine.run(user_inputs)
             
-            # 3. Verifica colisões no Scanner (Evitar repetição biográfica de bairros)
+            # 3. Verifica colisões no Scanner
             bairro_alvo = pacote_final['bairro']['nome']
             alerta_saturacao = ""
             if bairro_alvo not in ["Indaiatuba", "ALEATÓRIO", "FORCE_CITY_MODE"]:
                 if scanner.ja_publicado(bairro_alvo):
                     alerta_saturacao = f"⚠️ **Aviso do Scanner:** O local '{bairro_alvo}' já possui registro de publicação indexada no feed. Avalie a necessidade de alternar a região geográfica."
             
-            # 4. Formatação de Strings Temporais conforme ISO 8601 exigido pelo validador
+            # 4. Formatação de Strings Temporais conforme ISO 8601
             data_pub = datetime_alvo.strftime("%Y-%m-%dT%H:%M:%S") + GenesisConfig.FUSO_PADRAO
             data_mod = datetime.datetime.now(GenesisConfig.TZ_BRASILIA).strftime("%Y-%m-%dT%H:%M:%S") + GenesisConfig.FUSO_PADRAO
             
@@ -159,7 +157,6 @@ with col_dir:
             regras_injetadas = rules.get_for_prompt(bairro_alvo)
             
             # 6. Constrói o Prompt Final estruturado em Markdown
-            # CORREÇÃO CRÍTICA: A variável regras_injetadas agora é passada corretamente.
             prompt_gerado = builder.build(pacote_final, data_pub, data_mod, regras_injetadas)
             
             # 7. Exibição de Resumo de Sucesso
@@ -175,5 +172,9 @@ with col_dir:
                 st.write(f"**Ativo Validado:** {pacote_final['ativo_definido']}")
                 st.write(f"**Data Injetada no Script:** `{data_pub}`")
             
-            st.markdown("### Copie o Prompt Abaixo:")
+            # 8. ÁREA DE SAÍDA COM INDICAÇÃO VISUAL DE CÓPIA
+            st.markdown("### 📋 Prompt Gerado")
+            st.info("💡 **Instrução de Cópia Rápida:** As pessoas podem clicar no botão **'Copy'** que aparece automaticamente no canto superior direito do bloco abaixo ao passar o mouse.")
+            
+            # O bloco de código abaixo possui o botão nativo de cópia do Streamlit
             st.code(prompt_gerado, language="markdown")

@@ -2,7 +2,7 @@
 import datetime
 
 class GenesisConfig:
-    VERSION = "GERADOR V.71 (REFACTORED - FOUNDATIONS)"
+    VERSION = "GERADOR V.71 (REFACTORED - FORMATOS ATUALIZADOS)"
 
     # =====================================================
     # ⛔ CONFIGURAÇÃO CRÍTICA DE FUSO HORÁRIO
@@ -42,13 +42,24 @@ class GenesisConfig:
     REAL_ESTATE_TOPICS_DISPLAY = TOPICS_MAP 
 
     REAL_ESTATE_FORMATS_MAP = {
-        "GUIA_DEFINITIVO": "📘 Guia Definitivo (Imobiliário)",
-        "LISTA_POLEMICA": "🔥 Lista Polêmica (Imobiliário)",
-        "COMPARATIVO_TECNICO": "⚖️ Comparativo Técnico (Imobiliário)",
-        "INSIGHT_DE_CORRETOR": "💡 Insight de Corretor",
-        "PERGUNTAS_RESPOSTAS": "❓ Perguntas & Respostas",
-        "CENARIO_ANALITICO": "📊 Cenário Analítico (Previsão)",
-        "CHECKLIST_TECNICO": "📝 Checklist Técnico (Vistoria)"
+        # --- TOPO DE FUNIL (Atração, Local SEO e Descoberta) ---
+        "GUIA_BAIRRO": "🗺️ Guia de Bairro Definitivo (Local SEO & Lifestyle)",
+        "LISTICLE_CURADORIA": "🏆 Curadoria Listicles (Ex: Top 5 Condomínios)",
+        "MITOS_VERDADES": "🎭 Mitos vs Verdades (Quebra de Objeções Clássicas)",
+        "GLOSSARIO_TERMOS": "📖 Glossário/Conceito (Foco em Featured Snippets do Google)",
+        
+        # --- MEIO DE FUNIL (Consideração, Educação e Autoridade) ---
+        "GUIA_PASSO_A_PASSO": "📘 Guia Passo a Passo (Jornada de Compra/Venda)",
+        "COMPARATIVO_DIRETO": "⚖️ Comparativo Direto (Ex: Comprar vs Alugar, Casa vs Apto)",
+        "ERROS_FATAIS": "⚠️ Os X Erros Fatais (Usa gatilho de aversão à perda)",
+        "CENARIO_ANALITICO": "📊 Relatório de Mercado & Tendências (Data-Driven)",
+        "ENTREVISTA_ESPECIALISTA": "🎙️ Opinião do Especialista (Engenheiro, Arquiteto, Advogado)",
+        
+        # --- FUNDO DE FUNIL (Decisão, Prova Social e Venda) ---
+        "ESTUDO_DE_CASO": "📈 Estudo de Caso (Storytelling de Sucesso de Cliente)",
+        "ANALISE_ROI": "💰 Análise de ROI & Viabilidade (Para Investidores)",
+        "INSIGHT_DE_CORRETOR": "💡 Insight de Corretor (Análise de Oportunidade/Pitch)",
+        "CHECKLIST_TECNICO": "📝 Checklist Técnico Avançado (Vistoria, Documentação)"
     }
 
     # PADRONIZAÇÃO ESTREITA: Chaves UPPERCASE, Valores em Title Case 
@@ -90,13 +101,26 @@ class GenesisConfig:
     }
 
     PORTAL_FORMATS_MAP = {
-        "NOTICIA_IMPACTO": "📰 Hard News (Notícia de Impacto)",
-        "EXPLAINER": "🧠 Explainer (Entenda o Caso)",
-        "DOSSIE_INVESTIGATIVO": "🕵️ Dossiê Investigativo (Longform)",
-        "CHECAGEM_FATOS": "✅ Checagem de Fatos (Verdade ou Mentira)",
-        "LISTA_CURADORIA": "📋 Curadoria (Top 5 / Roteiros)",
-        "ENTREVISTA_PING_PONG": "🎙️ Entrevista Ping-Pong (Direto)",
-        "SERVICO_PASSO_A_PASSO": "👣 Serviço Passo-a-Passo (Tutorial)"
+        # --- Hard News & Urgência ---
+        "NOTICIA_IMPACTO": "📰 Hard News (Notícia Direta, Pirâmide Invertida)",
+        "COBERTURA_CONTINUA": "🔴 Atualização de Cenário (Follow-up de Notícia)",
+        
+        # --- Deep Dive & Jornalismo de Dados (Para Backlinks) ---
+        "EXPLAINER": "🧠 Explainer (Como Funciona / Por que isso importa)",
+        "DOSSIE_INVESTIGATIVO": "🕵️ Dossiê Investigativo (Jornalismo Longform)",
+        "DATA_STORYTELLING": "📊 Jornalismo de Dados (Histórias contadas por números)",
+        "CHECAGEM_FATOS": "✅ Fact-Checking (Verdade ou Boato)",
+        
+        # --- Utilidade Pública & Lifestyle (Alto Tráfego Orgânico) ---
+        "SERVICO_PASSO_A_PASSO": "👣 Guia de Utilidade Pública / Tutorial",
+        "LISTA_CURADORIA": "📋 Roteiros & Curadoria (Onde comer, O que fazer)",
+        "REVIEW_ANALISE": "⭐ Review da Redação (Testamos para você)",
+        
+        # --- Pessoas & Opinião (Conexão Comunitária) ---
+        "ENTREVISTA_PING_PONG": "🎙️ Entrevista Ping-Pong (Perguntas Diretas)",
+        "PERFIL_BIOGRAFICO": "👤 Perfil/Personagem (A história de moradores locais)",
+        "EDITORIAL_OPINIAO": "✍️ Editorial / Opinião Oficial",
+        "ANTES_E_DEPOIS": "🕰️ Antes e Depois (Evolução urbana e histórica)"
     }
 
     PORTAL_CATALOG = {

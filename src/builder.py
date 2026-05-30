@@ -71,27 +71,43 @@ class PromptBuilder:
         return ", ".join(final_tags[:12])
 
     def _get_portal_structure(self, formato_key, editoria_key, tema_key):
-        # Substituição da lógica frágil baseada em substrings (ex: 'Resumo in editoria')
-        # por mapeamento direto nas chaves da configuração
         if editoria_key == "DESTAQUE_DIARIO":
-            return "## 5. ESTRUTURA: REVISTA DIGITAL DIÁRIA\n1. Manchete do Dia\n2. Notícia Principal (Longform)\n3. Giro Rápido (Sub-manchetes)\n4. Agenda Cultural\n5. Previsão do Tempo e Trânsito"
+            return "## 5. ESTRUTURA: REVISTA DIGITAL DIÁRIA\n1. Manchete do Dia\n2. Notícia Principal (Longform)\n3. Giro Rápido (Sub-manchetes)\n4. Agenda Cultural\n5. Previsão do Tempo"
         
         structures = {
-            "NOTICIA_IMPACTO": "## 5. ESTRUTURA: HARD NEWS COMPLETA\nLide, Corpo da Notícia, Contexto Histórico e Serviço.",
-            "EXPLAINER": "## 5. ESTRUTURA: EXPLAINER\nContexto, Detalhes Técnicos e Impacto na Vida Real.",
-            "DOSSIE_INVESTIGATIVO": "## 5. ESTRUTURA: DOSSIÊ\nProblema, Causas, Contraponto e Histórias Reais.",
-            "CHECAGEM_FATOS": "## 5. ESTRUTURA: FACT-CHECKING\nOrigem do Boato, Investigação, Provas e Veredito.",
-            "LISTA_CURADORIA": "## 5. ESTRUTURA: CURADORIA\nTop 5 Melhores, Endereços, Preços e Dica Secreta.",
-            "SERVICO_PASSO_A_PASSO": "## 5. ESTRUTURA: TUTORIAL\nDocumentos, Prazos, Passo a Passo e Locais.",
-            "ENTREVISTA_PING_PONG": "## 5. ESTRUTURA: ENTREVISTA\nPerfil, Perguntas Diretas e Respostas na Íntegra."
+            "NOTICIA_IMPACTO": "## 5. ESTRUTURA: HARD NEWS COMPLETA\nLide (Quem, Quando, Onde, O que), Corpo da Notícia, Contexto Histórico e Serviço.",
+            "COBERTURA_CONTINUA": "## 5. ESTRUTURA: FOLLOW-UP\nResumo do que se sabe até agora, Novos desdobramentos, Impacto imediato e Próximos passos.",
+            "EXPLAINER": "## 5. ESTRUTURA: EXPLAINER\nPergunta central, Contexto prático, Detalhes técnicos traduzidos, Impacto no dia a dia da população.",
+            "DOSSIE_INVESTIGATIVO": "## 5. ESTRUTURA: DOSSIÊ LONGFORM\nContexto do Problema, Linha do Tempo, Dados e Provas, Contraponto/Culpados e Vítimas/Histórias Reais.",
+            "DATA_STORYTELLING": "## 5. ESTRUTURA: JORNALISMO DE DADOS\nApresentação do dado mais chocante, Evolução histórica, O que o número significa na prática, Projeção futura.",
+            "CHECAGEM_FATOS": "## 5. ESTRUTURA: FACT-CHECKING\nOrigem do Boato (O que estão dizendo), A Investigação (O que descobrimos), Provas, Veredito Oficial.",
+            "SERVICO_PASSO_A_PASSO": "## 5. ESTRUTURA: GUIA DE UTILIDADE\nO que é o serviço, Quem tem direito, Documentos necessários, Passo a passo prático, Prazos e Onde resolver.",
+            "LISTA_CURADORIA": "## 5. ESTRUTURA: LISTICLE\nIntrodução temática, Os Itens da lista com justificativa (Top 3 a 10), Dica Secreta da redação e Conclusão.",
+            "REVIEW_ANALISE": "## 5. ESTRUTURA: REVIEW LOCAL\nContexto da visita/teste, Pontos Fortes, Pontos Fracos, Preços/Custo-Benefício, Veredito Final.",
+            "ENTREVISTA_PING_PONG": "## 5. ESTRUTURA: ENTREVISTA\nMini-perfil do entrevistado, Perguntas curtas e provocativas e Respostas na íntegra.",
+            "PERFIL_BIOGRAFICO": "## 5. ESTRUTURA: PERFIL (STORYTELLING)\nInício no clímax da vida da pessoa, Retrospecto/Origem, As grandes lutas, A situação atual e Legado.",
+            "EDITORIAL_OPINIAO": "## 5. ESTRUTURA: OPINIÃO OFICIAL\nPosicionamento claro no primeiro parágrafo, Argumento principal suportado por fatos, Refutação ao lado contrário, Chamada à ação.",
+            "ANTES_E_DEPOIS": "## 5. ESTRUTURA: MEMÓRIA DA CIDADE\nComo era (Contexto da época), O estopim da mudança, O processo de transformação, Como está hoje e o impacto na cidade."
         }
         return structures.get(formato_key, structures["NOTICIA_IMPACTO"])
 
     def _get_real_estate_guidelines(self, formato_key, cluster, bairro):
         base = "## 5. ESTRUTURA: COPYWRITING IMOBILIÁRIO\nFoco em Storytelling, Valorização e Estilo de Vida."
+        
         structures = {
-            "LISTA_POLEMICA": base + "\n- Mitos vs Verdades.",
-            "COMPARATIVO_TECNICO": base + "\n- Prós e Contras honestos."
+            "GUIA_BAIRRO": base + "\n- História da região, Infraestrutura (saúde/educação), Perfil dos moradores, Potencial de valorização e Principais atrativos.",
+            "LISTICLE_CURADORIA": base + "\n- Introdução magnética, Lista curada detalhando características de cada item, Vantagem exclusiva de cada um e Chamada à ação direta.",
+            "MITOS_VERDADES": base + "\n- Apresente objeções comuns do mercado e destrua cada mito com fatos técnicos e dados reais.",
+            "GLOSSARIO_TERMOS": base + "\n- Explicação hiper-didática em formato de verbetes ou tópicos. Seja claro para que um leigo entenda, mas técnico para manter autoridade.",
+            "GUIA_PASSO_A_PASSO": base + "\n- Um mapa numerado (Fase 1, Fase 2, etc.). Liste armadilhas e atalhos de mercado. Crie um tom didático e acolhedor.",
+            "COMPARATIVO_DIRETO": base + "\n- Divida a estrutura em: Critério 1, Critério 2, Prós de A, Prós de B, Contras de A, Contras de B e um 'Veredito do Especialista' no fim.",
+            "ERROS_FATAIS": base + "\n- Tom de alerta profundo. Liste problemas técnicos (jurídicos, de vistoria, escolha de planta) e mostre como sua imobiliária blinda o cliente contra eles.",
+            "CENARIO_ANALITICO": base + "\n- Comece com números duros. Explique tendências macro, depois desça para a rua/bairro. Termine com uma previsão de valorização.",
+            "ENTREVISTA_ESPECIALISTA": base + "\n- Simule uma conversa franca com um engenheiro ou jurista da área imobiliária. Foco na segurança da transação.",
+            "ESTUDO_DE_CASO": base + "\n- Estrutura PAS (Problema, Agitação, Solução). Mostre o drama inicial do cliente fictício e como a Inteligência e curadoria da sua Imobiliária resolveu.",
+            "ANALISE_ROI": base + "\n- Foco em números. Rentabilidade de aluguel (Yield), Potencial de revenda (Flip), Crescimento do Plano Diretor e liquidez.",
+            "INSIGHT_DE_CORRETOR": base + "\n- Texto em primeira pessoa, persuasivo, mostrando que o cliente está diante de uma assimetria de mercado absurda que os leigos não veem.",
+            "CHECKLIST_TECNICO": base + "\n- Foco em utilidade prática. Checklist marcável (bullets), apontando detalhes elétricos, estruturais, solares e acústicos a serem observados."
         }
         return structures.get(formato_key, base)
 
@@ -99,11 +115,7 @@ class PromptBuilder:
         if gatilho_key == "NEUTRAL_JOURNALISM":
             return "### 🧠 MENTALIDADE (JORNALISMO)\n- Imparcial, Profundo e Baseado em Fatos."
         
-        return """### 🧠 MENTALIDADE (COPYWRITING HUMANIZADO)
-- Persuasivo e Acolhedor.
-- Use vocabulário que remeta a 'Lar' (ex: tranquilo, aconchego, refúgio, convivência).
-- Evite termos técnicos frios em excesso; foque no benefício emocional do espaço.
-- Fale como um consultor humano, não como um catálogo de vendas."""
+        return "### 🧠 MENTALIDADE (COPYWRITING HUMANIZADO)\n- Persuasivo e Acolhedor.\n- Use vocabulário que remeta a 'Lar' (ex: tranquilo, aconchego, refúgio, convivência).\n- Evite termos técnicos frios em excesso; foque no benefício emocional do espaço.\n- Fale como um consultor humano, não como um catálogo de vendas."
 
     def build(self, d, data_pub, data_mod, regras_texto_ajustada):
         if d.get('tipo_pauta') == "PORTAL":

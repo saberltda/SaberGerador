@@ -138,7 +138,8 @@ class PromptBuilder:
 ## GENESIS MAGNETO V.71 — PORTAL NEWS (REFACTORED)
 **Objetivo:** JORNALISMO DE PROFUNDIDADE (LONGFORM).
 **Persona:** PORTAL DA CIDADE.
-**Timestamp:** {data_mod} (Horário de Brasília)
+**Data de Publicação Alvo:** {data_pub}
+**Timestamp (Atual):** {data_mod} (Horário de Brasília)
 
 ## 1. A PAUTA
 - **EDITORIA:** {editoria_display}
@@ -188,7 +189,8 @@ Você é um repórter sênior. Escreva um texto denso e completo.
 ## GENESIS MAGNETO V.71 — REAL ESTATE (REFACTORED)
 **Objetivo:** Copywriting Imobiliário.
 **Persona:** IMOBILIÁRIA SABER.
-**Timestamp:** {data_mod} (Horário de Brasília)
+**Data de Publicação Alvo:** {data_pub}
+**Timestamp (Atual):** {data_mod} (Horário de Brasília)
 
 ## 1. O CENÁRIO
 - **ATIVO:** {ativo}

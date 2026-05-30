@@ -5,9 +5,9 @@ from .config import GenesisConfig
 
 class PromptBuilder:
     """
-    O 'Redator' (Versão Refatorada).
+    O 'Redator' (Versão Refatorada e Blindada contra IA Preguiçosa).
     Mapeamento direto (Chave-Valor) implementado. Dependência de substrings removida.
-    Garante montagem estruturada e limpa dos prompts finais.
+    Força a IA a agir em capacidade máxima de pesquisa.
     """
 
     CTA_CAPTURE_CODE = """
@@ -113,9 +113,9 @@ class PromptBuilder:
 
     def _get_tone_guidelines(self, gatilho_key):
         if gatilho_key == "NEUTRAL_JOURNALISM":
-            return "### 🧠 MENTALIDADE (JORNALISMO)\n- Imparcial, Profundo e Baseado em Fatos."
+            return "### 🧠 MENTALIDADE (JORNALISMO)\n- Imparcial, Profundo e Baseado em Fatos Verídicos Pesquisados."
         
-        return "### 🧠 MENTALIDADE (COPYWRITING HUMANIZADO)\n- Persuasivo e Acolhedor.\n- Use vocabulário que remeta a 'Lar' (ex: tranquilo, aconchego, refúgio, convivência).\n- Evite termos técnicos frios em excesso; foque no benefício emocional do espaço.\n- Fale como um consultor humano, não como um catálogo de vendas."
+        return "### 🧠 MENTALIDADE (COPYWRITING HUMANIZADO)\n- Persuasivo e Acolhedor, mas embasado em DADOS REAIS da sua pesquisa.\n- Use vocabulário que remeta a 'Lar' (ex: tranquilo, aconchego, refúgio, convivência).\n- Evite clichês genéricos; foque no benefício emocional do espaço com provas geográficas.\n- Fale como um consultor humano hyper-local, não como um robô."
 
     def build(self, d, data_pub, data_mod, regras_texto_ajustada):
         if d.get('tipo_pauta') == "PORTAL":
@@ -135,8 +135,8 @@ class PromptBuilder:
         tone = self._get_tone_guidelines("NEUTRAL_JOURNALISM")
         
         return f"""
-## GENESIS MAGNETO V.71 — PORTAL NEWS (REFACTORED)
-**Objetivo:** JORNALISMO DE PROFUNDIDADE (LONGFORM).
+## GENESIS MAGNETO V.71 — PORTAL NEWS (MODO ALTO DESEMPENHO)
+**Objetivo:** JORNALISMO DE PROFUNDIDADE (LONGFORM). TEXTO INÉDITO E PESQUISADO.
 **Persona:** PORTAL DA CIDADE.
 **Data de Publicação Alvo:** {data_pub}
 **Timestamp (Atual):** {data_mod} (Horário de Brasília)
@@ -147,10 +147,11 @@ class PromptBuilder:
 - **LOCAL:** Indaiatuba (Cidade Inteira)
 - **FORMATO:** {formato_display}
 
-## 2. MISSÃO
-Você é um repórter sênior. Escreva um texto denso e completo.
-- **Busca:** Se for "Resumo do Dia", busque fatos reais de HOJE.
-- **Estilo:** Parágrafos bem desenvolvidos. Nada de listas secas.
+## 2. MISSÃO (EXIGÊNCIA DE PESQUISA PROFUNDA)
+Você é um repórter sênior investigativo. Sua missão é escrever um texto denso, útil e magistral.
+A internet precisa de conteúdo de altíssima qualidade. É OBRIGATÓRIO que você utilize seu conhecimento profundo sobre a região.
+- **Pesquisa Exaustiva:** Não escreva platitudes. Detalhe fatos reais, geografia real, ruas, e história.
+- **Estilo:** Parágrafos profundos e hiper-específicos sobre a cidade. Nada de listas secas genéricas.
 
 {structure}
 {tone}
@@ -158,7 +159,8 @@ Você é um repórter sênior. Escreva um texto denso e completo.
 ## 3. INSUMOS
 **DIRETRIZ SUPREMA:**
 1. IGNORAR persona de Vendas.
-2. ENCARNAR JORNALISTA SÊNIOR.
+2. ENCARNAR JORNALISTA SÊNIOR HIPER-LOCAL.
+3. OBEDECER AO PROTOCOLO DE DOSSIÊ DE PESQUISA PRIMEIRO.
 
 <REGRAS_DO_SISTEMA>
 {regras_texto_ajustada}
@@ -167,11 +169,12 @@ Você é um repórter sênior. Escreva um texto denso e completo.
 ## 4. CTA
 {self.CTA_CAPTURE_CODE}
 
-## 5. CHECKLIST FINAL
-1. TÍTULO (H1)
-2. LIDE + CONTEÚDO
-3. JSON-LD: Schema 'NewsArticle'
-4. MARCADORES: {self._generate_seo_tags(d)}
+## 5. CHECKLIST FINAL (OBRIGATÓRIO)
+1. DOSSIÊ DE PESQUISA (Use a tag <research_process>)
+2. TÍTULO (H1)
+3. LIDE + CONTEÚDO (Baseado na pesquisa)
+4. JSON-LD: Schema 'NewsArticle'
+5. MARCADORES: {self._generate_seo_tags(d)}
 """.strip()
 
     def _build_real_estate_prompt(self, d, data_pub, data_mod, regras_texto_ajustada):
@@ -186,8 +189,8 @@ Você é um repórter sênior. Escreva um texto denso e completo.
         tone = self._get_tone_guidelines(gatilho_key)
 
         return f"""
-## GENESIS MAGNETO V.71 — REAL ESTATE (REFACTORED)
-**Objetivo:** Copywriting Imobiliário.
+## GENESIS MAGNETO V.71 — REAL ESTATE (MODO ALTO DESEMPENHO)
+**Objetivo:** Copywriting Imobiliário de Excelência e Retenção.
 **Persona:** IMOBILIÁRIA SABER.
 **Data de Publicação Alvo:** {data_pub}
 **Timestamp (Atual):** {data_mod} (Horário de Brasília)
@@ -199,15 +202,20 @@ Você é um repórter sênior. Escreva um texto denso e completo.
 - **FORMATO:** {formato_display}
 - **GATILHO:** {gatilho_display}
 
-## 2. MISSÃO
-Escreva um texto rico e persuasivo. Venda o sonho.
+## 2. MISSÃO (EXIGÊNCIA DE PESQUISA PROFUNDA)
+Você operará em CAPACIDADE MÁXIMA. A internet precisa de conteúdo valioso e permanente.
+Escreva um texto rico, persuasivo e fundamentado em PESQUISA PROFUNDA sobre {bairro}.
+- **Proibido texto genérico:** Venda o sonho usando fatos geográficos reais, citando ruas reais, pontos de referência exatos, parques e dados locais.
+- **Proibido clichês de vendedor:** Atue como um consultor sênior hiper-especializado no bairro.
+
 {structure}
 {tone}
 
 ## 3. INSUMOS
 **DIRETRIZ SUPREMA:**
 1. IGNORAR persona de Jornalismo.
-2. ENCARNAR CORRETOR ESPECIALISTA.
+2. ENCARNAR CORRETOR ESPECIALISTA HIPER-LOCAL.
+3. OBEDECER AO PROTOCOLO DE DOSSIÊ DE PESQUISA PRIMEIRO.
 
 <REGRAS_DO_SISTEMA>
 {regras_texto_ajustada}
@@ -216,9 +224,10 @@ Escreva um texto rico e persuasivo. Venda o sonho.
 ## 4. CTA
 {self.CTA_CAPTURE_CODE}
 
-## 5. CHECKLIST FINAL
-1. TÍTULO (H1)
-2. CONTEÚDO
-3. JSON-LD: Schema 'BlogPosting'
-4. MARCADORES: {self._generate_seo_tags(d)}
+## 5. CHECKLIST FINAL (OBRIGATÓRIO)
+1. DOSSIÊ DE PESQUISA (Use a tag <research_process>)
+2. TÍTULO (H1)
+3. CONTEÚDO (Baseado estritamente na pesquisa acima)
+4. JSON-LD: Schema 'BlogPosting'
+5. MARCADORES: {self._generate_seo_tags(d)}
 """.strip()

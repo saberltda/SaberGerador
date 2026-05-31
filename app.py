@@ -10,7 +10,7 @@ from src.scanner import BlogScanner
 # 1. CONFIGURAÇÃO DA PÁGINA
 # ==========================================
 st.set_page_config(
-    page_title="Genesis Magneto V.71", 
+    page_title="Genesis Magneto V.72", 
     page_icon="⚙️", 
     layout="wide",
     initial_sidebar_state="expanded"
@@ -26,88 +26,48 @@ def iniciar_modulos_centrais():
     engine = GenesisEngine(data)
     builder = PromptBuilder()
     scanner = BlogScanner()
-    # Pré-carrega o escaneamento do blog na memória
     scanner.mapear()
     return data, rules, engine, builder, scanner
 
 data, rules, engine, builder, scanner = iniciar_modulos_centrais()
 
-def humanizar(texto):
-    return texto.replace("_", " ").title()
-
 # ==========================================
 # 3. INTERFACE PRINCIPAL
 # ==========================================
-st.title("⚙️ Genesis Magneto - Gerador de Pautas")
+st.title("⚙️ Genesis Magneto - Gerador de Pautas (Modo Livre)")
 st.markdown(f"**Versão:** {GenesisConfig.VERSION} | **Status:** Online e Sincronizado")
 st.divider()
 
-# Divisão de layout principal
 col_esq, col_dir = st.columns([1, 2])
 
 with col_esq:
     st.subheader("1. Configurações da Pauta")
     
-    # MODO DE OPERAÇÃO
-    tipo_pauta = st.radio(
-        "Modo de Operação (Domínio):", 
-        ["IMOBILIARIA", "PORTAL"], 
-        format_func=lambda x: "🏢 Imobiliária (Comercial)" if x == "IMOBILIARIA" else "📰 Portal da Cidade (Jornalismo)"
-    )
-    
-    eh_portal = (tipo_pauta == "PORTAL")
-    
-    # SELEÇÃO DE BAIRRO
-    nomes_bairros = ["ALEATÓRIO", "FORCE_CITY_MODE"] + [b["nome"] for b in data.bairros]
+    # SELEÇÃO DE BAIRRO (MANTIDA)
+    nomes_bairros = ["FORCE_CITY_MODE"] + [b["nome"] for b in data.bairros]
     bairro_selecionado = st.selectbox(
-        "Localização / Bairro:", 
+        "Localização / Bairro (Obrigatório):", 
         options=nomes_bairros,
-        format_func=lambda x: "Qualquer Bairro (Sorteio)" if x == "ALEATÓRIO" else ("Cidade Inteira (Indaiatuba)" if x == "FORCE_CITY_MODE" else x)
+        format_func=lambda x: "Cidade Inteira (Indaiatuba)" if x == "FORCE_CITY_MODE" else x
     )
     
-    # SELEÇÃO DE CATEGORIA E ATIVO
-    st.markdown("### Seleção de Ativo")
-    if eh_portal:
-        chaves_categoria = ["ALEATÓRIO"] + list(GenesisConfig.PORTAL_CATALOG.keys())
-        categoria = st.selectbox("Editoria:", chaves_categoria, format_func=lambda x: "Sorteio Automático" if x == "ALEATÓRIO" else humanizar(x))
-        
-        opcoes_sub = ["ALEATÓRIO"]
-        if categoria != "ALEATÓRIO":
-            opcoes_sub += GenesisConfig.PORTAL_CATALOG[categoria]
-        sub_ativo = st.selectbox("Notícia/Foco:", opcoes_sub)
-    else:
-        chaves_categoria = ["ALEATÓRIO"] + list(GenesisConfig.ASSETS_CATALOG.keys())
-        categoria = st.selectbox("Cluster de Imóveis:", chaves_categoria, format_func=lambda x: "Sorteio Automático" if x == "ALEATÓRIO" else humanizar(x))
-        
-        opcoes_sub = ["ALEATÓRIO"]
-        if categoria != "ALEATÓRIO":
-            opcoes_sub += GenesisConfig.ASSETS_CATALOG[categoria]
-        sub_ativo = st.selectbox("Imóvel Específico:", opcoes_sub)
-
-    # SELEÇÃO DE PERSONA (Apenas Imobiliária)
-    if not eh_portal:
-        st.markdown("### Psicologia")
-        chaves_personas = ["ALEATÓRIO"] + [k for k in GenesisConfig.PERSONAS.keys() if k != "CITIZEN_GENERAL"]
-        persona_selecionada = st.selectbox("Persona / Público-Alvo:", chaves_personas, format_func=lambda x: "Sorteio Automático" if x == "ALEATÓRIO" else GenesisConfig.PERSONAS[x]['nome'])
-        
-        chaves_gatilho = ["ALEATÓRIO"] + list(GenesisConfig.EMOTIONAL_TRIGGERS_MAP.keys())
-        gatilho_selecionado = st.selectbox("Gatilho Emocional:", chaves_gatilho, format_func=lambda x: "Sorteio Automático" if x == "ALEATÓRIO" else GenesisConfig.EMOTIONAL_TRIGGERS_MAP[x])
-    else:
-        persona_selecionada = "CITIZEN_GENERAL"
-        gatilho_selecionado = "NEUTRAL_JOURNALISM"
-        
-    # FORMATO E TÓPICO
-    st.markdown("### Estrutura de Conteúdo")
+    st.markdown("### Parâmetros de Criação")
+    st.info("Descreva livremente o que deseja para cada tópico. A IA moldará o texto baseada nestas instruções.")
     
-    dict_topicos = GenesisConfig.PORTAL_TOPICS_MAP if eh_portal else GenesisConfig.TOPICS_MAP
-    chaves_topicos = ["ALEATÓRIO"] + list(dict_topicos.keys())
-    topico_selecionado = st.selectbox("Tópico Abordado:", chaves_topicos, format_func=lambda x: "Sorteio Automático" if x == "ALEATÓRIO" else dict_topicos[x])
+    contexto = st.text_input("1. Contexto / Modo de Operação:", placeholder="Ex: Escreva se o foco é Comercial Imobiliário, Jornalismo Local, Informativo da Prefeitura...")
     
-    dict_formatos = GenesisConfig.PORTAL_FORMATS_MAP if eh_portal else GenesisConfig.REAL_ESTATE_FORMATS_MAP
-    chaves_formatos = ["ALEATÓRIO"] + list(dict_formatos.keys())
-    formato_selecionado = st.selectbox("Formato do Texto:", chaves_formatos, format_func=lambda x: "Sorteio Automático" if x == "ALEATÓRIO" else dict_formatos[x])
+    ativo = st.text_input("2. Ativo / Assunto Principal:", placeholder="Ex: Escreva o foco central, como 'Venda de casa de alto padrão', 'Terreno industrial' ou 'Notícia sobre segurança'...")
+    
+    persona = st.text_input("3. Persona / Público-Alvo:", placeholder="Ex: Escreva o perfil do leitor, como 'Investidor alta renda', 'Famílias com pets', 'Estudantes'...")
+    
+    gatilho = st.text_input("4. Gatilho Emocional / Abordagem:", placeholder="Ex: Escreva a emoção a gerar, como 'Urgência e escassez', 'Segurança familiar', 'Luxo e exclusividade'...")
+    
+    topico = st.text_input("5. Tópico / Eixo Principal:", placeholder="Ex: Escreva o tema central, como 'Potencial de valorização (ROI)', 'Qualidade de vida', 'Custo-benefício'...")
+    
+    formato = st.text_input("6. Formato do Texto:", placeholder="Ex: Escreva a estrutura desejada, como 'Guia definitivo de 10 passos', 'Hard news investigativo', 'Lista curada Top 5'...")
+    
+    dicas = st.text_area("7. Solicitações Específicas / Dicas Extras:", placeholder="Ex: Dê ênfase que o bairro é vizinho ao Parque Ecológico, cite que tem fácil acesso à Rodovia e evite usar termos jurídicos complexos...")
 
-    # CONFIGURAÇÃO DE TEMPO
     st.markdown("### Agendamento Cronológico")
     usar_data_atual = st.checkbox("Usar data e hora atual do sistema", value=True)
     
@@ -125,56 +85,53 @@ with col_dir:
     st.subheader("2. Central de Orquestração")
     
     if btn_gerar:
-        with st.spinner("Processando arquitetura da pauta..."):
+        with st.spinner("Processando arquitetura gerativa da pauta..."):
             
-            # 1. Empacota as escolhas exatas feitas pelos operadores humanos
+            # 1. Empacota os inputs livres
             user_inputs = {
-                'tipo_pauta': tipo_pauta,
                 'bairro_nome': bairro_selecionado,
-                'ativo': categoria,
-                'sub_ativo': sub_ativo,
-                'persona_key': persona_selecionada,
-                'gatilho': gatilho_selecionado,
-                'topico': topico_selecionado,
-                'formato': formato_selecionado
+                'contexto': contexto or "Conteúdo Geral Informativo",
+                'ativo': ativo or "Não especificado (Defina organicamente)",
+                'persona': persona or "Público Amplo / Geral",
+                'gatilho': gatilho or "Tom neutro, focado em clareza",
+                'topico': topico or "Aspectos gerais e contextuais",
+                'formato': formato or "Artigo denso e estruturado",
+                'dicas': dicas or "Nenhuma solicitação extra pontuada."
             }
             
-            # 2. Roda a Engine para resolver cruzamentos e alucinações geográficas
+            # 2. Consolida o pacote final
             pacote_final = engine.run(user_inputs)
             
             # 3. Verifica colisões no Scanner
             bairro_alvo = pacote_final['bairro']['nome']
             alerta_saturacao = ""
-            if bairro_alvo not in ["Indaiatuba", "ALEATÓRIO", "FORCE_CITY_MODE"]:
+            if bairro_alvo not in ["Indaiatuba", "FORCE_CITY_MODE"]:
                 if scanner.ja_publicado(bairro_alvo):
-                    alerta_saturacao = f"⚠️ **Aviso do Scanner:** O local '{bairro_alvo}' já possui registro de publicação indexada no feed. Avalie a necessidade de alternar a região geográfica."
+                    alerta_saturacao = f"⚠️ **Aviso do Scanner:** O local '{bairro_alvo}' já possui registro de publicação indexada no feed. Avalie a necessidade de alternar a região."
             
-            # 4. Formatação de Strings Temporais conforme ISO 8601
+            # 4. Formatação Temporal
             data_pub = datetime_alvo.strftime("%Y-%m-%dT%H:%M:%S") + GenesisConfig.FUSO_PADRAO
             data_mod = datetime.datetime.now(GenesisConfig.TZ_BRASILIA).strftime("%Y-%m-%dT%H:%M:%S") + GenesisConfig.FUSO_PADRAO
             
-            # 5. Injeta regras locais (Conversão das tags {{BAIRRO}} e {{LOCAL}})
+            # 5. Injeta regras geográficas
             regras_injetadas = rules.get_for_prompt(bairro_alvo)
             
-            # 6. Constrói o Prompt Final estruturado em Markdown
+            # 6. Constrói o Prompt Final livre
             prompt_gerado = builder.build(pacote_final, data_pub, data_mod, regras_injetadas)
             
-            # 7. Exibição de Resumo de Sucesso
-            st.success("Parâmetros consolidados com sucesso. Filtros de segurança aplicados.")
+            st.success("Parâmetros absorvidos com sucesso. Modo Generativo Dinâmico Ativado.")
             
             if alerta_saturacao:
                 st.warning(alerta_saturacao)
                 
-            with st.expander("📊 Ver Relatório Analítico da Engine", expanded=True):
-                st.write(f"**Persona Final:** {pacote_final['persona']['nome']}")
-                st.write(f"**Desejo Alvo:** {pacote_final['persona']['desejo']}")
-                st.write(f"**Local/Zona:** {bairro_alvo} ({pacote_final['bairro'].get('zona_normalizada', 'N/A')})")
-                st.write(f"**Ativo Validado:** {pacote_final['ativo_definido']}")
-                st.write(f"**Data Injetada no Script:** `{data_pub}`")
+            with st.expander("📊 Ver Resumo do Dossiê Solicitado", expanded=True):
+                st.write(f"**Local/Zona Alvo:** {bairro_alvo} ({pacote_final['bairro'].get('zona_normalizada', 'urbana')})")
+                st.write(f"**Foco Principal:** {user_inputs['ativo']}")
+                st.write(f"**Público-Alvo:** {user_inputs['persona']}")
+                st.write(f"**Formato Escolhido:** {user_inputs['formato']}")
             
-            # 8. ÁREA DE SAÍDA COM INDICAÇÃO VISUAL DE CÓPIA
+            # 7. ÁREA DE SAÍDA COM CÓPIA
             st.markdown("### 📋 Prompt Gerado")
-            st.info("💡 **Instrução de Cópia Rápida:** As pessoas podem clicar no botão **'Copy'** que aparece automaticamente no canto superior direito do bloco abaixo ao passar o mouse.")
+            st.info("💡 **Instrução:** Clique no botão **'Copy'** que aparece no canto superior direito do bloco abaixo ao passar o mouse e jogue na IA.")
             
-            # O bloco de código abaixo possui o botão nativo de cópia do Streamlit
             st.code(prompt_gerado, language="markdown")

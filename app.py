@@ -46,142 +46,136 @@ O texto final será tão brilhante quanto as instruções que você fornecer aba
 """)
 st.divider()
 
-# --- LINHA 1: MODO E LOCAL ---
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown("#### 🎭 1. Contexto / Modo de Escrita")
-    st.info("""
-    **A Alma e a Voz do Texto.**
-    Esta escolha define toda a postura, o vocabulário e a ética da Inteligência Artificial:
-    
-    * **🏢 Corretor de Imóveis (Foco Comercial):** A IA assumirá a voz de um corretor sênior, hiper-especialista na região. O tom será consultivo, persuasivo, focado em quebrar objeções, gerar desejo, provar valorização (ROI) e encaminhar o leitor para o fechamento do negócio.
-    * **📰 Jornalístico (Portal da Cidade):** A IA atuará como uma redação de notícias. O tom será imparcial, informativo, investigativo e de utilidade pública. **Regra de Ouro:** Zero viés de venda. É feito para educar a população, rankear no Google e gerar autoridade.
-    """)
-    contexto = st.selectbox(
-        "Selecione o Modo de Escrita (Obrigatório):", 
-        options=["Corretor de Imóveis", "Jornalístico"]
-    )
-
-with col2:
-    st.markdown("#### 📍 2. Localização Exata (Bairro)")
-    st.info("""
-    **A Âncora da Realidade Física.**
-    A inteligência artificial tem a tendência de "alucinar" (inventar coisas) se você for genérico. Ao selecionar um bairro específico desta lista oficial, você aciona os protocolos de **Pesquisa Geográfica** do Magneto. 
-    
-    A IA será forçada a buscar as ruas reais daquele bairro, os hospitais próximos, as vias de acesso (ex: Rodovia Santos Dumont), a proximidade com o Parque Ecológico e o perfil real de quem mora ali. Selecione com precisão.
-    """)
-    nomes_bairros = ["FORCE_CITY_MODE"] + [b["nome"] for b in data.bairros]
-    bairro_selecionado = st.selectbox(
-        "Selecione o Bairro / Localização (Obrigatório):", 
-        options=nomes_bairros,
-        format_func=lambda x: "Abordagem Macro - Cidade Inteira (Indaiatuba)" if x == "FORCE_CITY_MODE" else x
-    )
-
-st.divider()
-
-# --- LINHA 2: PRODUTO E PÚBLICO ---
-col3, col4 = st.columns(2)
-
-with col3:
-    st.markdown("#### 🏢 3. Ativo / Assunto Principal")
-    st.info("""
-    **A Anatomia do seu Palco.** O que exatamente estamos promovendo ou noticiando? Fuja do genérico.
-    Em vez de apenas "Casa", detalhe a categoria do seu ativo. Inspire-se nestes Clusters:
-    
-    * 💎 **High-End (Luxo):** Mansão em condomínio fechado, cobertura duplex, arquitetura autoral, automação total.
-    * 👨‍👩‍👧‍👦 **Family (Família):** Casa térrea com espaço gourmet, sobrado moderno, quintal amplo para pets.
-    * 🏙️ **Urban (Urbano):** Studio moderno no centro, apartamento compacto de alto padrão (Short Stay).
-    * 🚚 **Logistics / Corporate:** Galpão logístico AAA, laje corporativa, terreno industrial.
-    * 🌿 **Rural Lifestyle:** Chácara de veraneio, sítio de lazer, haras.
-    
-    **Exemplo ideal:** *"Apartamento de 2 dormitórios (1 suíte), varanda gourmet envidraçada e 2 vagas, focado na planta inteligente."*
-    """)
-    ativo = st.text_input("Descreva o Produto ou Assunto (Seja detalhista):", placeholder="Ex: Casa térrea de alto padrão com 3 suítes, pé direito duplo e piscina aquecida...")
-
-with col4:
-    st.markdown("#### 🎯 4. Persona / Público-Alvo")
-    st.info("""
-    **O Alvo do Dardo.** Para quem estamos escrevendo? O texto muda radicalmente se você falar com um bilionário ou com um estagiário. 
-    Inspire-se no nosso catálogo histórico de Personas:
-    
-    * ✈️ **Família Êxodo (Elite SP):** Fugindo da violência e trânsito da capital, buscam oásis, segurança armada e qualidade de vida no interior.
-    * 🦈 **Investidor Tubarão (ROI):** Frio e calculista. Quer planilhas, custo de oportunidade, *yield* de locação e tese de valorização do Plano Diretor.
-    * 🔑 **Sonhador do 1º Imóvel:** Jovem casal espremido pelo aluguel, tem medo da burocracia do financiamento e busca conforto e aprovação de crédito.
-    * 💻 **Profissional Home Office:** Busca silêncio absoluto, acústica, escritório isolado e fácil acesso a Viracopos.
-    * 🍷 **Melhor Idade Ativa:** Seniores buscando casas 100% térreas (sem escadas), hortas, sol da manhã e proximidade de hospitais (HAOC).
-    """)
-    persona = st.text_input("Descreva o Público-Alvo com clareza:", placeholder="Ex: Investidores focados em renda passiva e valorização imobiliária...")
-
-st.divider()
-
-# --- LINHA 3: PSICOLOGIA E ARGUMENTAÇÃO ---
-col5, col6 = st.columns(2)
-
-with col5:
-    st.markdown("#### 🧠 5. Gatilho Emocional")
-    st.info("""
-    **A Engenharia Psicológica.** Qual botão subconsciente queremos apertar no cérebro do leitor para que ele tome uma ação imediata?
-    
-    * 👑 **Autoridade:** "Eu sou o especialista". Texto recheado de dados de mercado, termos técnicos traduzidos e postura consultiva.
-    * 🛡️ **Segurança (Mito da Caverna):** Focado em proteger a família (portaria 24h) ou blindar o patrimônio contra a inflação.
-    * 💰 **Ganância / Lucro:** Para investidores. Mostra a assimetria do mercado, a chance de multiplicar o capital, comprar na planta e revender (*flip*).
-    * 🚨 **Escassez e Urgência:** "A janela está fechando". Ideal para últimas unidades ou virada de tabela de preço. Aciona o medo de perder.
-    * ✨ **Exclusividade / Status:** "Para poucos". Vende a sensação de pertencer a um clube de elite, a assinatura do arquiteto, o ego e o requinte.
-    * 👥 **Prova Social:** "O movimento inteligente que todos estão fazendo". Validação comunitária.
-    """)
-    gatilho = st.text_input("Gatilho Dominante (Qual emoção evocar?):", placeholder="Ex: Gatilho de Escassez e Urgência")
-
-with col6:
-    st.markdown("#### 📖 6. Tópico Abordado (Argumento Central)")
-    st.info("""
-    **A Espinha Dorsal Argumentativa.** Qual é a tese principal que o seu texto vai defender e provar ao longo dos parágrafos?
-    
-    **Inspirações Imobiliárias:**
-    * 📈 Potencial de Valorização e Crescimento Econômico da Região.
-    * 🌿 Qualidade de Vida, Biofilia e Proximidade com a Natureza (Parques).
-    * 📱 Casa Inteligente (Smart Home) e Inovação Construtiva.
-    * ⚖️ Segurança Jurídica da Transação e Documentação Descomplicada.
-    
-    **Inspirações de Portal/Jornalismo:**
-    * 🔍 Fiscal do Povo (Transparência, Denúncia).
-    * 📊 Jornalismo de Dados (O que os números econômicos da cidade dizem).
-    * 🏛️ Resgate da Memória (História de fundação de um local icônico).
-    """)
-    topico = st.text_input("Tese / Argumento Principal:", placeholder="Ex: O potencial de valorização do entorno do Parque Ecológico...")
-
-st.divider()
-
-# --- LINHA 4: FORMATO E CONTROLE TOTAL ---
-st.markdown("#### 📐 7. Formato do Texto (Design da Informação)")
+# --- SELEÇÃO DE MODO (Define a Interface Dinamicamente) ---
+st.markdown("#### 🎭 1. Contexto / Modo de Escrita")
 st.info("""
-Como o cérebro do leitor vai digerir e visualizar essa informação na tela? A estrutura dita o engajamento e o tempo de retenção.
-
-**Formatos Campeões de Imobiliária:**
-* 🗺️ **Guia Definitivo de Bairro:** Um raio-X (história, escolas, padarias, segurança).
-* 🏆 **Listicle Curadoria (Top 5):** Ex: "Os 5 melhores condomínios para quem tem Pets".
-* 🎭 **Mitos vs Verdades:** Quebra sistemática de objeções do cliente inseguro.
-* 📈 **Estudo de Caso (Storytelling):** A Jornada do Herói de um cliente que prosperou com você.
-
-**Formatos Campeões de Portal/Notícia:**
-* 📰 **Hard News (Pirâmide Invertida):** Notícia de impacto, direto ao fato principal.
-* 🕵️ **Dossiê Investigativo:** Longform profundo, histórico e recheado de provas.
-* 🧠 **Explainer (Guia Prático):** Desenhando um conceito complexo ou lei para a população entender passo a passo.
+**A Alma e a Voz do Texto.**
+Esta escolha define toda a postura, o vocabulário, a ética e as opções do painel abaixo:
+* **🏢 Corretor de Imóveis (Foco Comercial):** Tom consultivo, persuasivo, focado em fechar negócios e provar retorno financeiro (ROI).
+* **📰 Jornalístico (Portal da Cidade):** Tom imparcial, informativo, investigativo e de utilidade pública. Zero viés de venda.
 """)
-formato = st.text_input("Estrutura do Conteúdo:", placeholder="Ex: Guia definitivo detalhando infraestrutura, escolas e lazer...")
-
-st.markdown("#### ⚠️ 8. Solicitações Específicas / Diretriz Suprema (Opcional, mas vital)")
-st.info("""
-**O seu "Override" Manual.** Este é o espaço de controle total. O que a IA **DEVE** incluir no texto de forma inegociável, sob pena de falhar na missão?
-Jogue aqui todos os detalhes específicos da pauta que não couberam acima. 
-
-* Exemplo: *"Cite o condomínio Manai (já entregue) e o lançamento Aurora, ambos da Masotti. Mencione que a rua principal acabou de ser recapeada pela prefeitura. Não use a palavra 'imperdível'. Fale do desconto de 10% para pagamento à vista."*
-""")
-dicas = st.text_area(
-    "Exigências, citações de marcas, campanhas e regras inegociáveis:", 
-    placeholder="Escreva livremente todos os detalhes cruciais que a IA precisa saber e citar obrigatoriamente...", 
-    height=200
+contexto = st.selectbox(
+    "Selecione o Modo de Escrita (Obrigatório):", 
+    options=["Corretor de Imóveis", "Jornalístico"]
 )
+st.divider()
+
+# ==========================================
+# BIFURCAÇÃO DA INTERFACE COM BASE NO MODO
+# ==========================================
+
+if contexto == "Corretor de Imóveis":
+    st.markdown("### 🏢 MODO: CORRETOR DE IMÓVEIS (FOCO COMERCIAL)")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("#### 📍 2. Localização Exata (Bairro)")
+        st.info("A IA tende a 'alucinar' se você for genérico. Ao selecionar um bairro, você aciona os protocolos de **Pesquisa Geográfica** (ruas reais, hospitais próximos).")
+        nomes_bairros = ["FORCE_CITY_MODE"] + [b["nome"] for b in data.bairros]
+        bairro_val = st.selectbox(
+            "Selecione o Bairro / Localização (Obrigatório):", 
+            options=nomes_bairros,
+            format_func=lambda x: "Abordagem Macro - Cidade Inteira (Indaiatuba)" if x == "FORCE_CITY_MODE" else x
+        )
+
+    with col2:
+        st.markdown("#### 🏢 3. Ativo / Assunto Principal")
+        st.info("**A Anatomia do seu Palco.** Descreva a categoria do ativo (High-End, Family, Urban, Logistics, etc.) e os detalhes essenciais.")
+        ativo_val = st.text_input("Descreva o Produto (Seja detalhista):", placeholder="Ex: Casa térrea de alto padrão com 3 suítes, pé direito duplo e piscina...")
+
+    col3, col4 = st.columns(2)
+    with col3:
+        st.markdown("#### 🎯 4. Persona / Público-Alvo")
+        st.info("**O Alvo do Dardo.** Para quem escrevemos? Família Êxodo (SP), Investidor Tubarão (ROI), Sonhador do 1º Imóvel, Profissional Home Office?")
+        persona_val = st.text_input("Descreva o Público-Alvo com clareza:", placeholder="Ex: Investidores focados em renda passiva e valorização imobiliária...")
+
+    with col4:
+        st.markdown("#### 🧠 5. Gatilho Emocional")
+        st.info("**A Engenharia Psicológica.** Qual emoção evocar? Autoridade, Segurança, Lucro, Escassez/Urgência, Exclusividade ou Prova Social?")
+        gatilho_val = st.text_input("Gatilho Dominante:", placeholder="Ex: Gatilho de Escassez e Exclusividade...")
+
+    col5, col6 = st.columns(2)
+    with col5:
+        st.markdown("#### 📖 6. Tópico Abordado (Argumento Central)")
+        st.info("**A Espinha Dorsal Argumentativa.** Qual é a tese principal que o seu texto vai defender e provar ao longo dos parágrafos?")
+        topico_val = st.text_input("Tese / Argumento Principal:", placeholder="Ex: O potencial de valorização do entorno do Parque Ecológico...")
+
+    with col6:
+        st.markdown("#### 📐 7. Formato do Texto")
+        st.info("**Design da Informação.** Guia Definitivo, Listicle Curadoria (Top 5), Mitos vs Verdades, ou Estudo de Caso.")
+        formato_val = st.text_input("Estrutura do Conteúdo:", placeholder="Ex: Guia definitivo detalhando infraestrutura, escolas e lazer...")
+
+    st.markdown("#### ⚠️ 8. Solicitações Específicas / Diretrizes (Opcional)")
+    st.info("**O seu 'Override' Manual.** O que a IA DEVE incluir no texto de forma inegociável, sob pena de falhar na missão?")
+    dicas_val = st.text_area(
+        "Exigências inegociáveis:", 
+        placeholder="Ex: Cite o condomínio X e o lançamento Y. Mencione a rua principal... Fale do desconto à vista.", 
+        height=150
+    )
+
+else:
+    # ------------------------------------------
+    # INTERFACE: JORNALÍSTICO (PORTAL DA CIDADE)
+    # ------------------------------------------
+    st.markdown("### 📰 MODO: PORTAL DA CIDADE (JORNALISMO)")
+    
+    # Em jornalismo, forçamos a busca geográfica para o escopo da cidade inteira
+    bairro_val = "FORCE_CITY_MODE"
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("#### 🗞️ 2. Caderno / Editoria")
+        st.info("A qual caderno pertence esta matéria? Isso define a seriedade da apuração e a categorização da notícia.")
+        editoria_val = st.selectbox(
+            "Selecione a Editoria:", 
+            options=[
+                "Notícia Local (Hard News)", 
+                "Utilidade Pública e Serviços", 
+                "Turismo, Lazer e História", 
+                "Política e Cidade", 
+                "Economia e Negócios", 
+                "Infraestrutura e Obras", 
+                "Cultura e Eventos", 
+                "Esportes", 
+                "Polícia e Segurança", 
+                "Editorial / Opinião"
+            ]
+        )
+
+    with col2:
+        st.markdown("#### 🚨 3. A Pauta / Fato Principal")
+        st.info("**O Acontecimento.** O que exatamente precisa ser noticiado ou investigado? Seja claro, direto e focado no fato.")
+        ativo_val = st.text_input("Descreva a Pauta (O Fato):", placeholder="Ex: Prefeitura aprova revitalização do Parque Ecológico...")
+
+    col3, col4 = st.columns(2)
+    with col3:
+        st.markdown("#### 👥 4. Leitor-Alvo / Público")
+        st.info("**Quem vai ler isso?** O cidadão comum, empresários locais, motoristas, pais de alunos da rede municipal?")
+        persona_val = st.text_input("Perfil do Leitor:", placeholder="Ex: Moradores da zona sul e motoristas que utilizam a rodovia X...")
+
+    with col4:
+        st.markdown("#### 🎙️ 5. Abordagem Jornalística (Tom)")
+        st.info("**Intenção da Reportagem.** Qual o viés? (Ex: Denúncia, Investigativo, Alerta à População, Inspiracional, Prestação de Serviço).")
+        gatilho_val = st.text_input("Tom / Abordagem:", placeholder="Ex: Tom de utilidade pública e alerta aos moradores...")
+
+    col5, col6 = st.columns(2)
+    with col5:
+        st.markdown("#### 🎯 6. Ângulo / Tese da Matéria")
+        st.info("**O Foco da Lente.** Mesmo noticiando um fato, qual aspecto você quer evidenciar ou aprofundar?")
+        topico_val = st.text_input("Ângulo Principal:", placeholder="Ex: O impacto prático do trânsito na vida diária devido às obras...")
+
+    with col6:
+        st.markdown("#### 📐 7. Estrutura da Notícia")
+        st.info("**Design da Matéria.** (Ex: Pirâmide Invertida, Dossiê Longform, Entrevista, Lista de Dicas Úteis, Checagem de Fatos).")
+        formato_val = st.text_input("Formato do Texto:", placeholder="Ex: Reportagem investigativa com dados, histórico e citações...")
+
+    st.markdown("#### ⚠️ 8. Diretrizes Editoriais e Apuração (Opcional)")
+    st.info("**Dados Obrigatórios.** Nomes de autoridades, secretarias, dados estatísticos ou restrições editoriais que a IA DEVE acatar rigorosamente.")
+    dicas_val = st.text_area(
+        "Regras e Fatos Inegociáveis:", 
+        placeholder="Ex: Citar o secretário João Silva. Mencionar a verba de 2 milhões aprovada. Manter total neutralidade política...", 
+        height=150
+    )
 
 st.divider()
 
@@ -191,40 +185,43 @@ st.divider()
 if st.button("🚀 INICIAR GERAÇÃO DE CONTEÚDO (MAGNETO V.72)", type="primary", use_container_width=True):
     with st.spinner("Compilando parâmetros e acionando arquitetura gerativa..."):
         
-        # Traduz a opção do usuário para o formato esperado pelas regras internas do sistema
-        contexto_normalizado = "Comercial Imobiliário" if contexto == "Corretor de Imóveis" else "Jornalismo Local"
+        # 1. Normaliza o Contexto dependendo do Modo Escolhido
+        if contexto == "Corretor de Imóveis":
+            contexto_normalizado = "Comercial Imobiliário"
+        else:
+            contexto_normalizado = f"Jornalismo Local (Caderno: {editoria_val})"
 
-        # 1. Empacota os inputs livres coletados na interface hiper-específica
+        # 2. Empacota os inputs livres coletados
         user_inputs = {
-            'bairro_nome': bairro_selecionado,
+            'bairro_nome': bairro_val,
             'contexto': contexto_normalizado,
-            'ativo': ativo or "Imóvel / Tema não especificado (Adote uma abordagem ampla)",
-            'persona': persona or "Público-Geral da cidade",
-            'gatilho': gatilho or "Tom informativo e acolhedor (Neutro)",
-            'topico': topico or "Apresentação geral das características e vantagens",
-            'formato': formato or "Artigo estruturado para Web (Leads, H2, H3 e Bullets)",
-            'dicas': dicas or "Siga estritamente as regras originais do sistema sem solicitações avulsas."
+            'ativo': ativo_val or ("Ativo não especificado" if contexto == "Corretor de Imóveis" else "Pauta não especificada"),
+            'persona': persona_val or ("Público Geral" if contexto == "Corretor de Imóveis" else "Cidadãos e População em geral"),
+            'gatilho': gatilho_val or ("Persuasivo" if contexto == "Corretor de Imóveis" else "Imparcial e Informativo"),
+            'topico': topico_val or "Apresentação dos fatos",
+            'formato': formato_val or ("Artigo Web" if contexto == "Corretor de Imóveis" else "Hard News"),
+            'dicas': dicas_val or "Siga estritamente as regras originais do sistema."
         }
         
-        # 2. Consolida o pacote final usando o cérebro (engine)
+        # 3. Consolida o pacote final usando o cérebro (engine)
         pacote_final = engine.run(user_inputs)
         
-        # 3. Verifica colisões estruturais com o Scanner do feed
+        # 4. Verifica colisões estruturais com o Scanner do feed
         bairro_alvo = pacote_final['bairro']['nome']
         alerta_saturacao = ""
         if bairro_alvo not in ["Indaiatuba", "FORCE_CITY_MODE"]:
             if scanner.ja_publicado(bairro_alvo):
-                alerta_saturacao = f"⚠️ **Aviso do Rada de SEO:** O local '{bairro_alvo}' já possui registro de publicação indexada recentemente no feed do site. Avalie a necessidade de alternar a região geográfica para evitar canibalização de palavras-chave."
+                alerta_saturacao = f"⚠️ **Aviso do Radar de SEO:** O local '{bairro_alvo}' já possui registro de publicação indexada recentemente no feed do site. Avalie a necessidade de alternar a região."
         
-        # 4. Formatação Temporal Baseada nas Configurações do Sistema (-03:00)
+        # 5. Formatação Temporal Baseada nas Configurações do Sistema (-03:00)
         datetime_alvo = datetime.datetime.now(GenesisConfig.TZ_BRASILIA)
         data_pub = datetime_alvo.strftime("%Y-%m-%dT%H:%M:%S") + GenesisConfig.FUSO_PADRAO
         data_mod = datetime_alvo.strftime("%Y-%m-%dT%H:%M:%S") + GenesisConfig.FUSO_PADRAO
         
-        # 5. Injeta regras estruturais geográficas lendo o arquivo REGRAS.txt
+        # 6. Injeta regras estruturais geográficas lendo o arquivo REGRAS.txt
         regras_injetadas = rules.get_for_prompt(bairro_alvo)
         
-        # 6. Constrói o Prompt Mestre Final Combinado
+        # 7. Constrói o Prompt Mestre Final Combinado
         prompt_gerado = builder.build(pacote_final, data_pub, data_mod, regras_injetadas)
         
         st.success("✨ Parâmetros absorvidos com sucesso. Modo Generativo Dinâmico Ativado.")
@@ -232,13 +229,13 @@ if st.button("🚀 INICIAR GERAÇÃO DE CONTEÚDO (MAGNETO V.72)", type="primary
         if alerta_saturacao:
             st.warning(alerta_saturacao)
             
-        with st.expander("📊 Ver Resumo do Dossiê Processado pela Engine", expanded=True):
+        with st.expander("📊 Ver Resumo do Dossiê Processado", expanded=True):
             st.write(f"**Modo de Interpretação:** {contexto_normalizado}")
             st.write(f"**Ancoragem Geográfica:** {bairro_alvo} ({pacote_final['bairro'].get('zona_normalizada', 'urbana')})")
-            st.write(f"**Objeto Principal:** {user_inputs['ativo']}")
-            st.write(f"**Psicologia Aplicada:** Gatilho de {user_inputs['gatilho']} direcionado para {user_inputs['persona']}")
+            st.write(f"**Objeto Central:** {user_inputs['ativo']}")
+            st.write(f"**Direcionamento/Tom:** {user_inputs['gatilho']} direcionado para {user_inputs['persona']}")
         
-        # 7. Área de Saída com o Prompt Mestre Pronto para Cópia
+        # 8. Área de Saída com o Prompt Mestre Pronto para Cópia
         st.markdown("### 📋 Prompt Mestre Gerado")
         st.info("💡 **Instrução de Operação:** Passe o mouse sobre a caixa preta abaixo. No canto superior direito dela aparecerá um botão escrito **'Copy'**. Clique nele e cole o conteúdo diretamente no chat da Inteligência Artificial.")
         

@@ -1,62 +1,74 @@
-# src/builder.py
-import datetime
+import re
+from datetime import datetime, timezone
+from src.config import SITE_CANONICAL_BASE, FORMKIT_FORM_ID, FORMKIT_UID
+from src.utils import slugify
 
-class PromptBuilder:
-    """
-    O 'Redator' (Modo Livre).
-    Monta o prompt mestre passando todas as intenções diretas do usuário de forma agnóstica 
-    para abranger tanto Jornalismo quanto Setor Imobiliário.
-    """
-
-    CTA_CAPTURE_CODE = """
-<div style="text-align:center; margin: 40px 0;">
-<script async data-uid="d188d73e78" src="https://sabernovidades.kit.com/d188d73e78/index.js"></script>
+def build_kit_form_html():
+    """Gera o bloco de formulário HTML do Kit.com idêntico ao dos artigos originais."""
+    return f"""
+<div>
+<form action="https://app.kit.com/forms/{FORMKIT_FORM_ID}/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="{FORMKIT_FORM_ID}" data-uid="{FORMKIT_UID}" data-format="inline" data-version="5" style="background-color:#f9fafb;border-radius:4px;padding:20px;border:1px solid #e3e3e3;margin-top:2rem;">
+  <div data-style="minimal">
+    <div class="formkit-header" style="color:#3b5998;font-size:24px;font-weight:700;margin-bottom:12px;text-align:center;">
+      <h2>Receba uma seleção dos melhores imóveis de Indaiatuba</h2>
+    </div>
+    <div class="formkit-subheader" style="color:#686868;font-size:16px;margin-bottom:18px;text-align:center;">
+      <p>Para sua segurança e evitar spam, enviaremos um link de confirmação: ative seu cadastro clicando nele.</p>
+    </div>
+    <div class="seva-fields formkit-fields" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <input class="formkit-input" name="email_address" placeholder="Digite aqui o seu e-mail..." required="" type="email" style="flex:1;min-width:240px;padding:12px;border:1px solid #e3e3e3;border-radius:4px;font-size:15px;">
+      <button data-element="submit" class="formkit-submit" style="color:#fff;background-color:#098b18;border:none;border-radius:4px;padding:12px 24px;font-size:15px;font-weight:600;cursor:pointer;">
+        <span>QUERO RECEBER OPORTUNIDADES</span>
+      </button>
+    </div>
+    <div class="formkit-guarantee" style="color:#4d4d4d;font-size:12px;margin-top:12px;text-align:center;">
+      <p>Nós respeitamos sua privacidade. Cancele o cadastro a qualquer momento.</p>
+    </div>
+  </div>
+</form>
 </div>
 """
 
-    def __init__(self):
-        pass
-
-    def build(self, d, data_pub, data_mod, regras_texto_ajustada):
-        bairro = d['bairro']['nome']
+def build_astro_post(title: str, excerpt: str, body_markdown: str, category: str = "Insights Estratégicos", tags: list = None, slug: str = None, publish_date: datetime = None) -> tuple[str, str]:
+    """
+    Monta o arquivo Markdown (.md) completo para o AstroWind.
+    Retorna (slug, conteúdo_final_markdown).
+    """
+    if not slug:
+        slug = slugify(title)
         
-        return f"""
-## GENESIS MAGNETO V.72 — MODO GENERATIVO LIVRE
-**Objetivo:** Produzir um conteúdo magistral, com profundidade cirúrgica, baseado estritamente nas diretrizes livres do operador humano.
-**Data de Publicação Alvo:** {data_pub}
-**Timestamp (Atual):** {data_mod} (Horário de Brasília)
+    if not publish_date:
+        publish_date = datetime.now(timezone.utc)
+        
+    iso_date = publish_date.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+    canonical_url = f"{SITE_CANONICAL_BASE}/{slug}"
+    
+    if not tags:
+        tags = ["Indaiatuba", "Mercado Imobiliário", "Investimento"]
+        
+    tags_yaml = "\n".join([f'  - "{t}"' for t in tags])
+    clean_title = title.replace('"', '\\"')
+    clean_excerpt = excerpt.replace('"', '\\"')
 
-## 1. INSTRUÇÕES DO OPERADOR (PARÂMETROS ESTRATÉGICOS)
-O usuário definiu parâmetros exatos abaixo. Você DEVE guiar todo o seu estilo, linguagem, estrutura e linha argumentativa por eles:
-- **CONTEXTO / MODO DA ESCRITA:** {d['contexto']}
-- **LOCALIZAÇÃO GEOGRÁFICA ALVO:** {bairro}
-- **OBJETO CENTRAL (PRODUTO OU PAUTA):** {d['ativo']}
-- **PÚBLICO-ALVO / LEITOR:** {d['persona']}
-- **ABORDAGEM / GATILHO PSICOLÓGICO:** {d['gatilho']}
-- **TESE / ÂNGULO PRINCIPAL:** {d['topico']}
-- **FORMATO DO CONTEÚDO:** {d['formato']}
+    # Cabeçalho Frontmatter padrão do AstroWind
+    frontmatter = f"""---
+publishDate: {iso_date}
+title: "{clean_title}"
+excerpt: "{clean_excerpt}"
+image: "~/assets/images/default.png"
+category: "{category}"
+tags:
+{tags_yaml}
+metadata:
+  canonical: "{canonical_url}"
+---
+"""
 
-## 2. DIRETRIZES MANUAIS / EXIGÊNCIAS (IMPORTANTE)
-Atenção absoluta a este direcionamento extra exigido pelo usuário:
-> "{d['dicas']}"
+    # Ajusta referências a links para a nova rota interna /blog/
+    body_markdown = re.sub(r'https?://(?:www\.)?saber\.imb\.br/blog/([^"\'\s>]+)', r'/blog/\1', body_markdown)
+    body_markdown = re.sub(r'https?://blog\.saber\.imb\.br/([^"\'\s>]+)', r'/blog/\1', body_markdown)
 
-## 3. MISSÃO E PESQUISA DE CAMPO
-A internet exige qualidade. É inegociável que você mergulhe em sua base de dados e traga contexto real da região:
-- **Zero Obviedade:** Detalhe fatos reais, ruas, localização geográfica verdadeira, infraestrutura e história.
-- **Autoridade:** Aja com maestria absoluta dentro do Contexto estipulado acima, fundindo suas palavras à Persona e à Abordagem de maneira invisível e fluida.
-
-## 4. INSUMOS (LEIS INEGOCIÁVEIS DO SISTEMA)
-<REGRAS_DO_SISTEMA>
-{regras_texto_ajustada}
-</REGRAS_DO_SISTEMA>
-
-## 5. CTA (Call To Action) OBRIGATÓRIO
-No local exato estipulado nas regras (Fim do HTML), você DEVE inserir o código abaixo rigorosamente:
-{self.CTA_CAPTURE_CODE}
-
-## 6. CHECKLIST FINAL (ORDEM DA SUA RESPOSTA)
-1. DOSSIÊ DE PESQUISA PROFUNDA (Use a tag <research_process> trazendo o que você sabe de verdade sobre o local para usar no texto).
-2. TÍTULO SUGERIDO (H1 otimizado para SEO).
-3. CONTEÚDO EM HTML (Estruturado conforme o "Formato do Conteúdo" e injetando o script JSON-LD exigido).
-4. MARCADORES/TAGS (Crie de 5 a 10 tags baseadas no conteúdo e no assunto principal, separadas por vírgula).
-""".strip()
+    form_html = build_kit_form_html()
+    
+    final_content = f"{frontmatter}\n{body_markdown.strip()}\n\n{form_html.strip()}\n"
+    return slug, final_content

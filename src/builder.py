@@ -1,13 +1,18 @@
 import re
+import unicodedata
 from datetime import datetime, timezone
-from src.config import SITE_CANONICAL_BASE, FORMKIT_FORM_ID, FORMKIT_UID
-from src.utils import slugify
 
-def build_kit_form_html():
-    """Gera o bloco de formulário HTML do Kit.com idêntico ao dos artigos originais."""
-    return f"""
+def slugify(value: str) -> str:
+    """Normaliza o título removendo acentos e gerando slug seguro para URL e arquivo."""
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
+    value = re.sub(r'[^\w\s-]', '', value.lower())
+    return re.sub(r'[-\s]+', '-', value).strip('-')
+
+def build_kit_form_html() -> str:
+    """Bloco HTML do formulário Kit.com com o formulário oficial."""
+    return """
 <div>
-<form action="https://app.kit.com/forms/{FORMKIT_FORM_ID}/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="{FORMKIT_FORM_ID}" data-uid="{FORMKIT_UID}" data-format="inline" data-version="5" style="background-color:#f9fafb;border-radius:4px;padding:20px;border:1px solid #e3e3e3;margin-top:2rem;">
+<form action="https://app.kit.com/forms/8984117/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="8984117" data-uid="d188d73e78" data-format="inline" data-version="5" style="background-color:#f9fafb;border-radius:4px;padding:20px;border:1px solid #e3e3e3;margin-top:2rem;">
   <div data-style="minimal">
     <div class="formkit-header" style="color:#3b5998;font-size:24px;font-weight:700;margin-bottom:12px;text-align:center;">
       <h2>Receba uma seleção dos melhores imóveis de Indaiatuba</h2>
@@ -29,19 +34,14 @@ def build_kit_form_html():
 </div>
 """
 
-def build_astro_post(title: str, excerpt: str, body_markdown: str, category: str = "Insights Estratégicos", tags: list = None, slug: str = None, publish_date: datetime = None) -> tuple[str, str]:
+def build_astro_markdown(title: str, excerpt: str, body: str, category: str = "Insights Estratégicos", tags: list = None, custom_slug: str = None) -> tuple[str, str]:
     """
-    Monta o arquivo Markdown (.md) completo para o AstroWind.
-    Retorna (slug, conteúdo_final_markdown).
+    Gera o conteúdo final no formato Markdown (.md) esperado pelo AstroWind.
+    Retorna (slug, markdown_string).
     """
-    if not slug:
-        slug = slugify(title)
-        
-    if not publish_date:
-        publish_date = datetime.now(timezone.utc)
-        
-    iso_date = publish_date.strftime("%Y-%m-%dT%H:%M:%S.000Z")
-    canonical_url = f"{SITE_CANONICAL_BASE}/{slug}"
+    slug = custom_slug if custom_slug else slugify(title)
+    iso_date = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+    canonical_url = f"https://saber.imb.br/blog/{slug}"
     
     if not tags:
         tags = ["Indaiatuba", "Mercado Imobiliário", "Investimento"]
@@ -50,7 +50,6 @@ def build_astro_post(title: str, excerpt: str, body_markdown: str, category: str
     clean_title = title.replace('"', '\\"')
     clean_excerpt = excerpt.replace('"', '\\"')
 
-    # Cabeçalho Frontmatter padrão do AstroWind
     frontmatter = f"""---
 publishDate: {iso_date}
 title: "{clean_title}"
@@ -64,11 +63,11 @@ metadata:
 ---
 """
 
-    # Ajusta referências a links para a nova rota interna /blog/
-    body_markdown = re.sub(r'https?://(?:www\.)?saber\.imb\.br/blog/([^"\'\s>]+)', r'/blog/\1', body_markdown)
-    body_markdown = re.sub(r'https?://blog\.saber\.imb\.br/([^"\'\s>]+)', r'/blog/\1', body_markdown)
+    # Garante links internos no padrão /blog/{slug}
+    clean_body = re.sub(r'https?://(?:www\.)?saber\.imb\.br/blog/([^"\'\s>]+)', r'/blog/\1', body)
+    clean_body = re.sub(r'https?://blog\.saber\.imb\.br/([^"\'\s>]+)', r'/blog/\1', clean_body)
 
     form_html = build_kit_form_html()
+    final_content = f"{frontmatter}\n{clean_body.strip()}\n\n{form_html.strip()}\n"
     
-    final_content = f"{frontmatter}\n{body_markdown.strip()}\n\n{form_html.strip()}\n"
     return slug, final_content

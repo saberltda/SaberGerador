@@ -15,6 +15,7 @@ class PromptBuilder:
     Monta o prompt mestre preservando a engenharia de prompts original.
     """
 
+    # Formulário Único e Limpo do Kit.com
     CTA_CAPTURE_CODE = """
 <div>
 <form action="https://app.kit.com/forms/8984117/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="8984117" data-uid="d188d73e78" data-format="inline" data-version="5" style="background-color:#f9fafb;border-radius:4px;padding:20px;border:1px solid #e3e3e3;margin-top:2rem;">
@@ -76,17 +77,18 @@ A internet exige qualidade. É inegociável que você mergulhe em sua base de da
 </REGRAS_DO_SISTEMA>
 
 ## 5. CHECKLIST FINAL (ORDEM DA SUA RESPOSTA)
-1. DOSSIÊ DE PESQUISA PROFUNDA (Use a tag <research_process> trazendo o que você sabe de verdade sobre o local para usar no texto).
-2. TÍTULO SUGERIDO (H1 otimizado para SEO).
-3. RESUMO / EXCERPT (1 ou 2 frases densas e instigantes para o card do artigo).
-4. CONTEÚDO DO ARTIGO (Em Markdown ou HTML limpo, usando subtítulos ## e parágrafos bem estruturados).
-5. MARCADORES/TAGS (Crie de 5 a 10 tags baseadas no bairro e no assunto principal, separadas por vírgula).
+1. TÍTULO SUGERIDO (H1 otimizado para SEO).
+2. RESUMO / EXCERPT (1 ou 2 frases densas e instigantes para o card do artigo).
+3. CONTEÚDO DO ARTIGO (Em HTML limpo ou Markdown, com subtítulos ##, tabelas e parágrafos estruturados). 
+   *(Nota: NÃO inclua blocos de JSON-LD, tags <script> de formulário ou imagens externas do Blogger no seu texto; entregue apenas o conteúdo limpo).*
+4. MARCADORES/TAGS (Crie de 5 a 10 tags baseadas no bairro e no assunto principal, separadas por vírgula).
 """.strip()
 
     @staticmethod
     def build_astro_file(title: str, excerpt: str, body: str, category: str, tags: list, custom_slug: str = None) -> tuple[str, str]:
         """
-        Empacota o retorno da IA gerando o arquivo Markdown (.md) com Frontmatter para o AstroWind.
+        Empacota o retorno da IA gerando o arquivo Markdown (.md) limpo para o AstroWind.
+        Remove automaticamente tags indesejadas (JSON-LD manual, scripts duplicados e imagens externas).
         """
         slug = custom_slug if custom_slug else slugify(title)
         iso_date = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
@@ -108,12 +110,19 @@ metadata:
   canonical: "{canonical_url}"
 ---
 """
-        # Normaliza links para o padrão /blog/
-        clean_body = re.sub(r'https?://(?:www\.)?saber\.imb\.br/blog/([^"\'\s>]+)', r'/blog/\1', body)
+        # 1. Remove blocos de JSON-LD manuais que a IA traga (o Astro já gera o SEO nativamente)
+        clean_body = re.sub(r'<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>', '', body, flags=re.IGNORECASE)
+        
+        # 2. Remove tags HTML de imagem avulsas ou corrompidas que venham de caches antigos
+        clean_body = re.sub(r'<img\b[^>]*>', '', clean_body, flags=re.IGNORECASE)
+
+        # 3. Normaliza links internos para o padrão /blog/ do Worker
+        clean_body = re.sub(r'https?://(?:www\.)?saber\.imb\.br/blog/([^"\'\s>]+)', r'/blog/\1', clean_body)
         clean_body = re.sub(r'https?://blog\.saber\.imb\.br/([^"\'\s>]+)', r'/blog/\1', clean_body)
 
-        # Remove qualquer bloco de pesquisa prévia <research_process> se o usuário colar junto
-        clean_body = re.sub(r'<research_process>[\s\S]*?<\/research_process>', '', clean_body).strip()
+        # Limpa espaços excessivos
+        clean_body = clean_body.strip()
 
+        # Monta o arquivo final garantindo o formulário do Kit.com inserido APENAS UMA VEZ no final
         final_content = f"{frontmatter}\n{clean_body}\n\n{PromptBuilder.CTA_CAPTURE_CODE.strip()}\n"
         return slug, final_content

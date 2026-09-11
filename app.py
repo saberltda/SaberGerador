@@ -2,28 +2,42 @@ import os
 import streamlit as st
 from src.builder import build_astro_markdown, slugify
 
-# Configuração visual do Streamlit
 st.set_page_config(
-    page_title="SaberGerador - AstroWind Edition",
+    page_title="SaberGerador - Astro Edition",
     page_icon="🏠",
     layout="wide"
 )
 
 st.title("🏠 SaberGerador — Artigos para AstroWind")
-st.markdown("Gere artigos prontos no padrão Markdown com Frontmatter YAML e formulário Kit.com integrados.")
+st.markdown("Gere artigos prontos no formato Markdown (.md) com Frontmatter YAML e formulário Kit.com integrados.")
 
-# Formulário no Streamlit
 col1, col2 = st.columns([2, 1])
 
 with col1:
-    titulo = st.text_input("Título do Artigo", placeholder="Ex: A Física da Luz em Grandes Vãos: Estética vs. Eficiência Térmica")
-    resumo = st.text_area("Resumo / Excerpt (1 a 2 frases)", placeholder="Ex: Como gerenciar a luz natural em casas amplas de Indaiatuba sem criar um efeito estufa.")
-    corpo = st.text_area("Corpo do Artigo (em Markdown)", height=350, placeholder="Escreva o texto aqui usando cabeçalhos ##, listas, tabelas e parágrafos normais...")
+    titulo = st.text_input(
+        "Título do Artigo",
+        placeholder="Ex: A Física da Luz em Grandes Vãos: Estética vs. Eficiência Térmica"
+    )
+    resumo = st.text_area(
+        "Resumo / Excerpt (1 a 2 frases)",
+        placeholder="Ex: Como gerenciar a luz natural em casas amplas de Indaiatuba sem criar um efeito estufa."
+    )
+    corpo = st.text_area(
+        "Corpo do Artigo (em Markdown)",
+        height=380,
+        placeholder="Escreva o artigo aqui usando cabeçalhos ##, listas, tabelas e parágrafos normais..."
+    )
 
 with col2:
     st.subheader("Metadados Astro")
-    categoria = st.selectbox("Categoria", ["Insights Estratégicos", "Análises de Mercado", "Urbanismo", "Investimentos"])
-    tags_input = st.text_input("Tags (separadas por vírgula)", value="Indaiatuba, Mercado Imobiliário, Urbanismo")
+    categoria = st.selectbox(
+        "Categoria",
+        ["Insights Estratégicos", "Análises de Mercado", "Urbanismo", "Investimentos"]
+    )
+    tags_input = st.text_input(
+        "Tags (separadas por vírgula)",
+        value="Indaiatuba, Mercado Imobiliário, Urbanismo"
+    )
     tags = [t.strip() for t in tags_input.split(",") if t.strip()]
     
     slug_sugerido = slugify(titulo) if titulo else ""
@@ -46,7 +60,7 @@ if st.button("Gerar Artigo para Astro", type="primary"):
 
         nome_arquivo = f"{final_slug}.md"
 
-        # Tenta salvar automaticamente caso esteja rodando no seu computador
+        # Se estiver rodando localmente no seu computador, salva direto na pasta do blog
         caminho_local_windows = r"C:\blog-saber\src\data\post"
         salvo_localmente = False
         
@@ -56,17 +70,16 @@ if st.button("Gerar Artigo para Astro", type="primary"):
                 with open(caminho_destino, "w", encoding="utf-8") as f:
                     f.write(markdown_pronto)
                 salvo_localmente = True
-            except Exception as e:
+            except Exception:
                 pass
 
-        st.success(f"✅ Artigo gerado com sucesso!")
+        st.success("✅ Artigo gerado com sucesso!")
         
         if salvo_localmente:
             st.info(f"📁 Arquivo salvo automaticamente em: `{caminho_destino}`")
         else:
-            st.info("Clique no botão abaixo para baixar o arquivo `.md` e colocar na pasta `src/data/post/`:")
+            st.info("Clique no botão abaixo para baixar o arquivo `.md` e adicioná-lo à pasta `src/data/post/` do blog:")
 
-        # Botão para download direto do arquivo .md pelo navegador
         st.download_button(
             label=f"📥 Baixar {nome_arquivo}",
             data=markdown_pronto,
@@ -75,6 +88,5 @@ if st.button("Gerar Artigo para Astro", type="primary"):
             type="secondary"
         )
 
-        # Pré-visualização do código Markdown gerado
         with st.expander("Visualizar Conteúdo do Arquivo Markdown (.md)", expanded=True):
             st.code(markdown_pronto, language="markdown")

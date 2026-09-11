@@ -60,7 +60,6 @@ if st.button("Gerar Artigo para Astro", type="primary"):
 
         nome_arquivo = f"{final_slug}.md"
 
-        # Se estiver rodando localmente no seu computador, salva direto na pasta do blog
         caminho_local_windows = r"C:\blog-saber\src\data\post"
         salvo_localmente = False
         

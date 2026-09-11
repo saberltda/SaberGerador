@@ -3,13 +3,13 @@ import unicodedata
 from datetime import datetime, timezone
 
 def slugify(value: str) -> str:
-    """Normaliza o título removendo acentos e gerando slug seguro para URL e arquivo."""
+    """Normaliza strings removendo acentos e gerando slug seguro para URL e arquivo."""
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
     value = re.sub(r'[^\w\s-]', '', value.lower())
     return re.sub(r'[-\s]+', '-', value).strip('-')
 
 def build_kit_form_html() -> str:
-    """Bloco HTML do formulário Kit.com com o formulário oficial."""
+    """Gera o formulário HTML do Kit.com para o rodapé do artigo."""
     return """
 <div>
 <form action="https://app.kit.com/forms/8984117/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="8984117" data-uid="d188d73e78" data-format="inline" data-version="5" style="background-color:#f9fafb;border-radius:4px;padding:20px;border:1px solid #e3e3e3;margin-top:2rem;">
@@ -37,7 +37,7 @@ def build_kit_form_html() -> str:
 def build_astro_markdown(title: str, excerpt: str, body: str, category: str = "Insights Estratégicos", tags: list = None, custom_slug: str = None) -> tuple[str, str]:
     """
     Gera o conteúdo final no formato Markdown (.md) esperado pelo AstroWind.
-    Retorna (slug, markdown_string).
+    Retorna uma tupla (slug, markdown_string).
     """
     slug = custom_slug if custom_slug else slugify(title)
     iso_date = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
@@ -63,7 +63,6 @@ metadata:
 ---
 """
 
-    # Garante links internos no padrão /blog/{slug}
     clean_body = re.sub(r'https?://(?:www\.)?saber\.imb\.br/blog/([^"\'\s>]+)', r'/blog/\1', body)
     clean_body = re.sub(r'https?://blog\.saber\.imb\.br/([^"\'\s>]+)', r'/blog/\1', clean_body)
 

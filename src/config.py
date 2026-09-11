@@ -5,6 +5,7 @@ class GenesisConfig:
     VERSION = "7.2.0"
     TZ_BRASILIA = pytz.timezone("America/Sao_Paulo")
     FUSO_PADRAO = "-03:00"
+    BLOG_URL = "https://saber.imb.br/blog/"
 
 # Caminhos e configurações do AstroWind
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

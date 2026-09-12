@@ -17,26 +17,8 @@ class PromptBuilder:
 
     # Formulário Único e Limpo do Kit.com
     CTA_CAPTURE_CODE = """
-<div>
-<form action="https://app.kit.com/forms/8984117/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="8984117" data-uid="d188d73e78" data-format="inline" data-version="5" style="background-color:#f9fafb;border-radius:4px;padding:20px;border:1px solid #e3e3e3;margin-top:2rem;">
-  <div data-style="minimal">
-    <div class="formkit-header" style="color:#3b5998;font-size:24px;font-weight:700;margin-bottom:12px;text-align:center;">
-      <h2>Receba uma seleção dos melhores imóveis de Indaiatuba</h2>
-    </div>
-    <div class="formkit-subheader" style="color:#686868;font-size:16px;margin-bottom:18px;text-align:center;">
-      <p>Para sua segurança e evitar spam, enviaremos um link de confirmação: ative seu cadastro clicando nele.</p>
-    </div>
-    <div class="seva-fields formkit-fields" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
-      <input class="formkit-input" name="email_address" placeholder="Digite aqui o seu e-mail..." required="" type="email" style="flex:1;min-width:240px;padding:12px;border:1px solid #e3e3e3;border-radius:4px;font-size:15px;">
-      <button data-element="submit" class="formkit-submit" style="color:#fff;background-color:#098b18;border:none;border-radius:4px;padding:12px 24px;font-size:15px;font-weight:600;cursor:pointer;">
-        <span>QUERO RECEBER OPORTUNIDADES</span>
-      </button>
-    </div>
-    <div class="formkit-guarantee" style="color:#4d4d4d;font-size:12px;margin-top:12px;text-align:center;">
-      <p>Nós respeitamos sua privacidade. Cancele o cadastro a qualquer momento.</p>
-    </div>
-  </div>
-</form>
+<div style="text-align:center; margin: 40px 0;">  
+  <script async data-uid="d188d73e78" src="https://sabernovidades.kit.com/d188d73e78/index.js"></script>
 </div>
 """
 

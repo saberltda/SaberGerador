@@ -1,15 +1,23 @@
-DIRETRIZES DA REVOLUÇÃO DE CONTEÚDO (ESTILO RED BULL):
+DIRETRIZES DE CONTEÚDO E FORMATAÇÃO (ESTILO RED BULL & ASTRO BLOG):
 
-1. REGRA DE OURO: "NÃO VENDA O IMÓVEL, VENDA O RITMO DE VIDA"
-   - Proibido citar: número de suítes, vagas de garagem, acabamentos de porcelanato, preço de metro quadrado ou termos técnicos de corretagem.
-   - Proibido abrir o texto com anúncios clássicos ("Excelente oportunidade", "Venha morar no...", "Confira este lindo imóvel").
+1. REGRA DE OURO - VENDER SEM VENDER:
+   - PROIBIDO citar: metragem quadrada, número de suítes, vagas de garagem, acabamentos, preços ou termos de corretagem tradicional.
+   - PROIBIDO títulos panfletários ("Oportunidade única", "More no lugar dos sonhos").
+   - O foco é 100% no choque de realidade: contrastar o esgotamento metropolitano com o luxo moderno do tempo, do silêncio e da segurança.
 
-2. ESTRUTURA DO TEXTO:
-   - Gancho Inicial: Confrontar diretamente a dor urbana ou o esgotamento da rotina na metrópole (ruído, confinamento, perda de tempo).
-   - Desenvolvimento: Descrever a experiência sensorial da liberdade (o cheiro do café, o silêncio às 7h, a corrida no fim da tarde, a segurança dos filhos).
-   - O Cenário Subjacente: O espaço físico (a casa, a cidade) aparece apenas como o suporte orgânico dessa vida ideal, nunca como um produto à venda.
-   - Assinatura Final Sutil: CTA conceitual convidando a repensar a própria rotina através da Saber.
+2. SAÍDA OBRIGATÓRIA EM MARKDOWN PARA ASTRO:
+   O texto DEVE conter no topo o bloco Frontmatter YAML com:
+   ---
+   title: "Título instigante e provocativo"
+   description: "Breve resumo instigante para SEO sobre liberdade e estilo de vida"
+   pubDate: YYYY-MM-DD
+   author: "Saber"
+   tags: ["Estilo de Vida", "Qualidade de Vida", "Liberdade"]
+   layout: "../../layouts/BlogPost.astro"
+   ---
 
-3. TOM DE VOZ:
-   - Autêntico, maduro, provocativo e acolhedor.
-   - Linguagem humanizada e sem clichês publicitários corporativos.
+3. ESTRUTURA DO ARTIGO:
+   - Introdução (Gancho de Conflito): Expor a dor crua do cotidiano na grande capital (ruído, estresse, cansaço crônico, falta de horizonte).
+   - O Contraste Sensorial: Descrever a experiência palpável de viver bem (luz matinal, crianças na rua, calistenia ao ar livre, ausência de trânsito).
+   - O Cenário Silencioso: A cidade entra como o ecossistema natural onde isso é viável, sem tom de anúncio imobiliário.
+   - Encerramento Sutil: Uma reflexão madura assinada com a identidade e filosofia da Saber.

@@ -1,23 +1,22 @@
 """
-Interface do SaberGerador - Edição Estilo de Vida & Narrativas
+Interface do SaberGerador - Modo Fábrica de Prompts (Astro MD)
 """
 import json
-import os
 from pathlib import Path
 import streamlit as st
 
-# Garante a resolução do path mesmo se o config tiver delay de cache
 try:
     from src.config import PILARES_JSON_PATH
 except ImportError:
     BASE_DIR = Path(__file__).resolve().parent
     PILARES_JSON_PATH = BASE_DIR / "assets" / "pilares_estilo_de_vida.json"
 
-from src.engine import LifestyleEngine
+from src.engine import CombinadorEngine, ANGULOS, FORMATOS, TONS
+from src.builder import build_astro_prompt
 
 st.set_page_config(
-    page_title="Saber • Vender Sem Vender",
-    page_icon="🌿",
+    page_title="Saber • Gerador de Prompts Astro",
+    page_icon="⚡",
     layout="centered"
 )
 
@@ -32,43 +31,55 @@ def carregar_pilares():
     return dados.get("pilares_estilo_de_vida", [])
 
 pilares = carregar_pilares()
-engine = LifestyleEngine()
 
-st.title("Saber • Vender Sem Vender")
-st.caption("Gere manifestos e crônicas sobre liberdade, rotina e tempo de qualidade.")
+st.title("⚡ Saber • Fábrica de Artigos Astro")
+st.caption("Gere combinações completas em .txt para copiar, colar no Gemini e receber o .md pronto para o blog.")
 
 if not pilares:
     st.warning("Nenhum pilar encontrado em assets/pilares_estilo_de_vida.json.")
     st.stop()
 
-opcoes_pilares = {p["nome"]: p for p in pilares}
-escolha_nome = st.selectbox("Escolha o Território Temático:", list(opcoes_pilares.keys()))
-pilar_selecionado = opcoes_pilares[escolha_nome]
+engine = CombinadorEngine(pilares)
 
-col1, col2 = st.columns(2)
-with col1:
-    formato = st.selectbox(
-        "Formato do Conteúdo:",
-        options=["manifesto", "cronica", "post_reflexivo"],
-        format_func=lambda x: {
-            "manifesto": "Manifesto Visceral",
-            "cronica": "Crônica de Rotina",
-            "post_reflexivo": "Post Reflexivo Curto"
-        }[x]
-    )
+aba1, aba2 = st.tabs(["🔥 Lote Completo (Centenas de Variações)", "🎯 Prompt Específico"])
 
-st.markdown("---")
-st.markdown(f"**Conflito abordado:** {pilar_selecionado['dor']}")
-st.markdown(f"**Aspiração central:** {pilar_selecionado['aspiracao']}")
+with aba1:
+    st.markdown("### Exportação em Massa")
+    st.write("Gere um arquivo `.txt` contendo todas as permutações dos pilares de estilo de vida com múltiplos ângulos, tons e formatos.")
+    
+    modo_profundo = st.checkbox("Matriz Completa (Cruzar todos os ângulos x formatos x tons)", value=True)
+    
+    total_estimado = len(pilares) * (len(ANGULOS) * len(FORMATOS) * len(TONS) if modo_profundo else len(ANGULOS))
+    st.info(f"Total a ser gerado: **{total_estimado} prompts prontos**")
+    
+    if st.button("Preparar Arquivo TXT para Download", type="primary"):
+        with st.spinner("Compilando combinações..."):
+            txt_resultado = engine.gerar_arquivo_combinado(multiplicar_todos=modo_profundo)
+            st.success(f"{total_estimado} prompts gerados com sucesso!")
+            st.download_button(
+                label="📥 Baixar Arquivo TXT Completo",
+                data=txt_resultado,
+                file_name="prompts_astro_saber_completo.txt",
+                mime="text/plain"
+            )
 
-if st.button("Gerar Peça de Conteúdo", type="primary"):
-    with st.spinner("Construindo a narrativa..."):
-        conteudo = engine.gerar_narrativa(pilar_selecionado, formato=formato)
-        st.markdown("### Resultado:")
-        st.write(conteudo)
+with aba2:
+    st.markdown("### Seleção Direta")
+    opcoes = {p["nome"]: p for p in pilares}
+    pilar_nome = st.selectbox("Pilar:", list(opcoes.keys()))
+    pilar = opcoes[pilar_nome]
+    
+    angulo = st.selectbox("Ângulo:", ANGULOS)
+    formato = st.selectbox("Formato:", FORMATOS)
+    tom = st.selectbox("Tom de Voz:", TONS)
+    
+    if st.button("Gerar Este Prompt"):
+        prompt_individual = build_astro_prompt(pilar, angulo, formato, tom)
+        st.markdown("#### Pronto para colar no Gemini:")
+        st.code(prompt_individual, language="markdown")
         st.download_button(
-            label="Baixar Texto",
-            data=conteudo,
-            file_name=f"narrativa_{pilar_selecionado['id']}.txt",
+            label="Baixar Este Prompt (.txt)",
+            data=prompt_individual,
+            file_name=f"prompt_{pilar['id']}.txt",
             mime="text/plain"
         )

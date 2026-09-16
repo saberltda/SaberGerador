@@ -2,6 +2,15 @@
 Construtor de prompts para geração de conteúdo no modelo Red Bull ("vender sem vender").
 """
 from typing import Dict, Any
+from src.config import REGRAS_TXT_PATH
+
+
+def carregar_regras_diretrizes() -> str:
+    """Lê as diretrizes do arquivo de regras, se disponível."""
+    if REGRAS_TXT_PATH.exists():
+        with open(REGRAS_TXT_PATH, "r", encoding="utf-8") as f:
+            return f.read().strip()
+    return ""
 
 
 def build_lifestyle_prompt(pilar: Dict[str, Any], formato: str) -> str:
@@ -14,6 +23,8 @@ def build_lifestyle_prompt(pilar: Dict[str, Any], formato: str) -> str:
         "post_reflexivo": "Escreva um texto curto em formato de reflexão direta para redes sociais com quebras de linha dinâmicas."
     }.get(formato, "Escreva uma reflexão envolvente e inspiradora.")
 
+    regras = carregar_regras_diretrizes()
+
     prompt = f"""
 Você é um ensaísta contemporâneo e estrategista de marca da Saber. Sua missão é escrever conteúdo que inspire pessoas das grandes metrópoles a reverem suas escolhas de vida, sem tentar vender imóveis diretamente.
 
@@ -22,10 +33,12 @@ DOR URBANA: {pilar.get('dor')}
 ASPIRAÇÃO / ESTILO DE VIDA: {pilar.get('aspiracao')}
 CENÁRIO SUTIL: {pilar.get('cenario_implicito')}
 
-DIRETRIZES RÍGIDAS:
-1. {instrucao_formato}
-2. Não mencione características técnicas de casas ou apartamentos (proibido falar de suítes, garagens ou acabamentos).
-3. Não cite nomes de bairros específicos. Deixe que o estilo de vida fale por si.
-4. Conclua com uma assinatura elegante que conecte a busca por essa rotina com a Saber (ex: 'O tempo é a única moeda que não se recupera. Conheça o ritmo da Saber.').
+FORMATO REQUISITADO:
+{instrucao_formato}
+
+DIRETRIZES EDITORIAIS A SEGUIR:
+{regras}
+
+Conclua com uma assinatura elegante que conecte a busca por essa rotina com a Saber (ex: 'O tempo é a única moeda que não se recupera. Conheça o ritmo da Saber.').
 """
     return prompt.strip()

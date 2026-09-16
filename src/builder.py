@@ -1,44 +1,45 @@
 """
-Construtor de prompts para geração de conteúdo no modelo Red Bull ("vender sem vender").
+Construtor de prompts em lote para artigos Astro Markdown.
 """
 from typing import Dict, Any
 from src.config import REGRAS_TXT_PATH
 
 
-def carregar_regras_diretrizes() -> str:
-    """Lê as diretrizes do arquivo de regras, se disponível."""
+def carregar_regras() -> str:
+    """Lê o arquivo de regras e diretrizes."""
     if REGRAS_TXT_PATH.exists():
         with open(REGRAS_TXT_PATH, "r", encoding="utf-8") as f:
             return f.read().strip()
     return ""
 
 
-def build_lifestyle_prompt(pilar: Dict[str, Any], formato: str) -> str:
+def build_astro_prompt(
+    pilar: Dict[str, Any],
+    angulo: str,
+    formato: str,
+    tom: str
+) -> str:
     """
-    Monta o prompt para o modelo de linguagem focado na experiência de vida.
+    Gera um bloco de instrução autocontido e pronto para colar no Gemini.
     """
-    instrucao_formato = {
-        "manifesto": "Escreva um manifesto visceral de 3 a 4 parágrafos sobre a retomada do tempo e do espaço.",
-        "cronica": "Escreva uma crônica curta de rotina narrando o contraste entre a vida caótica urbana e a vida plena.",
-        "post_reflexivo": "Escreva um texto curto em formato de reflexão direta para redes sociais com quebras de linha dinâmicas."
-    }.get(formato, "Escreva uma reflexão envolvente e inspiradora.")
+    regras = carregar_regras()
+    
+    prompt = f"""### TAREFA: GERAR ARTIGO EM MARKDOWN (.MD) PARA ASTRO BLOG
 
-    regras = carregar_regras_diretrizes()
-
-    prompt = f"""
-Você é um ensaísta contemporâneo e estrategista de marca da Saber. Sua missão é escrever conteúdo que inspire pessoas das grandes metrópoles a reverem suas escolhas de vida, sem tentar vender imóveis diretamente.
-
-TEMA CENTRAL: {pilar.get('nome')}
-DOR URBANA: {pilar.get('dor')}
-ASPIRAÇÃO / ESTILO DE VIDA: {pilar.get('aspiracao')}
-CENÁRIO SUTIL: {pilar.get('cenario_implicito')}
-
-FORMATO REQUISITADO:
-{instrucao_formato}
-
-DIRETRIZES EDITORIAIS A SEGUIR:
 {regras}
 
-Conclua com uma assinatura elegante que conecte a busca por essa rotina com a Saber (ex: 'O tempo é a única moeda que não se recupera. Conheça o ritmo da Saber.').
+---
+DADOS DO TEMA ESCOLHIDO:
+- Pilar Central: {pilar.get('nome')}
+- Conflito / Dor Urbana: {pilar.get('dor')}
+- Aspiração / Experiência: {pilar.get('aspiracao')}
+- Contexto Físico Implícito: {pilar.get('cenario_implicito')}
+- Ângulo de Abordagem: {angulo}
+- Formato Textual: {formato}
+- Tom de Voz: {tom}
+
+---
+INSTRUÇÃO FINAL PARA O MODELO:
+Gere o artigo completo formatado estritamente como arquivo .md compatível com Astro, iniciando obrigatoriamente com o frontmatter YAML demarcado por '---'. Não faça saudações antes do markdown.
 """
     return prompt.strip()

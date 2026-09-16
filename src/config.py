@@ -1,18 +1,18 @@
+"""
+Configurações e caminhos globais do SaberGerador.
+"""
 import os
-import pytz
+from pathlib import Path
 
-class GenesisConfig:
-    VERSION = "7.2.0"
-    TZ_BRASILIA = pytz.timezone("America/Sao_Paulo")
-    FUSO_PADRAO = "-03:00"
-    BLOG_URL = "https://saber.imb.br/blog/"
+# Diretórios base
+BASE_DIR = Path(__file__).resolve().parent.parent
+ASSETS_DIR = BASE_DIR / "assets"
 
-# Caminhos e configurações do AstroWind
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_ASTRO_POSTS_DIR = r"C:\blog-saber\src\data\post"
-OUTPUT_POSTS_DIR = DEFAULT_ASTRO_POSTS_DIR if os.path.exists(DEFAULT_ASTRO_POSTS_DIR) else os.path.join(BASE_DIR, "dist", "posts")
-os.makedirs(OUTPUT_POSTS_DIR, exist_ok=True)
+# Caminhos dos arquivos de dados
+PILARES_JSON_PATH = ASSETS_DIR / "pilares_estilo_de_vida.json"
+BAIRROS_JSON_PATH = ASSETS_DIR / "bairros.json"
+REGRAS_TXT_PATH = ASSETS_DIR / "REGRAS.txt"
 
-SITE_CANONICAL_BASE = "https://saber.imb.br/blog"
-FORMKIT_FORM_ID = "8984117"
-FORMKIT_UID = "d188d73e78"
+# Modelos e Chaves
+DEFAULT_MODEL_NAME = "gemini-2.5-flash"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")

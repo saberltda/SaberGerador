@@ -2,8 +2,17 @@
 Interface do SaberGerador - Edição Estilo de Vida & Narrativas
 """
 import json
+import os
+from pathlib import Path
 import streamlit as st
-from src.config import PILARES_JSON_PATH
+
+# Garante a resolução do path mesmo se o config tiver delay de cache
+try:
+    from src.config import PILARES_JSON_PATH
+except ImportError:
+    BASE_DIR = Path(__file__).resolve().parent
+    PILARES_JSON_PATH = BASE_DIR / "assets" / "pilares_estilo_de_vida.json"
+
 from src.engine import LifestyleEngine
 
 st.set_page_config(
@@ -14,10 +23,11 @@ st.set_page_config(
 
 @st.cache_data
 def carregar_pilares():
-    if not PILARES_JSON_PATH.exists():
-        st.error(f"Arquivo não encontrado: {PILARES_JSON_PATH}")
+    caminho = Path(PILARES_JSON_PATH)
+    if not caminho.exists():
+        st.error(f"Arquivo não encontrado: {caminho}")
         return []
-    with open(PILARES_JSON_PATH, "r", encoding="utf-8") as f:
+    with open(caminho, "r", encoding="utf-8") as f:
         dados = json.load(f)
     return dados.get("pilares_estilo_de_vida", [])
 

@@ -2,20 +2,22 @@
 Interface do SaberGerador - Edição Estilo de Vida & Narrativas
 """
 import json
-import os
 import streamlit as st
+from src.config import PILARES_JSON_PATH
 from src.engine import LifestyleEngine
 
 st.set_page_config(
-    page_title="Saber - Gerador de Narrativas",
+    page_title="Saber • Vender Sem Vender",
     page_icon="🌿",
     layout="centered"
 )
 
 @st.cache_data
 def carregar_pilares():
-    caminho_arquivo = os.path.join(os.path.dirname(__file__), "assets", "bairros.json")
-    with open(caminho_arquivo, "r", encoding="utf-8") as f:
+    if not PILARES_JSON_PATH.exists():
+        st.error(f"Arquivo não encontrado: {PILARES_JSON_PATH}")
+        return []
+    with open(PILARES_JSON_PATH, "r", encoding="utf-8") as f:
         dados = json.load(f)
     return dados.get("pilares_estilo_de_vida", [])
 
@@ -24,6 +26,10 @@ engine = LifestyleEngine()
 
 st.title("Saber • Vender Sem Vender")
 st.caption("Gere manifestos e crônicas sobre liberdade, rotina e tempo de qualidade.")
+
+if not pilares:
+    st.warning("Nenhum pilar encontrado em assets/pilares_estilo_de_vida.json.")
+    st.stop()
 
 opcoes_pilares = {p["nome"]: p for p in pilares}
 escolha_nome = st.selectbox("Escolha o Território Temático:", list(opcoes_pilares.keys()))

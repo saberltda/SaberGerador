@@ -1,0 +1,39 @@
+{
+  "pilares_estilo_de_vida": [
+    {
+      "id": "burnout_home_office",
+      "nome": "Fim do Burnout Urbano",
+      "dor": "Sensação de confinamento em apartamentos pequenos na capital, reuniões infinitas e janelas que dão para paredes cinzas.",
+      "aspiracao": "Trabalhar em silêncio acústico, luz solar direta na mesa e terminar o expediente às 18h já ao ar livre.",
+      "cenario_implicito": "Casas com iluminação natural abundante, escritórios dedicados e proximidade de áreas verdes."
+    },
+    {
+      "id": "cultura_outdoor_longevidade",
+      "nome": "Movimento e Longevidade Outdoor",
+      "dor": "Dependência de academias fechadas, mensalidades caras de clubes e medo constante de assalto ao correr na rua.",
+      "aspiracao": "Treinar calistenia ao amanhecer, pedalar por ciclovias contínuas e respirar ar puro sem vigilância armada.",
+      "cenario_implicito": "Acesso direto a parques lineares arborizados e ruas seguras com infraestrutura esportiva."
+    },
+    {
+      "id": "infancia_analogica",
+      "nome": "Infância Fora das Telas",
+      "dor": "Filhos presos a tablets e telas por falta de segurança e de espaço livre na metrópole.",
+      "aspiracao": "Pé no chão, crianças andando de bicicleta em bandos, autonomia e amizades construídas na calçada.",
+      "cenario_implicito": "Vilas e condomínios com ruas tranquilas, praças internas e senso comunitário real."
+    },
+    {
+      "id": "slow_living_sensorial",
+      "nome": "Arquitetura Sensorial e Calmaria",
+      "dor": "Barulho incessante de trânsito, poluição sonora, estresse diário e perda de rituais simples como tomar café sem pressa.",
+      "aspiracao": "Ouvir pássaros ao acordar, ter horta no quintal, almoçar com calma e receber amigos sem regras rígidas.",
+      "cenario_implicito": "Casas térreas integradas à natureza, quintais ensolarados e ambiente acusticamente preservado."
+    },
+    {
+      "id": "logistica_de_vida",
+      "nome": "O Êxodo da Eficiência",
+      "dor": "Semanas inteiras do ano perdidas em engarrafamentos e filas para resolver problemas cotidianos.",
+      "aspiracao": "Resolver tudo em menos de 10 minutos, ter um aeroporto internacional a 15 minutos sem o caos das grandes capitais.",
+      "cenario_implicito": "Cidade planejada, fluxo urbano desimpedido e alta eficiência logística."
+    }
+  ]
+}

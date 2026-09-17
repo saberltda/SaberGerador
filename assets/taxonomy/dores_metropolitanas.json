@@ -1,0 +1,248 @@
+import json
+import os
+
+os.makedirs("assets/taxonomy", exist_ok=True)
+
+dores = [
+    {
+        "id": "DOR_01",
+        "resumo": "Horas perdidas e desgaste cognitivo no trânsito pendular",
+        "gatilho_emocional": "A sensação humilhante de passar 2 a 3 horas diárias preso em filas de carros e túneis poluídos, convertendo tempo de vida irrecuperável em pura exaustão mental."
+    },
+    {
+        "id": "DOR_02",
+        "resumo": "Alerta crônico e medo constante de violência urbana",
+        "gatilho_emocional": "A hipervigilância involuntária em cada semáforo vermelho à noite, o sobressalto ao ver uma motocicleta se aproximar e o medo de ter a casa ou a família violada."
+    },
+    {
+        "id": "DOR_03",
+        "resumo": "A infância confinada entre telas e paredes de concreto",
+        "gatilho_emocional": "A dor de ver os próprios filhos crescendo sem pisar na grama descalços, reféns de tablets e celulares porque a rua se tornou um território hostil e proibido."
+    },
+    {
+        "id": "DOR_04",
+        "resumo": "Poluição sonora incessante e privação do sono profundo",
+        "gatilho_emocional": "A impossibilidade de encontrar silêncio genuíno: sirenes intermitentes, freadas, tráfego pesado e obras que corroem o descanso neurológico restaurador."
+    },
+    {
+        "id": "DOR_05",
+        "resumo": "Sufocamento visual pela ausência de horizonte e verde contínuo",
+        "gatilho_emocional": "A sensação de claustrofobia existencial provocada por janelas que dão de cara com paredes cinzentas e paredões de concreto, sem linha do horizonte nem copa de árvore."
+    },
+    {
+        "id": "DOR_06",
+        "resumo": "Custo de vida exorbitante com retorno degradado em serviços",
+        "gatilho_emocional": "Pagar IPTU, taxas de condomínio e mensalidades astronômicas para conviver com ruas esburacadas, praças abandonadas e serviços públicos colapsados."
+    },
+    {
+        "id": "DOR_07",
+        "resumo": "Isolamento social e anonimato frio nos grandes condomínios verticais",
+        "gatilho_emocional": "Conviver com dezenas de pessoas no mesmo elevador todos os dias sem trocar um olhar acolhedor, sentindo-se solitário no meio de uma multidão indiferente."
+    },
+    {
+        "id": "DOR_08",
+        "resumo": "Esgotamento crônico por estímulos simultâneos e pressa sem fim",
+        "gatilho_emocional": "O sentimento de estar permanentemente atrasado, multitarefa e com o sistema nervoso à beira do colapso por demandas corporativas e ruídos urbanos incessantes."
+    },
+    {
+        "id": "DOR_09",
+        "resumo": "Logística caótica para rotinas básicas de filhos e escolas",
+        "gatilho_emocional": "A rotina extenuante de coordenar escola, atividades extracurriculares e consultas sob trânsito hostil, sacrificando jantares familiares em prol do volante."
+    },
+    {
+        "id": "DOR_10",
+        "resumo": "Degradação respiratória provocada por material particulado e fuligem",
+        "gatilho_emocional": "Crises alérgicas recorrentes, sinusites crônicas e a tosse seca das crianças ao final de dias de inversão térmica com ar tóxico e pesado."
+    },
+    {
+        "id": "DOR_11",
+        "resumo": "Ilhas de calor e microclima opressivo do asfalto",
+        "gatilho_emocional": "A sensação sufocante de respirar um bafo quente acumulado nos cânions urbanos durante as noites de verão, sem circulação de brisa fresca natural."
+    },
+    {
+        "id": "DOR_12",
+        "resumo": "A angústia do tempo roubado com quem realmente importa",
+        "gatilho_emocional": "A culpa silenciosa de chegar em casa tarde demais para ver os filhos acordados e com energia insuficiente para manter uma conversa atenta com o parceiro."
+    },
+    {
+        "id": "DOR_13",
+        "resumo": "Insegurança ao praticar esportes e correr nas vias públicas",
+        "gatilho_emocional": "O risco iminente de atropelamento, a falta de calçadas contínuas e o receio de ter relógios, bicicletas ou celulares roubados durante os treinos matinais."
+    },
+    {
+        "id": "DOR_14",
+        "resumo": "Falta de espaço privativo e confinamento de animais de estimação",
+        "gatilho_emocional": "A tristeza de ver cães cheios de energia restritos a varandas minúsculas, gerando estresse comportamental e atritos com a administração condominial."
+    },
+    {
+        "id": "DOR_15",
+        "resumo": "A tirania das agendas sociais superficiais e networking estéril",
+        "gatilho_emocional": "A obrigação tácita de comparecer a encontros corporativos barulhentos e eventos sociais vazios apenas para sustentar aparências e conexões frágeis."
+    },
+    {
+        "id": "DOR_16",
+        "resumo": "Dificuldade de acesso a alimentos frescos e produtores de verdade",
+        "gatilho_emocional": "Comprar hortaliças murchas embaladas em plástico nos supermercados, sentindo o sabor industrializado e a desconexão completa com a terra."
+    },
+    {
+        "id": "DOR_17",
+        "resumo": "Descompasso entre o sucesso financeiro e a qualidade de vida real",
+        "gatilho_emocional": "A constatação melancólica de que a renda aumentou expressivamente ao longo dos anos, mas a paz de espírito e o bem-estar diário despencaram."
+    },
+    {
+        "id": "DOR_18",
+        "resumo": "Poluição luminosa e o desaparecimento do céu noturno",
+        "gatilho_emocional": "Olhar para o alto à noite e enxergar apenas uma abóbada acinzentada e leitosa de neblina e luz artificial, privando os olhos da contemplação cósmica."
+    },
+    {
+        "id": "DOR_19",
+        "resumo": "Impossibilidade de cultivar hobbies manuais e projetos autorais",
+        "gatilho_emocional": "Não ter um canto de garagem, jardim ou oficina onde seja possível mexer na terra, serrar madeira ou restaurar um objeto sem incomodar ninguém."
+    },
+    {
+        "id": "DOR_20",
+        "resumo": "Viver cercado por blindagens, cancelas e paranoia comunitária",
+        "gatilho_emocional": "A desumanização provocada por muros altíssimos, concertinas, guaritas blindadas e a desconfiança generalizada de qualquer pessoa que passe pela calçada."
+    },
+    {
+        "id": "DOR_21",
+        "resumo": "Perda de autonomia e isolamento forçado dos pais idosos",
+        "gatilho_emocional": "Ver os avós dependentes de motoristas particulares ou confinados em casa pelo medo legítimo de cair em calçadas irregulares ou sofrer violências."
+    },
+    {
+        "id": "DOR_22",
+        "resumo": "Atropelo dos fins de semana por tarefas atrasadas e trânsito de lazer",
+        "gatilho_emocional": "Enfrentar congestionamento nas rodovias na sexta à noite na ilusão de descansar na serra ou na praia, retornando domingo mais exausto do que saiu."
+    },
+    {
+        "id": "DOR_23",
+        "resumo": "Falta de privacidade sonora e devassa da intimidade familiar",
+        "gatilho_emocional": "Ouvir conversas, passos e ruídos hidráulicos de vizinhos de cima e dos lados através de lajes finas, sentindo a própria privacidade invadida."
+    },
+    {
+        "id": "DOR_24",
+        "resumo": "O esvaziamento do sentido de pertencimento a um lugar",
+        "gatilho_emocional": "Morar há anos em um bairro sem conhecer o comerciante local, sem raízes afetivas e com a sensação crônica de ser um turista em trânsito permanente."
+    },
+    {
+        "id": "DOR_25",
+        "resumo": "Crises de ansiedade e batimentos acelerados sem causa aparente",
+        "gatilho_emocional": "Acordar com o peito apertado e respiração curta antes mesmo de olhar para o relógio, engolido pelo ritmo elétrico e acelerado da metrópole."
+    },
+    {
+        "id": "DOR_26",
+        "resumo": "Gargalo no acesso a aeroportos e perda de compromissos globais",
+        "gatilho_emocional": "O desespero de calcular margens irreais de 4 horas de antecedência para conseguir embarcar em voos internacionais, vivendo sob o terror do atraso."
+    },
+    {
+        "id": "DOR_27",
+        "resumo": "Ambientes de trabalho doméstico improvisados e sem ventilação",
+        "gatilho_emocional": "Realizar reuniões de negócios em cantos de quarto escuros, dividindo o espaço com tábuas de passar e sentindo o ar estagnado de ambientes sem brisa."
+    },
+    {
+        "id": "DOR_28",
+        "resumo": "A cultura da ostentação metropolitana e pressão por status vazio",
+        "gatilho_emocional": "Sentir-se julgado pelo modelo do carro, pela etiqueta da roupa ou pelo endereço de moradia em ambientes onde o parecer importa mais do que o ser."
+    },
+    {
+        "id": "DOR_29",
+        "resumo": "Falta de espaços públicos limpos e seguros para piqueniques e brincadeiras",
+        "gatilho_emocional": "Levar as crianças a praças públicas e encontrar grama suja, lixo espalhado, brinquedos quebrados e sensação de vulnerabilidade iminente."
+    },
+    {
+        "id": "DOR_30",
+        "resumo": "O sentimento amargo de que a vida está sendo postergada para a aposentadoria",
+        "gatilho_emocional": "Concluir com pesar que a paz, a saúde e o convívio leve estão sempre condicionados a um futuro distante, enquanto a juventude se esvai na rotina caótica."
+    },
+    {
+        "id": "DOR_31",
+        "resumo": "Dificuldade crônica de manter rotinas saudáveis e exercícios físicos",
+        "gatilho_emocional": "Pagar mensalidades caras de academias lotadas e subterrâneas e desistir pelo desgaste prévio de ter que pegar o carro e procurar vaga para treinar."
+    },
+    {
+        "id": "DOR_32",
+        "resumo": "Poluição visual e bombardeio de telas publicitárias agressivas",
+        "gatilho_emocional": "A incapacidade de descansar os olhos em trajetos urbanos dominados por painéis de LED berrantes, fiação aérea emaranhada e desordem estética."
+    },
+    {
+        "id": "DOR_33",
+        "resumo": "Medo de perder os anos de ouro do desenvolvimento infantil",
+        "gatilho_emocional": "Perceber que a primeira infância dos filhos passou num piscar de olhos entre quatro paredes, sem memórias de aventuras na lama ou subidas em árvores."
+    },
+    {
+        "id": "DOR_34",
+        "resumo": "Insegurança jurídica e degradação súbita de áreas urbanas consolidadas",
+        "gatilho_emocional": "Comprar um imóvel de alto padrão e ver a vizinhança degradada rapidamente por ocupações desordenadas, verticalização predatória e insegurança."
+    },
+    {
+        "id": "DOR_35",
+        "resumo": "O cansaço moral de lidar com a grosseria e agressividade no trânsito",
+        "gatilho_emocional": "A energia negativa absorvida em discussões de semáforo, fechadas intencionais de motoristas furiosos e a cultura do 'cada um por si' nas ruas."
+    },
+    {
+        "id": "DOR_36",
+        "resumo": "A escassez de água e constantes oscilações no fornecimento público",
+        "gatilho_emocional": "O receio constante de apagões elétricos prolongados e racionamentos hídricos que paralisam a dinâmica doméstica nas metrópoles saturadas."
+    },
+    {
+        "id": "DOR_37",
+        "resumo": "Incapacidade de desconectar o cérebro mesmo nos momentos de descanso",
+        "gatilho_emocional": "Sentar no sofá deitar na cama e continuar sentindo a vibração interna da velocidade urbana, incapaz de relaxar os músculos e diminuir os pensamentos."
+    },
+    {
+        "id": "DOR_38",
+        "resumo": "Distância física e emocional entre familiares que moram na mesma cidade",
+        "gatilho_emocional": "Morar a apenas 15 km dos pais ou irmãos na metrópole e conseguir vê-los apenas em feriados por causa do terror de enfrentar a travessia das marginais."
+    },
+    {
+        "id": "DOR_39",
+        "resumo": "A perda do contato tátil com a passagem das estações e do clima",
+        "gatilho_emocional": "Viver sob temperatura controlada artificial de 22°C o ano inteiro sem sentir o calor aconchegante da primavera ou o ar seco e aromático do outono."
+    },
+    {
+        "id": "DOR_40",
+        "resumo": "A sensação de que a casa virou apenas um dormitório funcional",
+        "gatilho_emocional": "Chegar em casa apenas para tomar banho e dormir, sem que o lar seja um verdadeiro templo de refúgio, aconchego e celebração com os seus."
+    },
+    {
+        "id": "DOR_41",
+        "resumo": "Falta de opções seguras para atividades ao ar livre no período noturno",
+        "gatilho_emocional": "Sentir-se recolhido compulsivamente logo após o entardecer, sem opções de passear com tranquilidade pela cidade ao ar livre à noite."
+    },
+    {
+        "id": "DOR_42",
+        "resumo": "A tirania das entregas rápidas substituindo a experiência da cozinha caseira",
+        "gatilho_emocional": "A dependência diária de sacolas plásticas de delivery com comida fria pela falta de tempo de picar ingredientes frescos e cozinhar com calma."
+    },
+    {
+        "id": "DOR_43",
+        "resumo": "A constante incerteza sobre o futuro socioeconômico da capital",
+        "gatilho_emocional": "A percepção de que a infraestrutura das grandes cidades atingiu um ponto de saturação irreversível, com riscos crescentes de colapso urbano."
+    },
+    {
+        "id": "DOR_44",
+        "resumo": "A erosão da criatividade pela repetição de rotinas estéreis",
+        "gatilho_emocional": "Sentir a mente bloqueada e sem ideias originais por falta de estímulos contemplativos, ar fresco e contemplação do mundo natural."
+    },
+    {
+        "id": "DOR_45",
+        "resumo": "A dor de viver em estado de sobrevivência em vez de vida plena",
+        "gatilho_emocional": "O despertar lúcido para o fato de que a existência não pode se resumir a pagar contas, desviar de perigos e tolerar o caos metropolitano."
+    },
+    {
+        "id": "DOR_46",
+        "resumo": "O medo de desastres climáticos urbanos, enchentes e deslizamentos",
+        "gatilho_emocional": "A apreensão a cada tempestade de fim de tarde, temendo alagamentos que prendem o carro na pista ou invadem propriedades sem aviso prévio."
+    },
+    {
+        "id": "DOR_47",
+        "resumo": "Desconforto com a dependência de veículos até para as menores tarefas",
+        "gatilho_emocional": "A irritação de precisar manobrar e tirar o carro da garagem para comprar um simples pão fresco, em vez de fazer uma caminhada agradável a pé."
+    }
+]
+
+file_path = "assets/taxonomy/dores_metropolitanas.json"
+with open(file_path, "w", encoding="utf-8") as f:
+    json.dump(dores, f, ensure_ascii=False, indent=2)
+
+print(f"File created successfully with {len(dores)} curated metropolitan pain points.")

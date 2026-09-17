@@ -1,0 +1,385 @@
+import json
+import os
+
+os.makedirs("assets/taxonomy", exist_ok=True)
+
+macro_temas = [
+    {
+        "id": "TEMA_01",
+        "titulo": "A Crise da Dopamina Infantil e o Resgate da Infância ao Ar Livre",
+        "categoria": "Paternidade & Desenvolvimento Humano",
+        "premissa_universal": "O impacto neurológico do excesso de telas na atenção infantil versus o desenvolvimento sensorial proporcionado pelo contato direto com terra, árvores e liberdade de exploração sem muros de vidro."
+    },
+    {
+        "id": "TEMA_02",
+        "titulo": "Neurociência do Sono Reparador e Poluição Sonora Urbana",
+        "categoria": "Saúde & Longevidade",
+        "premissa_universal": "Como o ruído de baixa frequência e o tráfego contínuo das metrópoles mantêm o sistema nervoso autônomo em estado crônico de alerta, sabotando o sono profundo (estágio N3/REM) e a regeneração celular."
+    },
+    {
+        "id": "TEMA_03",
+        "titulo": "A Economia do Foco e o Custo Oculto do Deslocamento Diário",
+        "categoria": "Produtividade & Trabalho",
+        "premissa_universal": "O desgaste cognitivo cumulativo gerado por 2 a 3 horas diárias no trânsito e a transição inevitável para modelos de home office ou atuação distribuída que exigem santuários de trabalho focado."
+    },
+    {
+        "id": "TEMA_04",
+        "titulo": "Longevidade Ativa aos 40+: A Zona Azul Pessoal e a Caminhabilidade",
+        "categoria": "Saúde & Longevidade",
+        "premissa_universal": "O conceito das Zonas Azuis aplicado à rotina cotidiana: como o movimento involuntário, a caminhabilidade arborizada e o ritmo biológico natural estendem a expectativa de vida com autonomia plena."
+    },
+    {
+        "id": "TEMA_05",
+        "titulo": "Biofilia Residencial: A Psicologia do Horizonte Verde",
+        "categoria": "Arquitetura & Bem-Estar",
+        "premissa_universal": "A necessidade biológica inata do ser humano de manter contato visual com horizontes abertos e vegetação contínua para regulação dos níveis de cortisol e prevenção da fadiga por compaixão."
+    },
+    {
+        "id": "TEMA_06",
+        "titulo": "O Efeito Slow Living na Síndrome de Burnout Executivo",
+        "categoria": "Estilo de Vida & Filosofia",
+        "premissa_universal": "A substituição deliberada da cultura da pressa (hustle culture) por um ritmo existencial cadenciado, onde a excelência profissional convive com pausas reais e presença mental desfragmentada."
+    },
+    {
+        "id": "TEMA_07",
+        "titulo": "A Preservação Patrimonial Geracional em Ativos Reais Tangíveis",
+        "categoria": "Finanças & Legado",
+        "premissa_universal": "A busca por solidez e blindagem de patrimônio em momentos de volatilidade global por meio de terras, infraestrutura perene e localizações com alta demanda por qualidade de vida duradoura."
+    },
+    {
+        "id": "TEMA_08",
+        "titulo": "Cultura Esportiva Contínua: O Triatlo, a Corrida e a Vida ao Ar Livre",
+        "categoria": "Esportes & Performance",
+        "premissa_universal": "A integração diária do treinamento esportivo de resistência (ciclismo de estrada, corrida sem semáforos, natação) à rotina de executivos e atletas amadores de alta disciplina."
+    },
+    {
+        "id": "TEMA_09",
+        "titulo": "A Solitária Densidade Metropolitana versus o Resgate do Sentido de Comunidade",
+        "categoria": "Sociologia & Vínculos",
+        "premissa_universal": "O paradoxo das grandes cidades onde milhões convivem isolados em apartamentos herméticos, contrastando com a volta dos laços comunitários orgânicos, onde vizinhos se conhecem pelo nome."
+    },
+    {
+        "id": "TEMA_10",
+        "titulo": "Gastronomia de Quintal, Hortas Domésticas e Alimentos Limpos",
+        "categoria": "Sustentabilidade & Alimentação",
+        "premissa_universal": "O retorno ritualístico à culinária de origem, ao cultivo de ervas, hortaliças e árvores frutíferas no próprio quintal como antídoto ao consumo desenfreado de ultraprocessados metropolitanos."
+    },
+    {
+        "id": "TEMA_11",
+        "titulo": "O Hub Viracopos e a Nova Mobilidade Global Descentralizada",
+        "categoria": "Logística & Negócios Globais",
+        "premissa_universal": "Como a conectividade aeroportuária direta para a América do Norte e Europa sem o atrito de grandes capitais descentralizou as lideranças globais e fundadores de multinacionais."
+    },
+    {
+        "id": "TEMA_12",
+        "titulo": "Arquitetura Sensorial: A Luz Solar, a Ventilação Cruzada e a Saúde Mental",
+        "categoria": "Arquitetura & Bem-Estar",
+        "premissa_universal": "A influência dos ciclos circadianos e da luz natural abundante no humor e na produtividade, em contraste com a iluminação artificial e o ar-condicionado hermético das caixas corporativas."
+    },
+    {
+        "id": "TEMA_13",
+        "titulo": "A Transição da Meia-Idade: Do Acúmulo de Status à Curadoria de Tempo",
+        "categoria": "Estilo de Vida & Filosofia",
+        "premissa_universal": "O momento de virada biográfica em que profissionais consolidados deixam de colecionar símbolos externos de validação para priorizar manhãs tranquilas, presença com a família e paz interior."
+    },
+    {
+        "id": "TEMA_14",
+        "titulo": "Segurança Preventiva Silenciosa e a Recuperação da Confiança Pública",
+        "categoria": "Segurança & Bem-Estar Social",
+        "premissa_universal": "O impacto psicológico da vigilância constante e do medo latente nas grandes metrópoles contra a liberdade elementar de caminhar à noite ou deixar os filhos pedalarem na calçada."
+    },
+    {
+        "id": "TEMA_15",
+        "titulo": "A Ética do Silêncio: A Busca por Santuários Espirituais e Criativos",
+        "categoria": "Criatividade & Espiritualidade",
+        "premissa_universal": "Como o silêncio intencional e o isolamento acústico natural catalisam a escrita, a contemplação, a leitura profunda e a criação de obras artísticas e intelectuais duradouras."
+    },
+    {
+        "id": "TEMA_16",
+        "titulo": "A Cultura Equestre, o Hipismo e a Conexão com a Natureza Clássica",
+        "categoria": "Esportes & Performance",
+        "premissa_universal": "A disciplina milenar da convivência com animais de grande porte, o respeito aos ciclos da terra e o cultivo de tradições de campo que atravessam gerações familiares."
+    },
+    {
+        "id": "TEMA_17",
+        "titulo": "O Futuro da Educação Escolar: Espaço Aberto, Ciência Prática e Movimento",
+        "categoria": "Educação & Família",
+        "premissa_universal": "Modelos educacionais que integram salas de aula arejadas, contato com ecossistemas vivos e incentivo ao esporte, afastando o confinamento pedagógico estéril das metrópoles."
+    },
+    {
+        "id": "TEMA_18",
+        "titulo": "Microclima e Conforto Térmico: O Impacto das Ilhas de Calor Urbanas",
+        "categoria": "Saúde & Climatologia",
+        "premissa_universal": "A degradação física causada pelo asfalto quente e o concreto das capitais em comparação ao equilíbrio biológico propiciado por maciços florestais e lagos em áreas urbanizadas integradas."
+    },
+    {
+        "id": "TEMA_19",
+        "titulo": "Trabalho Assíncrono e a Morte do Presenteísmo Corporativo",
+        "categoria": "Produtividade & Trabalho",
+        "premissa_universal": "A emancipação dos profissionais intelectuais que trocam escritórios formais em corredores congestionados por rotinas autogeridas de alto impacto a partir de refúgios planejados."
+    },
+    {
+        "id": "TEMA_20",
+        "titulo": "Cozinhar como Ritual Terapêutico: A Cozinha Aberta e o Convívio Familiar",
+        "categoria": "Estilo de Vida & Gastronomia",
+        "premissa_universal": "A ressignificação do ato de preparar alimentos sem pressa em torno de ilhas gastronômicas integradas ao verde como o principal espaço aglutinador dos afetos familiares."
+    },
+    {
+        "id": "TEMA_21",
+        "titulo": "Saúde Cardiovascular e a Redução do Cortisol Basal",
+        "categoria": "Saúde & Longevidade",
+        "premissa_universal": "A relação direta entre a diminuição de microestressores diários (buzinas, filas, contenção mecânica) e a preservação do endotélio vascular e longevidade cardíaca."
+    },
+    {
+        "id": "TEMA_22",
+        "titulo": "A Estética do Espaço: Tetos Altos, Amplitude e Clareza de Pensamento",
+        "categoria": "Arquitetura & Psicologia",
+        "premissa_universal": "A hipótese de que a amplitude visual física de um ambiente estimula o pensamento abstrato de longo prazo, enquanto espaços confinados geram miopia estratégica e estresse."
+    },
+    {
+        "id": "TEMA_23",
+        "titulo": "O Envelhecimento Dignificado e a Mobilidade Sem Barreiras",
+        "categoria": "Longevidade & Sociedade",
+        "premissa_universal": "Como a topografia plana, calçadas acessíveis e convivência intergeracional restauram a autonomia de idosos em vez de confiná-los à clausura de edifícios altos."
+    },
+    {
+        "id": "TEMA_24",
+        "titulo": "Pets, Cães e a Liberdade Animal: O Fim do Confinamento em Apartamentos",
+        "categoria": "Família & Animais de Estimação",
+        "premissa_universal": "O bem-estar e equilíbrio comportamental de cães e animais de estimação quando têm acesso diário a gramados privativos, terra e trilhas seguras para caminhada."
+    },
+    {
+        "id": "TEMA_25",
+        "titulo": "O Elogio ao Tédio Criativo: Devolvendo Espaço para o Inesperado",
+        "categoria": "Filosofia & Inovação",
+        "premissa_universal": "A importância de janelas no dia sem agenda pré-formatada para que surjam ideias originais, composições, soluções empresariais e contemplação da vida ordinária."
+    },
+    {
+        "id": "TEMA_26",
+        "titulo": "A Nova Segurança Hídrica e o Paisagismo Regenerativo",
+        "categoria": "Sustentabilidade & Urbanismo",
+        "premissa_universal": "A integração de mananciais, espelhos d'água naturais e bacias de retenção como parte de um ecossistema urbano resiliente que convive em harmonia com os moradores."
+    },
+    {
+        "id": "TEMA_27",
+        "titulo": "O Esporte Amador de Raquete: O Fenômeno do Tênis e Beach Tennis nas Comunidades",
+        "categoria": "Esportes & Socialização",
+        "premissa_universal": "A socialização esportiva regular ao final do dia como ponte de amizades duradouras, descompressão pós-trabalho e longevidade articular."
+    },
+    {
+        "id": "TEMA_28",
+        "titulo": "Desconexão Digital Planejada e os Fins de Semana Sagrados",
+        "categoria": "Tecnologia & Saúde Mental",
+        "premissa_universal": "A prática de criar fronteiras espaciais rígidas entre o ambiente de trabalho e o lazer familiar, restabelecendo o sábado e o domingo como territórios intocáveis."
+    },
+    {
+        "id": "TEMA_29",
+        "titulo": "O Retorno ao Artesanato, Marcenaria e Hobbies Manuais",
+        "categoria": "Estilo de Vida & Terapia",
+        "premissa_universal": "O alívio psicológico proporcionado pela criação de objetos físicos tangíveis com as próprias mãos em oficinas domésticas, contrapondo o trabalho 100% abstrato nas telas."
+    },
+    {
+        "id": "TEMA_30",
+        "titulo": "A Cidade-Parque: A Fusão entre Urbanismo Racional e Ecossistemas Contínuos",
+        "categoria": "Urbanismo & Futuro das Cidades",
+        "premissa_universal": "A superação do modelo urbano fragmentado em direção a eixos ecológicos contínuos de lazer e mobilidade ativa que atravessam a cidade de ponta a ponta."
+    },
+    {
+        "id": "TEMA_31",
+        "titulo": "O Despertar do Olfato e da Audição: A Desintoxicação Sensorial Urbana",
+        "categoria": "Saúde & Fisiologia",
+        "premissa_universal": "A reabilitação dos sentidos primários através do cheiro de chuva na terra molhada, do canto de pássaros nativos e do vento nas folhas em oposição à fuligem e aos motores."
+    },
+    {
+        "id": "TEMA_32",
+        "titulo": "Amizades na Idade Adulta: A Convivência Não Programada entre Vizinhos",
+        "categoria": "Sociologia & Afetos",
+        "premissa_universal": "A raridade de novas amizades profundas após os 30 anos e como a circulação livre por alamedas e praças públicas resgata a espontaneidade dos encontros humanos."
+    },
+    {
+        "id": "TEMA_33",
+        "titulo": "Maturidade Financeira: A Transição do Custo da Urgência para o Investimento em Paz",
+        "categoria": "Finanças Comportamentais",
+        "premissa_universal": "Como o gasto compulsivo em grandes capitais frequentemente tenta compensar um ambiente hostil, enquanto a paz territorial diminui drasticamente o consumo de compensação."
+    },
+    {
+        "id": "TEMA_34",
+        "titulo": "A Cultura do Vinho e Adega Doméstica: O Prazer do Tempo que Matura",
+        "categoria": "Gastronomia & Estilo de Vida",
+        "premissa_universal": "O fascínio pelo amadurecimento paciente das safras, pelo ritual de receber amigos sem pressa de ir embora e pela celebração de conquistas discretas."
+    },
+    {
+        "id": "TEMA_35",
+        "titulo": "A Nova Mulher Líder: Gestão Corporativa, Maternidade e Equilíbrio Sem Culpa",
+        "categoria": "Liderança & Sociedade",
+        "premissa_universal": "A quebra do mito da mulher sobrecarregada pelo deslocamento metropolitano e o ganho de clareza mental quando a logística diária dos filhos se resolve em minutos."
+    },
+    {
+        "id": "TEMA_36",
+        "titulo": "O Valor da Rotina Ordinária: A Beleza dos Dias Comuns e Previsíveis",
+        "categoria": "Filosofia & Cotidiano",
+        "premissa_universal": "A reflexão sobre a verdadeira felicidade residir na repetição suave de hábitos saudáveis diários, e não em picos ocasionais e exaustivos de euforia metropolitana."
+    },
+    {
+        "id": "TEMA_37",
+        "titulo": "Sustentabilidade Energética Doméstica: Autonomia Fotovoltaica e Reúso de Água",
+        "categoria": "Tecnologia & Sustentabilidade",
+        "premissa_universal": "A transição de casas dependentes e custosas para residências inteligentes com autossuficiência energética, captação pluvial e integração ecossistêmica."
+    },
+    {
+        "id": "TEMA_38",
+        "titulo": "O Resgate da Noite Escura: Redução da Poluição Luminosa e a Visão das Estrelas",
+        "categoria": "Astronomia & Conexão Cósmica",
+        "premissa_universal": "O esquecimento metropolitano do céu noturno e o impacto profundo que o horizonte estrelado exerce sobre a humildade e a serenidade humana."
+    },
+    {
+        "id": "TEMA_39",
+        "titulo": "Saúde Respiratória e Imunidade Infantil: O Impacto dos Aerossóis Urbanos",
+        "categoria": "Medicina & Família",
+        "premissa_universal": "A incidência crônica de bronquites e alergias infantis nas capitais e a recuperação imunológica quase imediata das vias aéreas com a mudança para áreas de ar limpo."
+    },
+    {
+        "id": "TEMA_40",
+        "titulo": "A Arte da Hospitalidade: Receber com Alma e Espaço",
+        "categoria": "Convívio & Tradição",
+        "premissa_universal": "O retorno das longas refeições de domingo em mesas compridas de varanda, onde conversas não têm hora para terminar e a casa se torna um polo acolhedor de afetos."
+    },
+    {
+        "id": "TEMA_41",
+        "titulo": "O Ciclismo como Meio de Transporte e Filosofia de Vida",
+        "categoria": "Mobilidade & Esporte",
+        "premissa_universal": "A transformação de ciclovias contínuas em artérias vitais da cidade, substituindo a hostilidade do volante pelo vento no rosto e ritmo cardíaco controlado."
+    },
+    {
+        "id": "TEMA_42",
+        "titulo": "Segurança Psicológica Infantil: Crescer Andando Sozinho na Rua",
+        "categoria": "Paternidade & Autonomia",
+        "premissa_universal": "A autoconfiança indestrutível adquirida por uma criança que pode ir à escola de bicicleta ou à padaria sem a sombra da paranoia paterna por segurança armada."
+    },
+    {
+        "id": "TEMA_43",
+        "titulo": "Home Office com Propósito: O Isolamento Acústico e a Estética Produtiva",
+        "categoria": "Produtividade & Design",
+        "premissa_universal": "O projeto arquitetônico de bibliotecas e gabinetes integrados à luz da manhã, onde decisões estratégicas e trabalhos intelectuais profundos são gestados com foco total."
+    },
+    {
+        "id": "TEMA_44",
+        "titulo": "A Economia da Experiência: Menos Metros de Armário, Mais Metros de Vida",
+        "categoria": "Consumo Consciente",
+        "premissa_universal": "A desintoxicação do consumo material supérfluo para alocar recursos em convivência, viagens descomplicadas, esportes e refúgios que restauram a vitalidade."
+    },
+    {
+        "id": "TEMA_45",
+        "titulo": "A Conexão Intergeracional: Avós e Netos no Mesmo Ecossistema",
+        "categoria": "Família & Longevidade",
+        "premissa_universal": "Os benefícios mútuos da convivência frequente entre diferentes gerações da mesma família quando a distância geográfica e o trânsito deixam de ser um impedimento."
+    },
+    {
+        "id": "TEMA_46",
+        "titulo": "Microaventuras Cotidianas: A Natureza a Menos de Dez Minutos de Casa",
+        "categoria": "Lazer & Bem-Estar",
+        "premissa_universal": "A teoria de que o rejuvenescimento mental não exige viagens transcontinentais complexas, mas sim o acesso diário a trilhas, remadas em lago ou piqueniques em gramados."
+    },
+    {
+        "id": "TEMA_47",
+        "titulo": "A Mente Estendida: Como o Espaço ao Redor Molda Nossos Pensamentos",
+        "categoria": "Filosofia da Mente & Neurociência",
+        "premissa_universal": "A tese de que nossa mente não está confinada ao cérebro, mas se expande pelo ambiente físico circundante; ambientes caóticos geram pensamentos caóticos; ambientes harmônicos geram lucidez."
+    },
+    {
+        "id": "TEMA_48",
+        "titulo": "A Nova Governança Municipal: Eficiência dos Serviços e Cidadania Ativa",
+        "categoria": "Políticas Públicas & Gestão",
+        "premissa_universal": "A percepção nítida dos impostos pagos retornando em asfalto impecável, conservação de parques, escolas públicas premiadas e centros esportivos comunitários de excelência."
+    },
+    {
+        "id": "TEMA_49",
+        "titulo": "A Busca pela Serenidade Estóica no Século XXI",
+        "categoria": "Filosofia Prática",
+        "premissa_universal": "O discernimento estóico entre o que está sob nosso controle (nosso corpo, nossa rotina, nosso endereço) e o que foge ao nosso controle (o caos metropolitano incontrolável)."
+    },
+    {
+        "id": "TEMA_50",
+        "titulo": "A Dança das Estações: O Contato com a Mudança dos Ciclos Naturais",
+        "categoria": "Natureza & Poesia Cotidiana",
+        "premissa_universal": "A sensibilidade de notar a florada dos ipês amarelos, a queda das folhas no outono e as manhãs frescas de inverno, percepção completamente apagada pelo concreto metropolitano."
+    },
+    {
+        "id": "TEMA_51",
+        "titulo": "O Silêncio como Luxo Supremo da Nova Aristocracia Intelectual",
+        "categoria": "Sociologia & Cultura",
+        "premissa_universal": "Como o silêncio e o espaço se tornaram os bens mais raros e disputados da era contemporânea, suplantando os bens materiais tradicionais ostensivos."
+    },
+    {
+        "id": "TEMA_52",
+        "titulo": "Natação, Água e Relaxamento Muscular: O Movimento Sem Gravidade",
+        "categoria": "Saúde & Fisioterapia",
+        "premissa_universal": "O poder terapêutico da natação diária e dos banhos de sol matinais para descompressão vertebral e relaxamento miofascial de executivos estressados."
+    },
+    {
+        "id": "TEMA_53",
+        "titulo": "A Saúde Mental dos Médicos: O Pós-Plantão e a Descompressão Obrigatória",
+        "categoria": "Medicina & Humanidades",
+        "premissa_universal": "O pedágio emocional pago por profissionais de saúde que lidam com a finitude diariamente e a necessidade vital de um refúgio domiciliar que acolha o silêncio."
+    },
+    {
+        "id": "TEMA_54",
+        "titulo": "O Resgate das Refeições em Família à Luz do Dia",
+        "categoria": "Família & Hábitos",
+        "premissa_universal": "O poder do almoço diário em família, viabilizado pela proximidade entre trabalho, escola e casa, como o maior pilar de segurança emocional para adolescentes."
+    },
+    {
+        "id": "TEMA_55",
+        "titulo": "Investimentos Imobiliários de Alta Resiliência: O Vetor RMC e o Interior Paulista",
+        "categoria": "Mercado & Estratégia Patrimonial",
+        "premissa_universal": "A consolidação do interior paulista integrado por rodovias de padrão internacional como o polo mais atrativo de atração de capital produtivo e liquidez residencial do país."
+    },
+    {
+        "id": "TEMA_56",
+        "titulo": "A Prática do Mindful Living: Atenção Plena na Respiração e nos Passos",
+        "categoria": "Psicologia & Consciência",
+        "premissa_universal": "A facilidade natural de cultivar a atenção plena quando o ambiente físico ao redor oferece estímulos gentis em vez de bombardeios sensoriais agressivos."
+    },
+    {
+        "id": "TEMA_57",
+        "titulo": "Esportes Coletivos e Formação de Caráter nos Primeiros Anos",
+        "categoria": "Educação & Esporte",
+        "premissa_universal": "O valor de quadras esportivas acessíveis onde crianças e jovens aprendem a vencer, perder, negociar regras e respeitar adversários sem mediação de algoritmos."
+    },
+    {
+        "id": "TEMA_58",
+        "titulo": "O Charme das Feiras de Produtores Locais e o Vínculo com a Terra",
+        "categoria": "Cultura Local & Gastronomia",
+        "premissa_universal": "O sábado pela manhã dedicado à escolha de queijos artesanais, frutas da estação e flores frescas, dialogando diretamente com as famílias que plantam e produzem."
+    },
+    {
+        "id": "TEMA_59",
+        "titulo": "A Arquitetura da Luz: Grandes Vãos, Vidro e Integração com a Paisagem",
+        "categoria": "Design & Arquitetura",
+        "premissa_universal": "Projetos contemporâneos que dissolvem a fronteira entre a sala de estar e o jardim exterior, transformando o verde no principal elemento decorativo da residência."
+    },
+    {
+        "id": "TEMA_60",
+        "titulo": "A Decisão de Migrar: O Momento Exato em que o Estilo de Vida Supera a Inércia",
+        "categoria": "Psicologia & Tomada de Decisão",
+        "premissa_universal": "O insight transformador em que casais e famílias compreendem que a vida é finita demais para ser adiada em engarrafamentos e promessas de um futuro metropolitano que nunca chega."
+    },
+    {
+        "id": "TEMA_61",
+        "titulo": "Longevidade Cerebral: O Estímulo Neurotrófico de Ambientes Naturais",
+        "categoria": "Neurociência & Saúde",
+        "premissa_universal": "Pesquisas que comprovam que a exposição regular a padrões fractais da natureza estimula o fator neurotrófico derivado do cérebro (BDNF), prevenindo declínio cognitivo precoce."
+    },
+    {
+        "id": "TEMA_62",
+        "titulo": "O Fim da Paranóia Noturna: O Impacto Psicológico de Dormir de Portas Destravadas",
+        "categoria": "Segurança & Comportamento",
+        "premissa_universal": "A libertação mental que ocorre quando sistemas de inteligência e segurança comunitária permitem que o morador relaxe completamente dentro de seu próprio perímetro."
+    }
+]
+
+file_path = "assets/taxonomy/macro_temas.json"
+with open(file_path, "w", encoding="utf-8") as f:
+    json.dump(macro_temas, f, ensure_ascii=False, indent=2)
+
+print(f"File created successfully with {len(macro_temas)} curated themes.")

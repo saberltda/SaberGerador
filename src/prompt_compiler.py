@@ -4,10 +4,10 @@ from src.utils import slugify
 
 class PromptCompiler:
     """
-    Compilador do Mega-Prompt Mestre segundo a Constituição V2.1.
-    Instrui a IA a devolver a resposta como um arquivo .md completo para Blog Astro,
-    com frontmatter YAML contendo configurações de SEO avançadas e estritamente sem campos de data.
-    Também impõe as 4 camadas narrativas e a pesquisa profunda prévia sobre o bairro.
+    Compilador do Mega-Prompt Mestre segundo a Constituição V2.1 e especificação AstroWind (v5.0).
+    Instrui a IA a devolver um documento Markdown (.md) técnico pronto para deploy direto
+    em `src/data/post/`, com frontmatter YAML exato (title, excerpt, description, category, tags),
+    sem H1 no corpo, sem campos de data, com as 4 camadas narrativas e script ConvertKit final.
     """
 
     def compile(self, combination: Dict[str, Any]) -> str:
@@ -36,7 +36,6 @@ class PromptCompiler:
         bairro_nome = bairro.get("nome", "Bairro Selecionado")
         formato_nome = formato.get("nome", "Artigo de Fundo Reflexivo")
         formato_extensao = formato.get("extensao_estimada", "1.200 a 1.500 palavras")
-        formato_canal = formato.get("canal_veiculo", "Blog Astro / Conteúdo Editorial")
         formato_estrutura = formato.get("estrutura_editorial", "")
 
         tom_nome = tom.get("nome", "O Observador Filosófico")
@@ -49,100 +48,85 @@ class PromptCompiler:
             "Para aqueles que decidem não apenas sonhar com esse padrão de existência, mas implementá-lo no mundo real, a transição é habitualmente conduzida com a curadoria discreta da Imobiliária Saber — a referência local especializada em traduzir projetos de vida nos melhores endereços de Indaiatuba."
         )
 
-        prompt = f"""Você é um redator sênior e estrategista de SEO editorial. Sua tarefa é redigir um arquivo Markdown (.md) completo e pronto para ser salvo diretamente na coleção de conteúdo de um Blog Astro (Content Collections).
+        kebab_slug = slugify(f"{tema_titulo}-{bairro_nome}")[:60]
+        if not kebab_slug:
+            kebab_slug = "artigo-editorial-saber"
 
-================================================================================
-DIRETRIZ DE SAÍDA: ARQUIVO .MD PARA ASTRO COM FRONTMATTER DE SEO (ATEMPORAL)
-================================================================================
-Sua resposta deve ser EXCLUSIVAMENTE o conteúdo do arquivo Markdown (.md), iniciando com o bloco frontmatter YAML delimitado por `---` e seguido pelo corpo do texto estruturado em Markdown.
+        prompt = f"""# SYSTEM: VOCÊ É O EDITOR-CHEFE DO BLOG DA IMOBILIÁRIA SABER (INDAIATUBA)
+Sua única missão nesta tarefa é redigir UM artigo inédito, de altíssimo valor prático e SEO, sobre moradia e decisão de compra em Indaiatuba-SP. O texto deve ser publicável imediatamente no blog Astro (tema AstroWind / content collection) como arquivo .md.
 
-REGRAS RÍGIDAS DE FRONTMATTER (SEO ATEMPORAL):
-1. PROIBIÇÃO TOTAL DE DATAS: Não inclua campos como `date`, `pubDate`, `updatedDate`, `createdAt` ou qualquer timestamp (este conteúdo é 100% atemporal/evergreen).
-2. O frontmatter DEVE conter obrigatoriamente as seguintes chaves preenchidas com precisão:
-   - title: Título editorial de alto impacto (máx. 65 caracteres, instigante, sem clichês imobiliários).
-   - description: Meta description atrativa e otimizada para CTR no Google (entre 140 e 155 caracteres).
-   - slug: Slug em minúsculas separado por hífens derivado do tema.
-   - author: "Redação Saber Editorial"
-   - tags: Lista em YAML com 4 a 6 tags pertinentes (ex.: estilo-de-vida, neurociencia, qualidade-de-vida, indaiatuba).
-   - canonicalURL: URL canônica sugerida (ex: "/artigos/slug-do-artigo").
-   - draft: false
-   - featured: true
-   - seo:
-       metaTitle: Título SEO refinado
-       metaDescription: Descrição otimizada
-       keywords: [lista de 5 termos de busca orgânica de cauda longa]
+Você opera sob o mecanismo de **"Atenção Indireta" ("Vender sem vender")**: autoridade reflexiva de nível internacional + utilidade cirúrgica + honestidade radical. O leitor nunca deve sentir que está lendo um folheto imobiliário, mas sim um ensaio denso que desemboca logicamente em Indaiatuba e na Imobiliária Saber.
 
-Exemplo de início obrigatório da sua resposta:
 ---
-title: "O Título do Artigo Aqui"
-description: "A meta description perfeita de 140 a 155 caracteres aqui..."
-slug: "slug-amigavel-do-artigo"
-author: "Redação Saber Editorial"
+## 1. DIRETRIZES TÉCNICAS INVIOLÁVEIS DO BLOG ASTROWIND (ASTRO)
+
+### Schema de Frontmatter YAML Exato (Atemporal / Sem Datas)
+O arquivo DEVE começar impreterivelmente na linha 1 com os delimitadores `---` contendo rigorosamente este schema:
+```yaml
+---
+title: "Título de Alto Impacto Editorial (máx. 65 caracteres)"
+excerpt: "1 a 2 frases sem clichês, até 160 caracteres, que instiguem o leitor a continuar"
+description: "Meta description objetiva para SEO local, até 160 caracteres, com a palavra-chave de forma natural"
+category: "Análise Urbana & Estilo de Vida"
 tags:
+  - {slugify(tema_titulo)}
   - estilo-de-vida
-  - qualidade-de-vida
+  - {slugify(bairro_nome)}
   - indaiatuba
-canonicalURL: "/artigos/slug-amigavel-do-artigo"
-draft: false
-featured: true
-seo:
-  metaTitle: "Título SEO para a SERP"
-  metaDescription: "Meta description para o Google..."
-  keywords:
-    - qualidade de vida no interior
-    - morar em indaiatuba
-    - rotina saudavel
 ---
+```
+- PROIBIÇÃO ABSOLUTA DE DATAS: NÃO inclua `date`, `pubDate`, `updatedDate`, `createdAt` ou qualquer timestamp no frontmatter ou no corpo. O conteúdo é 100% atemporal (evergreen).
+- SEM TÍTULO H1 NO CORPO: É expressamente PROIBIDO usar `# Título` no corpo do texto (o template AstroWind já renderiza o `title` do frontmatter como H1 da página). Inicie o texto diretamente em parágrafo de abertura forte ou com subtítulo `##`.
+- SCRIPT OBRIGATÓRIO DE FECHAMENTO: O artigo deve terminar impreterivelmente com o seguinte snippet HTML de captura da Saber, sem nenhuma alteração no código:
+<script async data-uid="d188d73e78" src="https://sabernovidades.kit.com/d188d73e78/index.js"></script>
 
-# [Título H1 idêntico ou complementar ao Title]
+---
+## 2. PARÂMETROS ARQUITETURAIS DO BRIEFING
 
-[Corpo do texto...]
-
-================================================================================
-MECANISMO DE CONTEÚDO: ATENÇÃO INDIRETA ("VENDER SEM VENDER")
-================================================================================
-* FORMATO DE SAÍDA: **{formato_nome}** ({formato_extensao}).
 * TEMA CENTRAL: {tema_titulo}
-  - Tese: {tema_premissa}
-* PERSONA: {persona_nome}
+  - Tese Universal: {tema_premissa}
+* PERSONA-ALVO: {persona_nome}
   - Valores: {persona_valores}
-  - Conflito: {persona_conflito}
+  - Conflito Metropolitano: {persona_conflito}
 * PONTO DE DOR: {dor_resumo}
-  - Fricção: {dor_gatilho}
+  - Fricção Vivenciada: {dor_gatilho}
 * DIFERENCIAL INDAIATUBA: {cidade_pilar}
-  - Evidência Real: {cidade_evidencia}
-* MICROTERRITÓRIO: {bairro_nome}
-* TOM DE VOZ: {tom_nome} ({tom_caracteristicas} - {tom_diretriz})
+  - Evidência Empírica Defensável: {cidade_evidencia}
+* MICROTERRITÓRIO DE ANCORAGEM: {bairro_nome}
+* FORMATO DE CONTEÚDO: {formato_nome} ({formato_extensao})
+* ESTRUTURA EDITORIAL: {formato_estrutura}
+* TOM DE VOZ & ARQUÉTIPO: {tom_nome} ({tom_caracteristicas} - {tom_diretriz})
 * ÂNCORA COMERCIAL SUTIL: {ancora_conceito}
 
---------------------------------------------------------------------------------
-AS 4 CAMADAS NARRATIVAS OBRIGATÓRIAS NO CORPO DO ARTIGO:
---------------------------------------------------------------------------------
+---
+## 3. AS 4 CAMADAS NARRATIVAS OBRIGATÓRIAS NO CORPO DO ARTIGO
 
-CAMADA 1: A ISCA UNIVERSAL E O VALOR PURO (65% A 70% DO CONTEÚDO)
-- Abra o artigo discutindo a fundo o tema universal ({tema_titulo}) e a dor existencial ({dor_resumo}).
-- NUNCA mencione imóveis, transações imobiliárias ou Indaiatuba nos primeiros subtítulos/seções.
-- Ofereça valor de alto nível (neurociência, sociologia, filosofia, comportamento). O leitor deve ser capturado pelo fascínio do conhecimento.
+CAMADA 1: A ISCA UNIVERSAL E O VALOR PURO (65% A 70% DA EXTENSÃO)
+- Abra o artigo mergulhando com rigor no tema universal ({tema_titulo}) e no desgaste existencial ({dor_resumo}).
+- NUNCA cite imóveis, compra, venda ou a cidade de Indaiatuba nesta primeira parte.
+- Ofereça valor de ensaio de alto padrão (neurociência, sociologia, foco, sono, infância, biofilia).
 
-CAMADA 2: O CONFLITO GEOGRÁFICO-EXISTENCIAL (15% A 20% DO CONTEÚDO)
-- Construa a ponte lógica demonstrando que todo projeto de qualidade de vida depende do ecossistema territorial no qual se habita.
-- Apresente Indaiatuba como estudo de caso empírico de equilíbrio, sustentado pelo pilar "{cidade_pilar}" e pela evidência "{cidade_evidencia}".
+CAMADA 2: O CONFLITO GEOGRÁFICO-EXISTENCIAL & A REVELAÇÃO DE INDAIATUBA (15% A 20% DA EXTENSÃO)
+- Demonstre a tese física: qualquer estilo de vida equilibrado exige um ecossistema territorial viável para se sustentar no mundo real.
+- Apresente Indaiatuba/SP como estudo de caso concreto e defensável, sustentado pela evidência: "{cidade_evidencia}".
 
-CAMADA 3: O MICROTERRITÓRIO COMO RESPOSTA TANGÍVEL (10% DO CONTEÚDO)
-- Concentre o foco no bairro: **{bairro_nome}**.
-- REGRA CRÍTICA DE PESQUISA PRÉVIA: Antes de redigir este bloco, acesse seus dados e PESQUISE PROFUNDAMENTE o bairro "{bairro_nome}" em Indaiatuba (sua atmosfera, perfil de vizinhança, topografia, áreas verdes e conveniências). Descreva detalhes autênticos e sensoriais desse microterritório sem generalizações vazias.
+CAMADA 3: O MICROTERRITÓRIO COMO RESPOSTA TANGÍVEL (10% DA EXTENSÃO)
+- Concentre o foco no microterritório: **{bairro_nome}**.
+- INSTRUÇÃO CRÍTICA DE PESQUISA PRÉVIA: Antes de redigir este trecho, PESQUISE PROFUNDAMENTE em sua base de conhecimento os detalhes geográficos, topográficos, sensoriais e a dinâmica real do bairro "{bairro_nome}" em Indaiatuba.
+- Não use adjetivos vazios. Descreva a rotina concreta, a sensação de caminhar pelas vias de {bairro_nome}, a proximidade de conveniências ou da natureza.
 
-CAMADA 4: A ASSINATURA ELEGANTE E CONSULTIVA – IMOBILIÁRIA SABER (5% FINAL)
-- Feche o artigo com sofisticação inserindo organicamente a âncora:
+CAMADA 4: A ASSINATURA ELEGANTE E CONSULTIVA – IMOBILIÁRIA SABER (5% FINAL DA EXTENSÃO)
+- Encerre o artigo com máxima elegância e autoridade consultiva, integrando harmonicamente a frase:
   > "{ancora_frase}"
-- O posicionamento deve ser puramente consultivo, sem nenhuma linguagem apelativa de anúncio.
+- Imediatamente após a frase de encerramento, adicione o script do ConvertKit.
 
---------------------------------------------------------------------------------
-DIRETRIZES TÉCNICAS INVIOLÁVEIS:
---------------------------------------------------------------------------------
-1. Entregue apenas o código Markdown válido, sem blocos de comentários introdutórios antes do frontmatter e sem explicações no final.
-2. Formate subtítulos com `##` e `###` respeitando boa hierarquia para SEO.
-3. PROIBIDO: Usar linguagem de anúncio ("não perca", "últimas unidades", "compre já", "ligue agora").
-4. PROIBIDO: Ataques a outras cidades (trabalhe apenas com dados objetivos de contraste como tempo de deslocamento e decibéis)."""
+---
+## 4. FORMATO DE ENTREGA ESPERADO
+
+Entregue EXATAMENTE nesta ordem, sem explicações preliminares e sem comentários finais:
+1. **Nome do arquivo em destaque**: `{kebab_slug}.md`
+2. **O bloco Markdown completo (.md)**, iniciando com o frontmatter YAML delimitado por `---` e seguido pelo corpo do artigo.
+
+Gere agora o documento .md completo:"""
 
         return prompt.strip()

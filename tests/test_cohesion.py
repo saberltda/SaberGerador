@@ -34,15 +34,9 @@ def test_taxonomy_dimensions(database):
 
 
 def test_theoretical_combinations_exceeds_ten_million(engine):
-    """
-    Valida se o cálculo auditado do universo combinatório
-    ultrapassa com folga a meta mínima de 10 milhões de combinações teóricas.
-    """
+    """Valida se o volume auditado ultrapassa a meta de 10 milhões de combinações."""
     total = engine.get_theoretical_combinations()
-    assert total >= settings.min_theoretical_combinations, (
-        f"Total de combinações ({total}) inferior à meta mínima de "
-        f"{settings.min_theoretical_combinations}"
-    )
+    assert total >= settings.min_theoretical_combinations
 
 
 def test_generation_engine_combination_integrity(engine):
@@ -90,21 +84,28 @@ def test_equestrian_cohesion_rule():
     assert validator.is_coherent(compatible) is True
 
 
-def test_prompt_compiler_layers_and_deep_search_instruction(engine, compiler):
-    """Valida se o compilador gera o prompt contendo as 4 camadas e a instrução de pesquisa do bairro."""
+def test_prompt_compiler_astro_frontmatter_and_seo(engine, compiler):
+    """
+    Valida se o compilador gera as diretrizes de Markdown para Blog Astro,
+    frontmatter YAML de SEO, proibição explícita de campos de data e as 4 camadas narrativas.
+    """
     combination = engine.generate_harmonized_combination()
     prompt = compiler.compile(combination)
 
-    # 4 Camadas da Constituição
+    # Diretrizes de Saída Astro (.md) e Frontmatter
+    assert "ARQUIVO .MD PARA ASTRO COM FRONTMATTER DE SEO (ATEMPORAL)" in prompt
+    assert "PROIBIÇÃO TOTAL DE DATAS" in prompt
+    assert "canonicalURL" in prompt
+    assert "keywords:" in prompt
+
+    # 4 Camadas Narrativas Obrigatórias
     assert "CAMADA 1: A ISCA UNIVERSAL E O VALOR PURO" in prompt
     assert "CAMADA 2: O CONFLITO GEOGRÁFICO-EXISTENCIAL" in prompt
     assert "CAMADA 3: O MICROTERRITÓRIO COMO RESPOSTA TANGÍVEL" in prompt
     assert "CAMADA 4: A ASSINATURA ELEGANTE E CONSULTIVA" in prompt
 
-    # Entidades obrigatórias
+    # Entidades e Instrução Obrigatória de Pesquisa do Bairro
     assert "Imobiliária Saber" in prompt
     assert "Indaiatuba" in prompt
-
-    # Instrução obrigatória de pesquisa prévia do bairro
     assert "PESQUISE PROFUNDAMENTE" in prompt
     assert combination["bairro"]["nome"] in prompt

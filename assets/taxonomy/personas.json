@@ -1,0 +1,391 @@
+import json
+import os
+
+os.makedirs("assets/taxonomy", exist_ok=True)
+
+personas = [
+    {
+        "id": "PER_01",
+        "nome": "Casal Tech Remote-First (Engenheiros de Software & Product Managers)",
+        "faixa_etaria": "30 a 42 anos",
+        "perfil_economico": "Renda alta consolidada em moeda forte ou CLT tech de topo",
+        "valores_centrais": "Eficiência, conexão ultrarrápida, ergonomia, silêncio mental, minimalismo funcional",
+        "rotina_desejada": "Trabalho focado pela manhã, pausa para pedal ou caminhada no almoço, sem reuniões com buzinas ao fundo",
+        "conflito_com_metropole": "Pagar aluguel ou condomínio estratosférico em bairros adensados de SP para viver trancado num apartamento de 80m²"
+    },
+    {
+        "id": "PER_02",
+        "nome": "Médicos Especialistas & Cirurgiões em Busca de Descompressão",
+        "faixa_etaria": "38 a 55 anos",
+        "perfil_economico": "Alto patrimônio, rotina de alta responsabilidade e plantões",
+        "valores_centrais": "Paz absoluta, sono ininterrupto pós-plantão, segurança para a família enquanto trabalha",
+        "rotina_desejada": "Retornar para uma casa arejada com jardim, nadar ou caminhar ao ar livre para neutralizar a carga emocional clínica",
+        "conflito_com_metropole": "Poluição sonora constante que fragmenta o descanso e a sensação perene de insegurança no deslocamento noturno"
+    },
+    {
+        "id": "PER_03",
+        "nome": "Família Jovem com Filhos na Primeira Infância",
+        "faixa_etaria": "32 a 45 anos (pais), filhos de 2 a 8 anos",
+        "perfil_economico": "Classe média-alta em ascensão, priorizando investimentos na formação dos filhos",
+        "valores_centrais": "Pé na terra, infância sem paranoia de telas, autonomia comunitária, escolas arborizadas",
+        "rotina_desejada": "Filhos andando de bicicleta na rua com vizinhos, almoço em família e finais de semana em parques abertos",
+        "conflito_com_metropole": "Confinamento em playgrounds de condomínio vertical e rotina logística infernal entre trânsito escolar e trabalho"
+    },
+    {
+        "id": "PER_04",
+        "nome": "Executivo Multinacional com Hub em Viracopos",
+        "faixa_etaria": "40 a 58 anos",
+        "perfil_economico": "C-Level / Diretor com viagens internacionais e nacionais frequentes",
+        "valores_centrais": "Pontualidade, previsibilidade logística, elegância sóbria, privacidade",
+        "rotina_desejada": "Morar a 15 minutos do portão de embarque de Viracopos, sem stress da Marginal Pinheiros ou Congonhas",
+        "conflito_com_metropole": "Perder voos cruciais ou gastar 2h30 para chegar a Cumbica sob chuva torrencial e trânsito caótico"
+    },
+    {
+        "id": "PER_05",
+        "nome": "Empreendedor Serial & Fundador Digital",
+        "faixa_etaria": "33 a 48 anos",
+        "perfil_economico": "Capitalizado pós-liquidez / M&A ou operando empresas digitais de alto faturamento",
+        "valores_centrais": "Autonomia de agenda, clareza estratégica, networking qualificado sem politicagem superficial",
+        "rotina_desejada": "Home office projetado em biofilia, tardes livres para esportes de raquete e leitura profunda de teses",
+        "conflito_com_metropole": "A drenagem contínua de energia psíquica em encontros presenciais improdutivos e a sensação de tempo roubado"
+    },
+    {
+        "id": "PER_06",
+        "nome": "Aposentados Ativos & Golden Agers da Longevidade",
+        "faixa_etaria": "60 a 75 anos",
+        "perfil_economico": "Patrimônio consolidado, renda passiva de investimentos e aposentadoria",
+        "valores_centrais": "Saúde preventiva, caminhabilidade plana, ar puro, proximidade de bons hospitais e feiras de bairro",
+        "rotina_desejada": "Caminhadas diárias em parques bem cuidados, cultivo de horta doméstica e acolhimento dos netos no fim de semana",
+        "conflito_com_metropole": "Calçadas esburacadas, medo de assaltos ao cruzar a rua e a poluição atmosférica que agrava problemas respiratórios"
+    },
+    {
+        "id": "PER_07",
+        "nome": "Praticantes Ávidos de Endurance & Atletas Amadores (Triatlo/Ciclismo/Maratona)",
+        "faixa_etaria": "28 a 48 anos",
+        "perfil_economico": "Profissionais liberais ou executivos com alto poder aquisitivo e foco em alta performance esportiva",
+        "valores_centrais": "Disciplina, segurança para treinos longos de asfalto, ciclovias contínuas, recuperação muscular",
+        "rotina_desejada": "Rodar 80km de bike de estrada logo cedo com segurança viária ou correr em pistas planas sem semáforos a cada 100m",
+        "conflito_com_metropole": "Risco de vida constante ao pedalar em acostamentos metropolitanos e pistas fechadas superlotadas como a Ciclovia do Rio Pinheiros"
+    },
+    {
+        "id": "PER_08",
+        "nome": "Advogados Corporativos & Consultores de Negócios de Alta Complexidade",
+        "faixa_etaria": "36 a 55 anos",
+        "perfil_economico": "Sócios de bancas jurídicas ou consultorias estratégicas",
+        "valores_centrais": "Capacidade analítica, discrição, equilíbrio entre sofisticação e sobriedade",
+        "rotina_desejada": "Dias concentrados de redação jurídica e pareceres em home office silencioso, com ida a São Paulo apenas 1 ou 2 vezes na semana",
+        "conflito_com_metropole": "A cultura do presenteísmo estéril e o esgotamento nervoso por viver permanentemente reativo a estímulos externos"
+    },
+    {
+        "id": "PER_09",
+        "nome": "Família Multigeracional (Pais, Avós e Filhos Integrados)",
+        "faixa_etaria": "Diversas gerações convivendo juntas",
+        "perfil_economico": "Patrimônio familiar que busca otimização e terreno amplo para convívio comum",
+        "valores_centrais": "Preservação da memória familiar, segurança compartilhada, almoços dominicais fartos",
+        "rotina_desejada": "Casa ampla térrea ou integrada em condomínio fechado, onde netos brincam no gramado sob os olhos serenos dos avós",
+        "conflito_com_metropole": "A impossibilidade financeira e física de encontrar terrenos que permitam unir gerações sem um custo absurdo"
+    },
+    {
+        "id": "PER_10",
+        "nome": "Profissionais Criativos & Designers de Liderança",
+        "faixa_etaria": "30 a 45 anos",
+        "perfil_economico": "Diretores de arte, arquitetos, designers de produto e redatores premiados",
+        "valores_centrais": "Estética impecável, luz natural farta, biofilia, ambientes que inspiram ideias originais",
+        "rotina_desejada": "Estúdio integrado ao jardim, observação das copas das árvores durante blocos criativos e café fresco coado sem correria",
+        "conflito_com_metropole": "A tirania do cinza de concreto, apartamentos com janelas viradas para empenas cegas e poluição visual sufocante"
+    },
+    {
+        "id": "PER_11",
+        "nome": "Pilotos de Linha Aérea Comercial & Tripulantes Internacionais",
+        "faixa_etaria": "32 a 52 anos",
+        "perfil_economico": "Renda estável e diferenciada, voos internacionais regulares",
+        "valores_centrais": "Praticidade de locomoção para a base, segurança e descanso absoluto nos períodos de folga",
+        "rotina_desejada": "Chegar de um voo internacional de 12 horas e estar em sua cama em 15 minutos, aproveitando dias de folga com a família",
+        "conflito_com_metropole": "A angústia de enfrentar a Marginal do Tietê após cruzar fusos horários para chegar em casa exausto"
+    },
+    {
+        "id": "PER_12",
+        "nome": "Investidores Patrimoniais & Famílias de Herança Líquida",
+        "faixa_etaria": "45 a 65 anos",
+        "perfil_economico": "Ultra-High-Net-Worth Individuals (UHNWI) focados em preservação de capital real",
+        "valores_centrais": "Solidez perene, discrição patrimonial, liquidez imobiliária em polos de desenvolvimento acelerado",
+        "rotina_desejada": "Alocação em terras e imóveis de alto padrão no vetor RMC que combinem valorização contínua e usufruto qualificado",
+        "conflito_com_metropole": "Tributação punitiva, insegurança jurídica urbana e saturação do mercado da capital"
+    },
+    {
+        "id": "PER_13",
+        "nome": "Entusiastas do Mundo Equestre & Praticantes de Hipismo / Polo",
+        "faixa_etaria": "35 a 60 anos",
+        "perfil_economico": "Alto poder aquisitivo com apreço pela tradição campestre refinada",
+        "valores_centrais": "Conexão animal, respeito aos ciclos da natureza, convivência em clubes de campo e hípicas tradicionais",
+        "rotina_desejada": "Montar cedo pela manhã em haras próprios ou centros de treinamento de classe internacional (ex.: Helvetia), sem deslocamentos demorados",
+        "conflito_com_metropole": "Manter cavalos em cocheiras a 70km de distância em SP, limitando a convivência equestre a raras visitas no fim de semana"
+    },
+    {
+        "id": "PER_14",
+        "nome": "Pesquisadores Acadêmicos, Cientistas & Escritores Independentes",
+        "faixa_etaria": "38 a 62 anos",
+        "perfil_economico": "Bolsistas seniores, docentes titulares da Unicamp/USP ou autores que vivem de direitos intelectuais",
+        "valores_centrais": "Isolamento acústico para leitura profunda, biblioteca acolhedora, ritmo mental não fragmentado",
+        "rotina_desejada": "Manhãs inteiras dedicadas à redação de livros e teses com pássaros cantando na janela e caminhadas no final da tarde",
+        "conflito_com_metropole": "A cacofonia sensorial que destrói a capacidade de concentração sustentada exigida pelo trabalho de alta complexidade"
+    },
+    {
+        "id": "PER_15",
+        "nome": "Gestores Financeiros, Traders & Analistas Macro",
+        "faixa_etaria": "30 a 45 anos",
+        "perfil_economico": "Profissionais de fundos quantitativos, assets e tesourarias que operam sob altíssima pressão de mercado",
+        "valores_centrais": "Resiliência psicológica, infraestrutura de conexão redundante, redução do estresse adrenal diário",
+        "rotina_desejada": "Operar a abertura do mercado americano ou europeu em uma estação de trabalho voltada para o verde, com pausa para natação",
+        "conflito_com_metropole": "A somatória do estresse das telas com a violência urbana e os buzinaços cotidianos na Faria Lima"
+    },
+    {
+        "id": "PER_16",
+        "nome": "Mulheres Executivas & Mães Solo de Alta Carreira",
+        "faixa_etaria": "34 a 48 anos",
+        "perfil_economico": "Executivas com independência financeira plena buscando equilíbrio sem culpa",
+        "valores_centrais": "Segurança irrestrita para os filhos, rede de apoio confiável, logística urbana sem gargalos",
+        "rotina_desejada": "Deixar o filho na escola em 7 minutos e estar pronta para videoconferências internacionais, sabendo que a cidade acolhe a família",
+        "conflito_com_metropole": "A sobrecarga insustentável de gerir carreira e maternidade gastando 3 horas diárias no trânsito"
+    },
+    {
+        "id": "PER_17",
+        "nome": "Gamers Profissionais, Streamers & Criadores de Conteúdo Audiovisual",
+        "faixa_etaria": "24 a 35 anos",
+        "perfil_economico": "Geração digital nativa com receita consolidada em plataformas e patrocínios",
+        "valores_centrais": "Fibra ótica estável, espaço para estúdio acústico e necessidade de descompressão offline em áreas abertas",
+        "rotina_desejada": "Gravar e transmitir em ambiente acusticamente perfeito, saindo no fim de tarde para andar de skate ou patins na pista do parque",
+        "conflito_com_metropole": "Viver trancado em pequenos estúdios urbanos sem ar puro e cercado pela insegurança das capitais"
+    },
+    {
+        "id": "PER_18",
+        "nome": "Empresários Industriais do Eixo Viracopos-Campinas",
+        "faixa_etaria": "42 a 62 anos",
+        "perfil_economico": "Proprietários de indústrias de manufatura avançada, logística e biotecnologia",
+        "valores_centrais": "Proximidade da planta fabril sem abrir mão de viver em uma cidade residencial paradisíaca",
+        "rotina_desejada": "Deslocar-se 10 minutos até a fábrica nos distritos industriais e almoçar em casa com a família",
+        "conflito_com_metropole": "Morar em São Paulo e perder 3 horas diárias na Rodovia dos Bandeirantes para visitar as próprias instalações fabris"
+    },
+    {
+        "id": "PER_19",
+        "nome": "Adeptos da Saúde Integrativa, Yoga & Terapias Holísticas",
+        "faixa_etaria": "32 a 55 anos",
+        "perfil_economico": "Praticantes ou instrutores de métodos integrativos com público seleto",
+        "valores_centrais": "Alimentos orgânicos, respiração limpa (pranayama), contato com a terra, silêncio para meditação matinal",
+        "rotina_desejada": "Praticar yoga ao amanhecer no deck de madeira do quintal ouvindo a brisa nas árvores e colher ervas frescas na horta",
+        "conflito_com_metropole": "O ar saturado de material particulado fino (PM2.5) e a vibração frenética que desregula os ritmos circadianos"
+    },
+    {
+        "id": "PER_20",
+        "nome": "Casais DINK (Double Income, No Kids) Focados em Bem-Estar e Viagens",
+        "faixa_etaria": "30 a 45 anos",
+        "perfil_economico": "Dupla renda consolidada, sem dependentes diretos, alto índice de consumo em experiências",
+        "valores_centrais": "Liberdade, gastronomia, hospitalidade para receber amigos, praticidade de trancar a casa e viajar",
+        "rotina_desejada": "Noites de vinho no quintal com churrasqueira gourmet, finais de semana pedalando ou pegando voos rápidos em Viracopos",
+        "conflito_com_metropole": "O custo proibitivo do metro quadrado em capitais, gerando sensação de sufocamento doméstico"
+    },
+    {
+        "id": "PER_21",
+        "nome": "Veterinários & Tutores Apaixonados por Animais de Grande Porte e Pets",
+        "faixa_etaria": "28 a 50 anos",
+        "perfil_economico": "Profissionais de saúde animal ou famílias com 3 ou mais cães de grande porte",
+        "valores_centrais": "Liberdade para os animais, gramados privativos, trilhas para passeios seguros",
+        "rotina_desejada": "Ver os cães correrem soltos pelo gramado privativo e fazer trilhas matinais sem guia curta",
+        "conflito_com_metropole": "Multas de condomínio por latidos, elevadores de serviço restritivos e a tristeza de cães confinados em apartamentos"
+    },
+    {
+        "id": "PER_22",
+        "nome": "Enófilos & Gastrônomos Amadores",
+        "faixa_etaria": "40 a 65 anos",
+        "perfil_economico": "Colecionadores de vinhos, chefs de fim de semana com alto poder aquisitivo",
+        "valores_centrais": "Cultura da mesa posta, adega climatizada subterrânea, fornos de pizza a lenha, slow food",
+        "rotina_desejada": "Cozinhar pacientemente em uma varanda gourmet aberta para o jardim enquanto compartilha rótulos raros com amigos",
+        "conflito_com_metropole": "Apartamentos com varandas minúsculas envidraçadas que retêm fumaça e impedem a experiência autêntica do fogo"
+    },
+    {
+        "id": "PER_23",
+        "nome": "Famílias com Crianças Atípicas (Neurodivergentes / Espectro Autista)",
+        "faixa_etaria": "30 a 45 anos (pais)",
+        "perfil_economico": "Famílias que buscam o melhor suporte terapêutico e sensorial para os filhos",
+        "valores_centrais": "Previsibilidade sensorial, ausência de sirenes e buzinas agressivas, parques planos e acolhedores",
+        "rotina_desejada": "Caminhadas tranquilas na grama sem sobrecarga sensorial auditiva, permitindo a autorregulação do filho",
+        "conflito_com_metropole": "A hostilidade acústica e visual constante da metrópole que desencadeia crises sensoriais diárias nas crianças"
+    },
+    {
+        "id": "PER_24",
+        "nome": "Consultores de Gestão de Riscos & Segurança da Informação (Cybersecurity)",
+        "faixa_etaria": "32 a 50 anos",
+        "perfil_economico": "Especialistas corporativos com rotina intelectual densa e remota",
+        "valores_centrais": "Segurança em camadas, privacidade estrita, tranquilidade mental",
+        "rotina_desejada": "Trabalhar em um bunker digital aconchegante cercado por árvores, sabendo que a família desfruta de segurança civil de alto nível",
+        "conflito_com_metropole": "A dissonância de proteger sistemas virtuais de ponta enquanto teme ser assaltado no semáforo ao voltar da padaria"
+    },
+    {
+        "id": "PER_25",
+        "nome": "Expatriados & Executivos Internacionais Retornando ao Brasil",
+        "faixa_etaria": "38 a 58 anos",
+        "perfil_economico": "Profissionais que viveram nos EUA, Europa ou Ásia e buscam padrão de vida civilizado no retorno",
+        "valores_centrais": "Urbanismo planejado, respeito às leis de trânsito, limpeza pública, sensação de primeiro mundo",
+        "rotina_desejada": "Encontrar uma cidade brasileira que entregue a sensação cívica e a organização urbana com a qual se acostumaram no exterior",
+        "conflito_com_metropole": "O choque cultural reverso ao se deparar com a degradação urbana e a desordem do trânsito de capitais"
+    },
+    {
+        "id": "PER_26",
+        "nome": "Professores Universitários e Pesquisadores de Pós-Doutorado",
+        "faixa_etaria": "40 a 65 anos",
+        "perfil_economico": "Renda acadêmica estável, com foco no legado cultural e intelectual",
+        "valores_centrais": "Cultura, livros, convívio com mentes inquietas, proximidade com polos universitários de excelência",
+        "rotina_desejada": "Lecionar e pesquisar a 25 minutos de Campinas, voltando para o refúgio arborizado no mesmo dia",
+        "conflito_com_metropole": "Morar em polos industriais barulhentos ou capitais congestionadas que consomem as horas de pesquisa"
+    },
+    {
+        "id": "PER_27",
+        "nome": "Pilotos de Kart, Automobilismo & Motociclismo Esportivo",
+        "faixa_etaria": "25 a 50 anos",
+        "perfil_economico": "Amantes da velocidade controlada e engenharia mecânica esportiva",
+        "valores_centrais": "Paixão automobilística, espaço para oficinas e garagens coletoras, proximidade de pistas e kartódromos",
+        "rotina_desejada": "Ter uma garagem ampla para cuidar do próprio veículo e fácil acesso a circuitos e estradas de padrão internacional",
+        "conflito_com_metropole": "Vagas apertadas de condomínio vertical onde não se pode sequer lavar ou ajustar a mecânica de um carro clássico"
+    },
+    {
+        "id": "PER_28",
+        "nome": "Empresários do Agronegócio (Holding Rural & Gestão Familiar)",
+        "faixa_etaria": "45 a 68 anos",
+        "perfil_economico": "Produtores rurais e pecuaristas que gerenciam fazendas no Centro-Oeste ou interior",
+        "valores_centrais": "Amor pela terra, mas com necessidade de comodidades urbanas de ponta e facilidade logística para voar às propriedades",
+        "rotina_desejada": "Família estabelecida em uma cidade-parque segura com colégios de ponta, próxima a Viracopos para visitas quinzenais ao campo",
+        "conflito_com_metropole": "O distanciamento cultural das metrópoles densas e o estresse que não combina com a mentalidade agro"
+    },
+    {
+        "id": "PER_29",
+        "nome": "Designers de Interiores & Paisagistas Renomados",
+        "faixa_etaria": "32 a 55 anos",
+        "perfil_economico": "Profissionais de destaque no mercado de arquitetura e projetos de alto padrão",
+        "valores_centrais": "Biofilia real, solo fértil, flora nativa, respeito à topografia original",
+        "rotina_desejada": "Laboratório vivo no próprio quintal, testando espécies botânicas tropicais e compondo com a luz do sol o dia todo",
+        "conflito_com_metropole": "Projetar jardins suspensos artificiais em varandas sufocadas pela fumaça dos escapamentos"
+    },
+    {
+        "id": "PER_30",
+        "nome": "Líderes de ONGs, Filantropos & Gestores de Sustentabilidade",
+        "faixa_etaria": "35 a 60 anos",
+        "perfil_economico": "Profissionais de governança ESG e impacto social positivo",
+        "valores_centrais": "Coerência existencial, preservação de mananciais, energia limpa, redução da pegada de carbono",
+        "rotina_desejada": "Viver em um município com tratamento de esgoto modelo e gestão eficiente de resíduos sólidos",
+        "conflito_com_metropole": "A hipocrisia de pregar sustentabilidade enquanto vive mergulhado no desperdício e na poluição metropolitana"
+    },
+    {
+        "id": "PER_31",
+        "nome": "Psicólogos, Psicanalistas & Terapeutas Comportamentais",
+        "faixa_etaria": "35 a 60 anos",
+        "perfil_economico": "Clínicos consolidados com consultórios presenciais ou teleatendimento internacional",
+        "valores_centrais": "Saúde mental preventiva, escuta serena, contenção de estresse vicário",
+        "rotina_desejada": "Atender pacientes online ou presencialmente em uma sala com vista para árvores, encerrando o dia com descompressão reflexiva",
+        "conflito_com_metropole": "A sobrecarga de escutar o sofrimento psíquico alheio e ainda ter que enfrentar a brutalidade do trânsito na saída da clínica"
+    },
+    {
+        "id": "PER_32",
+        "nome": "Artistas Plásticos, Escultores & Ceramistas",
+        "faixa_etaria": "30 a 65 anos",
+        "perfil_economico": "Artistas com mercado em galerias nacionais e internacionais",
+        "valores_centrais": "Espaço de ateliê com pé direito alto, luz zenital, terra, fogo, tempo de maturação das peças",
+        "rotina_desejada": "Ateliê no quintal de casa, queima de cerâmica em fornos próprios e espaço para secagem natural de tintas e argilas",
+        "conflito_com_metropole": "A limitação espacial e as regras de segurança rígidas de edifícios que inviabilizam qualquer processo artístico material"
+    },
+    {
+        "id": "PER_33",
+        "nome": "Casais em Transição de Carreira (Downshifting & Novo Ciclo)",
+        "faixa_etaria": "40 a 55 anos",
+        "perfil_economico": "Profissionais que acumularam reservas e optaram por reduzir o ritmo de trabalho frenético",
+        "valores_centrais": "Sobriedade voluntária, autogestão do tempo, novos projetos com significado",
+        "rotina_desejada": "Dias mais longos para iniciar um negócio consultivo leve, ler livros represados e caminhar sem rumo na parte da manhã",
+        "conflito_com_metropole": "O custo de vida altíssimo em capitais que obriga as pessoas a continuarem na roda-viva corporativa por inércia"
+    },
+    {
+        "id": "PER_34",
+        "nome": "Músicos, Compositores & Produtores Fonográficos",
+        "faixa_etaria": "28 a 52 anos",
+        "perfil_economico": "Artistas da indústria fonográfica, trilhas sonoras e espetáculos",
+        "valores_centrais": "Fidelidade acústica, silêncio para afinação de timbres, inspiração harmônica",
+        "rotina_desejada": "Estúdio caseiro isolado, tocar piano de cauda às 22h sem incomodar vizinhos e compor com a serenidade da natureza",
+        "conflito_com_metropole": "O ruído de fundo de baixa frequência das metrópoles que polui microfones e destrói o ouvido sutil"
+    },
+    {
+        "id": "PER_35",
+        "nome": "Famílias Praticantes de Educação Domiciliar / Escolas Alternativas (Waldorf / Montessori)",
+        "faixa_etaria": "30 a 45 anos (pais)",
+        "perfil_economico": "Famílias com alto investimento cultural e dedicação à pedagogia integral",
+        "valores_centrais": "Desenvolvimento do ser humano integral, respeito ao ritmo biológico infantil, contato prático com ciências e natureza",
+        "rotina_desejada": "Acesso fácil a escolas inovadoras ou espaço em casa para aprendizado com botânica, carpintaria infantil e artes",
+        "conflito_com_metropole": "Sistemas educacionais metropolitanos conteudistas de ritmo fabril com crianças sob pressão precoce de vestibulares"
+    },
+    {
+        "id": "PER_36",
+        "nome": "Cervejeiros & Padeiros Artesanais Caseiros (Entusiastas de Fermentação Natural)",
+        "faixa_etaria": "32 a 55 anos",
+        "perfil_economico": "Profissionais de diversas áreas que cultivam hobbies de alta precisão bioquímica",
+        "valores_centrais": "Paciência, microclima estável, água de alta qualidade, cultivo de leveduras selvagens",
+        "rotina_desejada": "Ter uma cozinha técnica ou bancada dedicada com espaço para panelas de brassagem e fermentadores com temperatura controlada",
+        "conflito_com_metropole": "Cozinhas industriais minúsculas de apartamentos que não comportam o equipamento nem o aroma da panificação"
+    },
+    {
+        "id": "PER_37",
+        "nome": "Diretores de Recursos Humanos & Headhunters Executivos",
+        "faixa_etaria": "38 a 56 anos",
+        "perfil_economico": "Especialistas em desenvolvimento de lideranças e movimentação de talentos",
+        "valores_centrais": "Empatia, visão holística do ser humano, discernimento sobre felicidade corporativa",
+        "rotina_desejada": "Viver o que prega sobre qualidade de vida e equilíbrio corporativo, trabalhando remotamente com ergonomia total",
+        "conflito_com_metropole": "A contradição de aconselhar líderes a combaterem o estresse enquanto vive imerso no epicentro da neurose urbana"
+    },
+    {
+        "id": "PER_38",
+        "nome": "Casais Jovens sem Filhos Planejando o Primeiro Bebê",
+        "faixa_etaria": "28 a 36 anos",
+        "perfil_economico": "Jovens profissionais em franca ascensão montando o ninho definitivo",
+        "valores_centrais": "Segurança no parto e infância, ar puro para formação pulmonar da criança, comunidade protetora",
+        "rotina_desejada": "Montar o quarto do bebê voltado para árvores e saber que o primeiro ano de vida do filho será sereno e acolhido",
+        "conflito_com_metropole": "O medo de criar um recém-nascido em meio a poeira tóxica, trânsito para consultas pediátricas e violência urbana"
+    },
+    {
+        "id": "PER_39",
+        "nome": "Corredores Noturnos e Amantes de Caminhadas ao Luar",
+        "faixa_etaria": "25 a 55 anos",
+        "perfil_economico": "Pessoas que encontram no final do dia o seu melhor momento de atividade física",
+        "valores_centrais": "Liberdade irrestrita de circulação, iluminação pública eficiente, serenidade das madrugadas",
+        "rotina_desejada": "Colocar os tênis às 21h ou 22h e correr no Parque Ecológico ou nas alamedas do condomínio com sensação total de paz",
+        "conflito_com_metropole": "O toque de recolher psicológico imposto pelo medo de assaltos noturnos em qualquer praça pública da capital"
+    },
+    {
+        "id": "PER_40",
+        "nome": "Famílias Apaixonadas por Esportes Náuticos e Lazer Aquático (Remo, Caiaque, SUP)",
+        "faixa_etaria": "30 a 50 anos",
+        "perfil_economico": "Famílias ativas que privilegiam a proximidade com espelhos d'água",
+        "valores_centrais": "Vida ao ar livre, contato com a água limpa, condicionamento físico lúdico",
+        "rotina_desejada": "Remar caiaque ou stand-up paddle no fim de tarde em lagos seguros e integrados à rotina residencial",
+        "conflito_com_metropole": "Rios urbanos poluídos e mortos, transformados em esgotos a céu aberto ladeados por pistas expressas"
+    },
+    {
+        "id": "PER_41",
+        "nome": "Investidores Anjo e Mentores de Startups Tecnológicas",
+        "faixa_etaria": "40 a 60 anos",
+        "perfil_economico": "Fundadores de sucesso que reinvestem capital em novas gerações de empreendedores",
+        "valores_centrais": "Visão de futuro, tempo de qualidade para mentorar mentes brilhantes, proximidade dos ecossistemas de Campinas e SP",
+        "rotina_desejada": "Fazer sessões de mentoria com vista para a piscina e jardim, recebendo founders para conversas estratégicas descontraídas",
+        "conflito_com_metropole": "O ambiente saturado e barulhento de cafés corporativos de capitais onde todos disputam espaço e atenção"
+    },
+    {
+        "id": "PER_42",
+        "nome": "Herdeiros de Negócios Familiares Assumindo o Comando",
+        "faixa_etaria": "28 a 40 anos",
+        "perfil_economico": "Segunda ou terceira geração de famílias empresárias em fase de sucessão",
+        "valores_centrais": "Inovação sem perder as raízes, preservação patrimonial sólida, sobriedade e estilo de vida de alta classe discreto",
+        "rotina_desejada": "Comandar as operações regionais com acesso veloz às capitais e aeroportos, mas mantendo a vida privada em um refúgio exclusivo",
+        "conflito_com_metropole": "A ostentação metropolitana vazia e os riscos de segurança patrimonial pessoal e de sua família"
+    }
+]
+
+file_path = "assets/taxonomy/personas.json"
+with open(file_path, "w", encoding="utf-8") as f:
+    json.dump(personas, f, ensure_ascii=False, indent=2)
+
+print(f"File created successfully with {len(personas)} curated personas.")

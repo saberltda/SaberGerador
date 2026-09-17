@@ -1,26 +1,25 @@
 # REGRAS EDITORIAIS INVIOLÁVEIS DO GERADOR SABER V2
 # ENGENHARIA DE ATENÇÃO INDIRETA & BRAND CONTENT SUBLIMINAR ("EFEITO RED BULL")
-# DIRETRIZ TÉCNICA: PUBLICAÇÃO EM BLOG ASTRO (SEO ATEMPORAL & EVERGREEN)
+# DIRETRIZ TÉCNICA: PUBLICAÇÃO EM BLOG ASTRO (TEMA ASTROWIND / CONTENT COLLECTIONS)
 ================================================================================
 
-1. FORMATO DE SAÍDA: ARQUIVO MARKDOWN (.MD) PARA ASTRO CONTENT COLLECTIONS
-- A IA receptora deve retornar unicamente o documento em formato Markdown pronto para deploy no framework Astro.
-- O documento deve iniciar impreterivelmente na linha 1 com o bloco frontmatter delimitado por três hífens (---).
-- PROIBIÇÃO ABSOLUTA DE DATAS: Não incluir campos como date, pubDate, updatedDate, createdAt ou qualquer menção cronológica no frontmatter ou no corpo. Todas as publicações são concebidas como ativos editoriais 100% atemporais (evergreen).
-- CAMPOS OBRIGATÓRIOS DO FRONTMATTER YAML:
-  * title: Título editorial atrativo (máx. 65 caracteres).
-  * description: Meta description focada em CTR orgânico (140 a 155 caracteres).
-  * slug: Slug limpo em minúsculas separado por hífens.
-  * author: "Redação Saber Editorial"
-  * tags: Lista de 4 a 6 tags pertinentes em formato de lista YAML.
-  * canonicalURL: Rota canônica sugerida (ex.: "/artigos/slug-do-artigo").
-  * draft: false
-  * featured: true
-  * seo: Bloco com metaTitle, metaDescription e keywords (cauda longa).
+1. FORMATO DE SAÍDA: ARQUIVO MARKDOWN (.MD) PRONTO PARA DEPLOY
+- A IA receptora deve retornar unicamente o documento em formato Markdown pronto para ser salvo em `src/data/post/` do blog Astro (AstroWind).
+- O documento deve iniciar impreterivelmente na linha 1 com o bloco frontmatter delimitado por três hífens (`---`).
+- PROIBIÇÃO ABSOLUTA DE DATAS: Não incluir campos como `date`, `pubDate`, `updatedDate`, `createdAt` ou qualquer menção cronológica no frontmatter ou no corpo. Todas as publicações são concebidas como ativos editoriais 100% atemporais (evergreen).
+- SCHEMA OBRIGATÓRIO DO FRONTMATTER YAML:
+  * title: Título editorial de alto impacto (máx. 65 caracteres).
+  * excerpt: 1 a 2 frases sem clichês, até 160 caracteres, para engajamento imediato.
+  * description: Meta description focada em CTR e SEO local (máx. 160 caracteres).
+  * category: Categoria editorial do artigo (ex.: "Análise Urbana & Estilo de Vida").
+  * tags: Lista em YAML com tags temáticas, territoriais e locais.
+- PROIBIÇÃO DE H1 NO CORPO: É estritamente proibido usar títulos com `#` no corpo do texto, pois o template do AstroWind renderiza automaticamente o campo `title` do frontmatter como H1 principal. O texto deve iniciar diretamente com parágrafo de abertura ou subtítulo `##`.
+- SCRIPT OBRIGATÓRIO DE CAPTURA (CONVERTKIT): O artigo deve terminar impreterivelmente com o snippet oficial da Saber:
+  <script async data-uid="d188d73e78" src="https://sabernovidades.kit.com/d188d73e78/index.js"></script>
 
 2. PRINCÍPIO FUNDAMENTAL DA ATENÇÃO INDIRETA ("VENDER SEM VENDER")
 - O leitor nunca deve sentir que está lendo um panfleto comercial ou anúncio imobiliário.
-- A narrativa é construída como ensaio cultural, jornalismo investigativo/reflexivo ou crônica de alto teor filosófico e estético.
+- A narrativa é construída como ensaio cultural, jornalismo investigativo/reflexivo ou crônica de alto teor reflexivo e estético.
 - A conversão ocorre por atração gravitacional: ao término do artigo, a conclusão lógica do estilo de vida pleno se ancora no território de Indaiatuba e na autoridade consultiva da Imobiliária Saber.
 
 3. A DISTRIBUIÇÃO PROPORCIONAL OBRIGATÓRIA (AS 4 CAMADAS NARRATIVAS)

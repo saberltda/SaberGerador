@@ -84,19 +84,21 @@ def test_equestrian_cohesion_rule():
     assert validator.is_coherent(compatible) is True
 
 
-def test_prompt_compiler_astro_frontmatter_and_seo(engine, compiler):
+def test_prompt_compiler_astrowind_spec(engine, compiler):
     """
-    Valida se o compilador gera as diretrizes de Markdown para Blog Astro,
-    frontmatter YAML de SEO, proibição explícita de campos de data e as 4 camadas narrativas.
+    Valida se o compilador gera o prompt aderente à especificação AstroWind:
+    schema frontmatter exato (title, excerpt, description, category, tags),
+    sem H1 no corpo, proibição absoluta de datas, 4 camadas e script ConvertKit.
     """
     combination = engine.generate_harmonized_combination()
     prompt = compiler.compile(combination)
 
-    # Diretrizes de Saída Astro (.md) e Frontmatter
-    assert "ARQUIVO .MD PARA ASTRO COM FRONTMATTER DE SEO (ATEMPORAL)" in prompt
-    assert "PROIBIÇÃO TOTAL DE DATAS" in prompt
-    assert "canonicalURL" in prompt
-    assert "keywords:" in prompt
+    # Schema e Regras AstroWind
+    assert "DIRETRIZES TÉCNICAS INVIOLÁVEIS DO BLOG ASTROWIND" in prompt
+    assert 'excerpt: "1 a 2 frases sem clichês' in prompt
+    assert "PROIBIÇÃO ABSOLUTA DE DATAS" in prompt
+    assert "SEM TÍTULO H1 NO CORPO" in prompt
+    assert "sabernovidades.kit.com" in prompt
 
     # 4 Camadas Narrativas Obrigatórias
     assert "CAMADA 1: A ISCA UNIVERSAL E O VALOR PURO" in prompt
@@ -104,7 +106,7 @@ def test_prompt_compiler_astro_frontmatter_and_seo(engine, compiler):
     assert "CAMADA 3: O MICROTERRITÓRIO COMO RESPOSTA TANGÍVEL" in prompt
     assert "CAMADA 4: A ASSINATURA ELEGANTE E CONSULTIVA" in prompt
 
-    # Entidades e Instrução Obrigatória de Pesquisa do Bairro
+    # Entidades e Pesquisa Prévia do Bairro
     assert "Imobiliária Saber" in prompt
     assert "Indaiatuba" in prompt
     assert "PESQUISE PROFUNDAMENTE" in prompt

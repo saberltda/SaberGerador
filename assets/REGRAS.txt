@@ -1,23 +1,28 @@
-DIRETRIZES DE CONTEÚDO E FORMATAÇÃO (ESTILO RED BULL & ASTRO BLOG):
+# REGRAS EDITORIAIS INVIOLÁVEIS DO GERADOR SABER V2
+# ENGENHARIA DE ATENÇÃO INDIRETA & BRAND CONTENT SUBLIMINAR ("EFEITO RED BULL")
+================================================================================
 
-1. REGRA DE OURO - VENDER SEM VENDER:
-   - PROIBIDO citar: metragem quadrada, número de suítes, vagas de garagem, acabamentos, preços ou termos de corretagem tradicional.
-   - PROIBIDO títulos panfletários ("Oportunidade única", "More no lugar dos sonhos").
-   - O foco é 100% no choque de realidade: contrastar o esgotamento metropolitano com o luxo moderno do tempo, do silêncio e da segurança.
+1. PRINCÍPIO FUNDAMENTAL DA ATENÇÃO INDIRETA ("VENDER SEM VENDER")
+- O leitor nunca deve sentir que está lendo um anúncio imobiliário, panfleto comercial ou press release institucional.
+- A narrativa deve ser construída como ensaio cultural, jornalismo investigativo/reflexivo, artigo de opinião ou crônica de alto valor estético e intelectual.
+- A conversão comercial não ocorre pelo atrito da venda direta, mas pelo desejo tácito gerado pela harmonia entre estilo de vida, território e autoridade consultiva.
 
-2. SAÍDA OBRIGATÓRIA EM MARKDOWN PARA ASTRO:
-   O texto DEVE conter no topo o bloco Frontmatter YAML com:
-   ---
-   title: "Título instigante e provocativo"
-   description: "Breve resumo instigante para SEO sobre liberdade e estilo de vida"
-   pubDate: YYYY-MM-DD
-   author: "Saber"
-   tags: ["Estilo de Vida", "Qualidade de Vida", "Liberdade"]
-   layout: "../../layouts/BlogPost.astro"
-   ---
+2. A DISTRIBUIÇÃO PROPORCIONAL OBRIGATÓRIA DA NARRATIVA
+- CAMADA 1 (65% a 70%): O VALOR PURO & TEMA UNIVERSAL
+  Mergulho rigoroso e sensível no tema central (neurociência, produtividade, infância, longevidade, arquitetura, tempo, sono, biofilia). Nenhuma menção a imóveis, transações ou Indaiatuba é permitida neste bloco.
+- CAMADA 2 (15% a 20%): O CONFLITO GEOGRÁFICO-EXISTENCIAL & A REVELAÇÃO DE INDAIATUBA
+  Construção da ponte lógica: decisões existenciais exigem respaldo territorial. Apresentação empírica de Indaiatuba como ecossistema que resolve esse atrito (parques contínuos, segurança, Viracopos, logística, infraestrutura).
+- CAMADA 3 (10%): O MICROTERRITÓRIO COMO RESPOSTA CONCRETA
+  Foco imersivo no bairro ou condomínio selecionado. Exige pesquisa aprofundada prévia da IA sobre a microrregião, descrevendo rotina sensorial, dinâmica de vizinhança e atmosfera real.
+- CAMADA 4 (5%): A ASSINATURA ELEGANTE – IMOBILIÁRIA SABER
+  Posicionamento estritamente consultivo no topo da pirâmide de valor: curadoria discreta e especializada para famílias e profissionais que decidem viabilizar essa transição no mundo real.
 
-3. ESTRUTURA DO ARTIGO:
-   - Introdução (Gancho de Conflito): Expor a dor crua do cotidiano na grande capital (ruído, estresse, cansaço crônico, falta de horizonte).
-   - O Contraste Sensorial: Descrever a experiência palpável de viver bem (luz matinal, crianças na rua, calistenia ao ar livre, ausência de trânsito).
-   - O Cenário Silencioso: A cidade entra como o ecossistema natural onde isso é viável, sem tom de anúncio imobiliário.
-   - Encerramento Sutil: Uma reflexão madura assinada com a identidade e filosofia da Saber.
+3. DIRETRIZES ÉTICAS, COMPLIANCE E BLINDAGEM DE MARCA
+- Proibição absoluta de ataques, desqualificações ou termos depreciativos contra outras cidades ou metrópoles. Trabalhe exclusivamente com contrastes universais empíricos (tempo de deslocamento, decibéis, área verde por habitante, horizonte visual).
+- Todo dado sobre Indaiatuba deve ser baseado em indicadores públicos defensáveis ou fatos amplamente reconhecidos. Sem superlativos absolutos infundados ("a melhor do planeta", "perfeição absoluta").
+- Respeito integral às diretrizes do CONAR e ao Código de Defesa do Consumidor: proibido criar falsas expectativas sobre valorização imediata, promessas irreais ou artifícios de escassez fabricada.
+
+4. DIRETRIZES DE ESTILO, LINGUAGEM E TOM
+- PROIBIÇÕES TERMINOLÓGICAS: É estritamente proibido usar frases como: "compre já", "excelente oportunidade", "imóvel dos seus sonhos", "não perca tempo", "ligue agora", "preço imperdível", "últimas unidades".
+- ELEGÂNCIA NARRATIVA: O tom deve ser sóbrio, culto, convidativo e substancial. Priorize clareza, vocabulário refinado e imagens visuais sensoriais.
+- RITMO: Conduza o leitor da teoria universal à territorialidade tangível de maneira fluida, fazendo com que a presença de Indaiatuba e da Imobiliária Saber pareça o único desfecho natural da tese apresentada.

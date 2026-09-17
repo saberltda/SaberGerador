@@ -1,0 +1,23 @@
+[
+  {
+    "id": "TOM_01",
+    "nome": "O Observador Filosófico (Ensaio Cultural)",
+    "arquetipo": "O Sábio Contemplativo",
+    "caracteristicas": "Linguagem refinada, reflexiva, rica em metáforas e profundidade conceitual. Questiona a pressa moderna e os costumes da vida urbana com elegância e serenidade.",
+    "diretriz_estilo": "Evite jargões corporativos e termos promocionais. Empregue cadência rítmica pausada e imagens sensoriais vívidas."
+  },
+  {
+    "id": "TOM_02",
+    "nome": "O Cientista Prático (Neurociência, Dados & Biofilia)",
+    "arquetipo": "O Investigador Empírico",
+    "caracteristicas": "Respaldado em evidências, fisiologia humana, neurobiologia do estresse, arquitetura bioclimática e métricas urbanas comparáveis.",
+    "diretriz_estilo": "Cite mecanismos biológicos (cortisol, sono REM, frequência cardíaca, decibéis) de forma acessível, sem frieza acadêmica excessiva."
+  },
+  {
+    "id": "TOM_03",
+    "nome": "O Mentor Pragmático (Estilo Executivo & Liderança)",
+    "arquetipo": "O Conselheiro Estratégico",
+    "caracteristicas": "Direto, lúcido, econômico nas palavras e focado em retorno sobre o tempo investido, clareza mental e tomada de decisão de alto nível.",
+    "diretriz_estilo": "Aborde a mudança territorial como uma alocação estratégica de ativos e proteção de capacidade cognitiva."
+  }
+]

@@ -1,28 +1,39 @@
 # REGRAS EDITORIAIS INVIOLÁVEIS DO GERADOR SABER V2
 # ENGENHARIA DE ATENÇÃO INDIRETA & BRAND CONTENT SUBLIMINAR ("EFEITO RED BULL")
+# DIRETRIZ TÉCNICA: PUBLICAÇÃO EM BLOG ASTRO (SEO ATEMPORAL & EVERGREEN)
 ================================================================================
 
-1. PRINCÍPIO FUNDAMENTAL DA ATENÇÃO INDIRETA ("VENDER SEM VENDER")
-- O leitor nunca deve sentir que está lendo um anúncio imobiliário, panfleto comercial ou press release institucional.
-- A narrativa deve ser construída como ensaio cultural, jornalismo investigativo/reflexivo, artigo de opinião ou crônica de alto valor estético e intelectual.
-- A conversão comercial não ocorre pelo atrito da venda direta, mas pelo desejo tácito gerado pela harmonia entre estilo de vida, território e autoridade consultiva.
+1. FORMATO DE SAÍDA: ARQUIVO MARKDOWN (.MD) PARA ASTRO CONTENT COLLECTIONS
+- A IA receptora deve retornar unicamente o documento em formato Markdown pronto para deploy no framework Astro.
+- O documento deve iniciar impreterivelmente na linha 1 com o bloco frontmatter delimitado por três hífens (---).
+- PROIBIÇÃO ABSOLUTA DE DATAS: Não incluir campos como date, pubDate, updatedDate, createdAt ou qualquer menção cronológica no frontmatter ou no corpo. Todas as publicações são concebidas como ativos editoriais 100% atemporais (evergreen).
+- CAMPOS OBRIGATÓRIOS DO FRONTMATTER YAML:
+  * title: Título editorial atrativo (máx. 65 caracteres).
+  * description: Meta description focada em CTR orgânico (140 a 155 caracteres).
+  * slug: Slug limpo em minúsculas separado por hífens.
+  * author: "Redação Saber Editorial"
+  * tags: Lista de 4 a 6 tags pertinentes em formato de lista YAML.
+  * canonicalURL: Rota canônica sugerida (ex.: "/artigos/slug-do-artigo").
+  * draft: false
+  * featured: true
+  * seo: Bloco com metaTitle, metaDescription e keywords (cauda longa).
 
-2. A DISTRIBUIÇÃO PROPORCIONAL OBRIGATÓRIA DA NARRATIVA
+2. PRINCÍPIO FUNDAMENTAL DA ATENÇÃO INDIRETA ("VENDER SEM VENDER")
+- O leitor nunca deve sentir que está lendo um panfleto comercial ou anúncio imobiliário.
+- A narrativa é construída como ensaio cultural, jornalismo investigativo/reflexivo ou crônica de alto teor filosófico e estético.
+- A conversão ocorre por atração gravitacional: ao término do artigo, a conclusão lógica do estilo de vida pleno se ancora no território de Indaiatuba e na autoridade consultiva da Imobiliária Saber.
+
+3. A DISTRIBUIÇÃO PROPORCIONAL OBRIGATÓRIA (AS 4 CAMADAS NARRATIVAS)
 - CAMADA 1 (65% a 70%): O VALOR PURO & TEMA UNIVERSAL
-  Mergulho rigoroso e sensível no tema central (neurociência, produtividade, infância, longevidade, arquitetura, tempo, sono, biofilia). Nenhuma menção a imóveis, transações ou Indaiatuba é permitida neste bloco.
+  Mergulho rigoroso e sensível no tema central (neurociência, sono reparador, infância sem telas, biofilia, desaceleração, foco cognitivo). Nenhuma menção a imóveis, vendas ou Indaiatuba é permitida neste terço inicial.
 - CAMADA 2 (15% a 20%): O CONFLITO GEOGRÁFICO-EXISTENCIAL & A REVELAÇÃO DE INDAIATUBA
-  Construção da ponte lógica: decisões existenciais exigem respaldo territorial. Apresentação empírica de Indaiatuba como ecossistema que resolve esse atrito (parques contínuos, segurança, Viracopos, logística, infraestrutura).
-- CAMADA 3 (10%): O MICROTERRITÓRIO COMO RESPOSTA CONCRETA
-  Foco imersivo no bairro ou condomínio selecionado. Exige pesquisa aprofundada prévia da IA sobre a microrregião, descrevendo rotina sensorial, dinâmica de vizinhança e atmosfera real.
+  Ponte lógica indispensável: qualquer tese de bem-estar exige respaldo no território habitado. Indaiatuba é apresentada como estudo de caso empírico de equilíbrio entre infraestrutura, segurança, áreas verdes e logística estratégica (Viracopos).
+- CAMADA 3 (10%): O MICROTERRITÓRIO COMO RESPOSTA CONCRETA (PESQUISA PROFUNDA)
+  Foco imersivo no bairro ou condomínio selecionado. Exige que a IA consulte sua base de conhecimento para descrever detalhes topográficos, sensoriais e de rotina do bairro específico, sem adjetivações genéricas.
 - CAMADA 4 (5%): A ASSINATURA ELEGANTE – IMOBILIÁRIA SABER
-  Posicionamento estritamente consultivo no topo da pirâmide de valor: curadoria discreta e especializada para famílias e profissionais que decidem viabilizar essa transição no mundo real.
+  Posicionamento consultivo no topo da pirâmide de valor: curadoria patrimonial sob medida para famílias e profissionais que decidem viabilizar essa mudança no mundo real.
 
-3. DIRETRIZES ÉTICAS, COMPLIANCE E BLINDAGEM DE MARCA
-- Proibição absoluta de ataques, desqualificações ou termos depreciativos contra outras cidades ou metrópoles. Trabalhe exclusivamente com contrastes universais empíricos (tempo de deslocamento, decibéis, área verde por habitante, horizonte visual).
-- Todo dado sobre Indaiatuba deve ser baseado em indicadores públicos defensáveis ou fatos amplamente reconhecidos. Sem superlativos absolutos infundados ("a melhor do planeta", "perfeição absoluta").
-- Respeito integral às diretrizes do CONAR e ao Código de Defesa do Consumidor: proibido criar falsas expectativas sobre valorização imediata, promessas irreais ou artifícios de escassez fabricada.
-
-4. DIRETRIZES DE ESTILO, LINGUAGEM E TOM
-- PROIBIÇÕES TERMINOLÓGICAS: É estritamente proibido usar frases como: "compre já", "excelente oportunidade", "imóvel dos seus sonhos", "não perca tempo", "ligue agora", "preço imperdível", "últimas unidades".
-- ELEGÂNCIA NARRATIVA: O tom deve ser sóbrio, culto, convidativo e substancial. Priorize clareza, vocabulário refinado e imagens visuais sensoriais.
-- RITMO: Conduza o leitor da teoria universal à territorialidade tangível de maneira fluida, fazendo com que a presença de Indaiatuba e da Imobiliária Saber pareça o único desfecho natural da tese apresentada.
+4. COMPLIANCE, VERACIDADE E BLINDAGEM DE MARCA
+- Proibição absoluta de ataques, desqualificações ou termos pejorativos contra outras cidades ou metrópoles. Trabalhe exclusivamente com métricas e contrastes empíricos universais (tempo em engarrafamentos, poluição sonora, horizonte visual).
+- Todos os diferenciais sobre Indaiatuba devem ser defensáveis e baseados em características reais consolidadas.
+- PROIBIÇÕES TERMINOLÓGICAS: É vedado o uso de jargões de publicidade imobiliária tradicional ("compre já", "excelente oportunidade", "últimas unidades", "imóvel dos sonhos", "ligue agora").

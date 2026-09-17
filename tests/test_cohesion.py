@@ -23,7 +23,7 @@ def compiler():
 
 
 def test_taxonomy_dimensions(database):
-    """Valida se as bases de dados cumprem os quantitativos mínimos da Constituição V2.1."""
+    """Valida se as bases cumprem as cotas mínimas da Constituição V2.1."""
     assert len(database.macro_temas) >= settings.min_macro_temas
     assert len(database.personas) >= settings.min_personas
     assert len(database.dores) >= settings.min_dores
@@ -33,8 +33,20 @@ def test_taxonomy_dimensions(database):
     assert len(database.ancoras) >= settings.min_ancoras
 
 
-def test_generation_engine_combination(engine):
-    """Valida se a geração de combinação entrega os 8 eixos povoados de forma coesa."""
+def test_theoretical_combinations_exceeds_ten_million(engine):
+    """
+    Valida se o cálculo auditado do universo combinatório
+    ultrapassa com folga a meta mínima de 10 milhões de combinações teóricas.
+    """
+    total = engine.get_theoretical_combinations()
+    assert total >= settings.min_theoretical_combinations, (
+        f"Total de combinações ({total}) inferior à meta mínima de "
+        f"{settings.min_theoretical_combinations}"
+    )
+
+
+def test_generation_engine_combination_integrity(engine):
+    """Valida se a combinação gerada preenche todos os 8 eixos de forma harmônica."""
     combination = engine.generate_harmonized_combination()
     required_keys = [
         "macro_tema",
@@ -52,10 +64,10 @@ def test_generation_engine_combination(engine):
 
 
 def test_equestrian_cohesion_rule():
-    """Valida se a regra rígida de afinidade equestre/Helvetia é respeitada pelo validador."""
+    """Valida se a regra rígida de afinidade equestre/Helvetia é aplicada pelo validador."""
     validator = CohesionValidator()
-    
-    incompatible_candidate = {
+
+    incompatible = {
         "macro_tema": {
             "titulo": "A Cultura Equestre e o Hipismo",
             "premissa_universal": "Cocheiras e cavalos"
@@ -66,33 +78,33 @@ def test_equestrian_cohesion_rule():
         },
         "dor": {"resumo": "Falta de haras perto"},
         "diferencial_indaiatuba": {"pilar": "Tradição equestre"},
-        "bairro": {"nome": "Jardim Esplanada"},  # Incompatível com tema puramente de haras
+        "bairro": {"nome": "Jardim Esplanada"},
         "formato": {"nome": "Artigo"},
         "tom": {"nome": "Clássico"},
         "ancora": {"conceito": "Tradição equestre"},
     }
-    assert validator.is_coherent(incompatible_candidate) is False
+    assert validator.is_coherent(incompatible) is False
 
-    compatible_candidate = dict(incompatible_candidate)
-    compatible_candidate["bairro"] = {"nome": "Helvetia Country"}
-    assert validator.is_coherent(compatible_candidate) is True
+    compatible = dict(incompatible)
+    compatible["bairro"] = {"nome": "Helvetia Country"}
+    assert validator.is_coherent(compatible) is True
 
 
-def test_prompt_compiler_layers_and_instruction(engine, compiler):
-    """Valida se o compilador gera o prompt contendo as 4 camadas e a instrução de pesquisa profunda do bairro."""
+def test_prompt_compiler_layers_and_deep_search_instruction(engine, compiler):
+    """Valida se o compilador gera o prompt contendo as 4 camadas e a instrução de pesquisa do bairro."""
     combination = engine.generate_harmonized_combination()
     prompt = compiler.compile(combination)
 
-    # Verifica menção das camadas narrativas
+    # 4 Camadas da Constituição
     assert "CAMADA 1: A ISCA UNIVERSAL E O VALOR PURO" in prompt
     assert "CAMADA 2: O CONFLITO GEOGRÁFICO-EXISTENCIAL" in prompt
     assert "CAMADA 3: O MICROTERRITÓRIO COMO RESPOSTA TANGÍVEL" in prompt
     assert "CAMADA 4: A ASSINATURA ELEGANTE E CONSULTIVA" in prompt
 
-    # Verifica menção à Imobiliária Saber e Indaiatuba
+    # Entidades obrigatórias
     assert "Imobiliária Saber" in prompt
     assert "Indaiatuba" in prompt
 
-    # Verifica a instrução mandatória de pesquisa profunda do bairro
+    # Instrução obrigatória de pesquisa prévia do bairro
     assert "PESQUISE PROFUNDAMENTE" in prompt
     assert combination["bairro"]["nome"] in prompt

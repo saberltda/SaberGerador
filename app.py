@@ -2,16 +2,17 @@ import streamlit as st
 from src.core_engine import GenerationEngine
 from src.prompt_compiler import PromptCompiler
 from src.telemetry import TelemetryTracker
+from src.utils import slugify
 
-# Configuração da página - Interface moderna e imersiva
+# Configuração da página da aplicação
 st.set_page_config(
-    page_title="Gerador Saber V2 | Mecanismo de Atenção Indireta",
+    page_title="Gerador Saber V2 | Astro Blog Edition",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Inicialização de dependências singleton em cache
+# Inicialização de recursos cacheados
 @st.cache_resource
 def get_engine():
     return GenerationEngine()
@@ -28,7 +29,7 @@ engine = get_engine()
 compiler = get_compiler()
 telemetry = get_telemetry()
 
-# Inicialização de estado da sessão
+# Inicialização do estado de sessão
 if "current_combination" not in st.session_state:
     st.session_state.current_combination = None
 if "current_prompt" not in st.session_state:
@@ -38,7 +39,7 @@ if "history" not in st.session_state:
 if "generation_count" not in st.session_state:
     st.session_state.generation_count = 0
 
-# Estilização CSS refinada
+# Estilos CSS
 st.markdown("""
 <style>
     .main-title {
@@ -69,20 +70,14 @@ st.markdown("""
         color: #4338CA;
         border: 1px solid #C7D2FE;
     }
-    .metric-card {
-        background: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
-    }
 </style>
 """, unsafe_allow_html=True)
 
-# Cabeçalho Principal
+# Cabeçalho da Aplicação
 st.markdown('<div class="main-title">⚡ Gerador Saber V2</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Engenharia de Atenção Indireta & Brand Content Subliminar ("Vender sem Vender")</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">Engenharia de Atenção Indireta & Formatação Markdown (.md) para Blog Astro (SEO Atemporal)</div>', unsafe_allow_html=True)
 
-# Cálculo e Formatação do Universo Combinatório Real
+# Linha de Métricas Auditadas
 theoretical_combinations = engine.get_theoretical_combinations()
 if theoretical_combinations >= 1_000_000_000_000:
     formatted_comb = f"{theoretical_combinations / 1_000_000_000_000:.2f} Trilhões"
@@ -93,32 +88,31 @@ elif theoretical_combinations >= 1_000_000:
 else:
     formatted_comb = f"{theoretical_combinations:,}".replace(",", ".")
 
-# Linha de métricas
-col_metric1, col_metric2, col_metric3 = st.columns([1.2, 1, 1.8])
-with col_metric1:
+col_m1, col_m2, col_m3 = st.columns([1.2, 1, 1.8])
+with col_m1:
     st.metric(
         label="Combinações Teóricas (8 Eixos)",
         value=formatted_comb,
         help=f"Total auditado: {theoretical_combinations:,}".replace(",", ".")
     )
-with col_metric2:
+with col_m2:
     st.metric(
         label="Prompts Gerados na Sessão",
         value=st.session_state.generation_count
     )
-with col_metric3:
-    st.caption("✅ Universo combinatório validado por matriz de afinidade semântica (Regra N1 × N2 × ... × N8).")
+with col_m3:
+    st.caption("🚀 Saída configurada para Astro Content Collections com Frontmatter YAML e SEO Atemporal (sem datas).")
 
 st.divider()
 
-# Botão Hero de Ação Principal
+# Ação Hero
 col_btn, _ = st.columns([1.2, 2.8])
 with col_btn:
-    generate_clicked = st.button("⚡ GERAR NOVO PROMPT MESTRE", type="primary", use_container_width=True)
+    generate_clicked = st.button("⚡ GERAR PROMPT ASTRO (.MD)", type="primary", use_container_width=True)
 
-# Painel Modular Expansível de Ajustes Finos
+# Painel Modular de Ajustes Finos
 with st.expander("🛠️ Ajustes Finos Paramétricos (Opcional - sobrescreve seleção autônoma)"):
-    st.caption("Deixe em '[Aleatório / Automático]' para manter a harmonização autônoma da matriz de afinidade.")
+    st.caption("Deixe em '[Aleatório / Automático]' para que o motor harmonize os 8 eixos via afinidade semântica.")
     
     col_p1, col_p2, col_p3 = st.columns(3)
     
@@ -168,7 +162,7 @@ with st.expander("🛠️ Ajustes Finos Paramétricos (Opcional - sobrescreve se
             index=0
         )
 
-# Processamento da Geração
+# Execução da Geração
 if generate_clicked or st.session_state.current_prompt == "":
     manual_overrides = {
         "macro_tema": None if custom_tema.startswith("[") else custom_tema,
@@ -191,10 +185,10 @@ if generate_clicked or st.session_state.current_prompt == "":
         telemetry.record_generation(combination, prompt)
         st.session_state.history = telemetry.get_recent_history(limit=20)
 
-# Exibição dos Parâmetros Ativos (Badges)
+# Exibição dos Parâmetros Ativos
 if st.session_state.current_combination:
     comb = st.session_state.current_combination
-    st.markdown("##### 🎯 Parâmetros Sorteados da Combinação Harmônica")
+    st.markdown("##### 🎯 Parâmetros Ativos do Post Astro")
     
     badge_html = f"""
     <div>
@@ -211,40 +205,47 @@ if st.session_state.current_combination:
     st.markdown(badge_html, unsafe_allow_html=True)
     st.write("")
 
-# Área Principal: Mega-Prompt Pronto para Cópia
+# Área Principal: Mega-Prompt Mestre para Geração do Post Astro
 col_prompt, col_side_actions = st.columns([4, 1.1])
 
 with col_prompt:
-    st.markdown("#### 📄 Mega-Prompt Mestre Pronto para Cópia")
+    st.markdown("#### 📄 Mega-Prompt Mestre para Criação do Post Astro (.md)")
     prompt_text = st.text_area(
-        label="Prompt Mestre",
+        label="Prompt Mestre Astro",
         value=st.session_state.current_prompt,
-        height=450,
+        height=470,
         label_visibility="collapsed"
     )
 
 with col_side_actions:
-    st.markdown("#### 🚀 Ações")
+    st.markdown("#### 🚀 Exportação")
     
+    # Gera slug dinâmico para nomenclatura do arquivo .md
+    current_slug = "post-editorial-saber"
+    if st.session_state.current_combination:
+        tema_txt = st.session_state.current_combination.get("macro_tema", {}).get("titulo", "")
+        if tema_txt:
+            current_slug = slugify(tema_txt)[:45]
+
     st.download_button(
-        label="📥 Baixar como .md",
+        label="📥 Baixar Prompt (.md)",
         data=st.session_state.current_prompt,
-        file_name="prompt_mestre_saber_v2.md",
+        file_name=f"{current_slug}.md",
         mime="text/markdown",
         use_container_width=True
     )
     
     st.download_button(
-        label="📄 Baixar como .txt",
+        label="📄 Baixar Prompt (.txt)",
         data=st.session_state.current_prompt,
-        file_name="prompt_mestre_saber_v2.txt",
+        file_name=f"{current_slug}.txt",
         mime="text/plain",
         use_container_width=True
     )
     
-    st.info("💡 **Cópia Instantânea:** Utilize o ícone no canto superior direito da caixa de texto para copiar diretamente para a área de transferência.")
+    st.info("💡 **Dica de Publicação:** Ao colar este mega-prompt em sua IA de preferência, copie a resposta integral gerada e salve diretamente como `.md` dentro de `src/content/blog/` no seu projeto Astro.")
 
-# Histórico Local dos Últimos Prompts
+# Histórico Recente
 st.divider()
 with st.expander("📜 Histórico de Prompts Recentes (Últimos 20)"):
     if st.session_state.history:

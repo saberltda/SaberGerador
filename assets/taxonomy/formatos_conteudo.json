@@ -1,0 +1,23 @@
+[
+  {
+    "id": "FMT_01",
+    "nome": "Artigo de Fundo Reflexivo (LinkedIn Pulse / Medium)",
+    "canal_veiculo": "LinkedIn Pulse / Medium / Substack",
+    "extensao_estimada": "1.200 a 1.600 palavras",
+    "estrutura_editorial": "Ensaio analítico estruturado com introdução provocativa sobre dilemas humanos contemporâneos, tese sociológica/científica, virada territorial e conclusão consultiva discreta."
+  },
+  {
+    "id": "FMT_02",
+    "nome": "Ensaio em Profundidade Estilo Long-Form (The New Yorker / Piauí)",
+    "canal_veiculo": "Revista Digital / Caderno de Cultura / Blog Autoral",
+    "extensao_estimada": "1.800 a 2.500 palavras",
+    "estrutura_editorial": "Narrativa densa, imersiva, rica em metáforas e observações quase literárias da condição urbana moderna, afunilando sutilmente para um microcosmo geográfico palpável."
+  },
+  {
+    "id": "FMT_03",
+    "nome": "Thread Viral de Alta Retenção no X (Twitter)",
+    "canal_veiculo": "X (Twitter) / Bluesky / Threads",
+    "extensao_estimada": "10 a 14 tweets encadeados",
+    "estrutura_editorial": "Gancho magnético no tweet 1 desconstruindo um mito metropolitano, dados concisos em cascata, quebra de padrão existencial, apresentação de um estudo de caso prático e assinatura elegante final."
+  }
+]

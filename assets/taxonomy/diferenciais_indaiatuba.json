@@ -1,0 +1,20 @@
+[
+  {
+    "id": "IND_01",
+    "pilar": "O Conceito da Cidade-Parque e o Parque Ecológico Linear",
+    "categoria": "Urbanismo & Biofilia",
+    "evidencia_empirica": "Parque linear contínuo com cerca de 15 km de extensão cruzando a cidade de ponta a ponta, oferecendo lagos, pistas exclusivas de corrida, ciclovias segregadas, áreas de convivência e mais de 1 milhão de m² de áreas verdes preservadas."
+  },
+  {
+    "id": "IND_02",
+    "pilar": "Segurança Pública com Tecnologia e Cerco Eletrônico Integrado",
+    "categoria": "Segurança & Tranquilidade",
+    "evidencia_empirica": "Sistema pioneiro de monitoramento veicular inteligente (COI), muralha digital nas entradas da cidade, Guarda Civil armada e integrada, resultando em índices de criminalidade comparáveis aos padrões europeus."
+  },
+  {
+    "id": "IND_03",
+    "pilar": "Hub Estratégico Viracopos e Logística Sem Atrito",
+    "categoria": "Conectividade Global",
+    "evidencia_empirica": "Localização a apenas 10-15 minutos do Aeroporto Internacional de Viracopos, conectando moradores a voos diários diretos para capitais nacionais, EUA e Europa, além de acesso rápido à Rodovia Santos Dumont, Bandeirantes e Anhanguera."
+  }
+]

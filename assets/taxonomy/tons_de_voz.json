@@ -1,23 +1,23 @@
 [
   {
     "id": "TOM_01",
-    "nome": "O Observador Filosófico (Ensaio Cultural)",
-    "arquetipo": "O Sábio Contemplativo",
-    "caracteristicas": "Linguagem refinada, reflexiva, rica em metáforas e profundidade conceitual. Questiona a pressa moderna e os costumes da vida urbana com elegância e serenidade.",
-    "diretriz_estilo": "Evite jargões corporativos e termos promocionais. Empregue cadência rítmica pausada e imagens sensoriais vívidas."
+    "nome": "O Observador Sábio (Profundo e Simples)",
+    "arquetipo": "O Conselheiro Amigo",
+    "caracteristicas": "Fala de coisas profundas com palavras simples que qualquer pessoa entende. Tom calmo, humano, acolhedor e cheio de sabedoria prática sobre o tempo, a família e a vida.",
+    "diretriz_estilo": "Proibido usar palavras difíceis ou jargões acadêmicos. Use exemplos do dia a dia (o café na varanda, o barulho da rua, o sono tranquilo) para explicar ideias grandiosas."
   },
   {
     "id": "TOM_02",
-    "nome": "O Cientista Prático (Neurociência, Dados & Biofilia)",
-    "arquetipo": "O Investigador Empírico",
-    "caracteristicas": "Respaldado em evidências, fisiologia humana, neurobiologia do estresse, arquitetura bioclimática e métricas urbanas comparáveis.",
-    "diretriz_estilo": "Cite mecanismos biológicos (cortisol, sono REM, frequência cardíaca, decibéis) de forma acessível, sem frieza acadêmica excessiva."
+    "nome": "O Especialista Prático (Fatos, Saúde e Bem-Estar)",
+    "arquetipo": "O Guia Claro e Confiável",
+    "caracteristicas": "Explica saúde, sono, ambiente e segurança com clareza cristalina, sem enrolação e sem termos médicos complexos.",
+    "diretriz_estilo": "Substitua termos técnicos por linguagem comum: em vez de 'cortisol crônico', use 'o corpo sempre tenso e em alerta'; em vez de 'estágio REM', use 'o sono pesado que realmente descansa'."
   },
   {
     "id": "TOM_03",
-    "nome": "O Mentor Pragmático (Estilo Executivo & Liderança)",
-    "arquetipo": "O Conselheiro Estratégico",
-    "caracteristicas": "Direto, lúcido, econômico nas palavras e focado em retorno sobre o tempo investido, clareza mental e tomada de decisão de alto nível.",
-    "diretriz_estilo": "Aborde a mudança territorial como uma alocação estratégica de ativos e proteção de capacidade cognitiva."
+    "nome": "O Mentor Pragmático (Visão Clara e Decisão Inteligente)",
+    "arquetipo": "O Parceiro Estratégico",
+    "caracteristicas": "Direto, lúcido, econômico nas palavras. Focado em economia de tempo, proteção da família e inteligência no uso do dinheiro.",
+    "diretriz_estilo": "Trate a escolha da moradia como uma decisão prática de paz e liberdade, sem enrolação e sem juridiquês ou clichês corporativos."
   }
 ]

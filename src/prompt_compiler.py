@@ -5,9 +5,10 @@ from src.utils import slugify
 class PromptCompiler:
     """
     Compilador do Mega-Prompt Mestre segundo a Constituição V2.1 e especificação AstroWind (v5.0).
-    Instrui a IA a devolver um documento Markdown (.md) técnico pronto para deploy direto
+    Instrui a IA a devolver um documento Markdown (.md) pronto para deploy direto
     em `src/data/post/`, com frontmatter YAML exato (title, excerpt, description, category, tags),
     sem H1 no corpo, sem campos de data, com as 4 camadas narrativas e script ConvertKit final.
+    DIRETRIZ SUPREMA: Falar de coisas altas com palavras simples.
     """
 
     def compile(self, combination: Dict[str, Any]) -> str:
@@ -35,10 +36,10 @@ class PromptCompiler:
 
         bairro_nome = bairro.get("nome", "Bairro Selecionado")
         formato_nome = formato.get("nome", "Artigo de Fundo Reflexivo")
-        formato_extensao = formato.get("extensao_estimada", "1.200 a 1.500 palavras")
+        formato_extensao = formato.get("extensao_estimada", "1.000 a 1.300 palavras")
         formato_estrutura = formato.get("estrutura_editorial", "")
 
-        tom_nome = tom.get("nome", "O Observador Filosófico")
+        tom_nome = tom.get("nome", "O Observador Sábio (Profundo e Simples)")
         tom_caracteristicas = tom.get("caracteristicas", "")
         tom_diretriz = tom.get("diretriz_estilo", "")
 
@@ -53,9 +54,13 @@ class PromptCompiler:
             kebab_slug = "artigo-editorial-saber"
 
         prompt = f"""# SYSTEM: VOCÊ É O EDITOR-CHEFE DO BLOG DA IMOBILIÁRIA SABER (INDAIATUBA)
-Sua única missão nesta tarefa é redigir UM artigo inédito, de altíssimo valor prático e SEO, sobre moradia e decisão de compra em Indaiatuba-SP. O texto deve ser publicável imediatamente no blog Astro (tema AstroWind / content collection) como arquivo .md.
+Sua única missão nesta tarefa é redigir UM artigo inédito, de altíssimo valor prático e SEO, sobre moradia e qualidade de vida em Indaiatuba-SP. O texto deve ser publicável imediatamente no blog Astro (tema AstroWind / content collection) como arquivo .md.
 
-Você opera sob o mecanismo de **"Atenção Indireta" ("Vender sem vender")**: autoridade reflexiva de nível internacional + utilidade cirúrgica + honestidade radical. O leitor nunca deve sentir que está lendo um folheto imobiliário, mas sim um ensaio denso que desemboca logicamente em Indaiatuba e na Imobiliária Saber.
+## REGRA SUPREMA DE ESTILO: "FALAR DE COISAS ALTAS COM PALAVRAS SIMPLES"
+- O leitor ideal é um empresário, investidor ou pai/mãe de família que trabalhou duro e conquistou patrimônio, mas NÃO tem paciência nem apreço por linguagem acadêmica, palavras difíceis ou termos empolados.
+- Escreva de tal forma que até uma criança de 10 a 12 anos consiga entender assuntos profundos com clareza.
+- PROIBIÇÃO ABSOLUTA DE JARGÕES: Não use termos como "resposta simpática", "amígdala cortical", "fricção cinética", "geometria fractal", "atrito cognitivo" ou "atitude blasé". Explique as ideias usando a vida real: a chave do portão, o trânsito da volta para casa, o café sem pressa, o sono calmo da noite, os filhos brincando na calçada.
+- Você opera sob o mecanismo de **"Atenção Indireta" ("Vender sem vender")**: profundidade humana + utilidade prática + honestidade cristalina. O leitor nunca deve sentir que está lendo um panfleto de vendas nem uma tese universitária.
 
 ---
 ## 1. DIRETRIZES TÉCNICAS INVIOLÁVEIS DO BLOG ASTROWIND (ASTRO)
@@ -64,9 +69,9 @@ Você opera sob o mecanismo de **"Atenção Indireta" ("Vender sem vender")**: a
 O arquivo DEVE começar impreterivelmente na linha 1 com os delimitadores `---` contendo rigorosamente este schema:
 ```yaml
 ---
-title: "Título de Alto Impacto Editorial (máx. 65 caracteres)"
-excerpt: "1 a 2 frases sem clichês, até 160 caracteres, que instiguem o leitor a continuar"
-description: "Meta description objetiva para SEO local, até 160 caracteres, com a palavra-chave de forma natural"
+title: "Título de Alto Impacto, Humano e Direto (máx. 65 caracteres)"
+excerpt: "1 a 2 frases claras e instigantes, até 160 caracteres, sem palavras difíceis"
+description: "Meta description objetiva para SEO local, até 160 caracteres, em português natural"
 category: "Análise Urbana & Estilo de Vida"
 tags:
   - {slugify(tema_titulo)}
@@ -91,32 +96,32 @@ tags:
 * PONTO DE DOR: {dor_resumo}
   - Fricção Vivenciada: {dor_gatilho}
 * DIFERENCIAL INDAIATUBA: {cidade_pilar}
-  - Evidência Empírica Defensável: {cidade_evidencia}
+  - Evidência Real: {cidade_evidencia}
 * MICROTERRITÓRIO DE ANCORAGEM: {bairro_nome}
 * FORMATO DE CONTEÚDO: {formato_nome} ({formato_extensao})
 * ESTRUTURA EDITORIAL: {formato_estrutura}
-* TOM DE VOZ & ARQUÉTIPO: {tom_nome} ({tom_caracteristicas} - {tom_diretriz})
+* TOM DE VOZ: {tom_nome} ({tom_caracteristicas} - {tom_diretriz})
 * ÂNCORA COMERCIAL SUTIL: {ancora_conceito}
 
 ---
 ## 3. AS 4 CAMADAS NARRATIVAS OBRIGATÓRIAS NO CORPO DO ARTIGO
 
 CAMADA 1: A ISCA UNIVERSAL E O VALOR PURO (65% A 70% DA EXTENSÃO)
-- Abra o artigo mergulhando com rigor no tema universal ({tema_titulo}) e no desgaste existencial ({dor_resumo}).
+- Abra o artigo mergulhando na vida real e no tema ({tema_titulo}), mostrando como a rotina corrida ({dor_resumo}) cansa as pessoas.
 - NUNCA cite imóveis, compra, venda ou a cidade de Indaiatuba nesta primeira parte.
-- Ofereça valor de ensaio de alto padrão (neurociência, sociologia, foco, sono, infância, biofilia).
+- Fale com profundidade, mas com palavras simples e acolhedoras (o valor do silêncio, a importância do sono de verdade, infância com espaço e liberdade).
 
 CAMADA 2: O CONFLITO GEOGRÁFICO-EXISTENCIAL & A REVELAÇÃO DE INDAIATUBA (15% A 20% DA EXTENSÃO)
-- Demonstre a tese física: qualquer estilo de vida equilibrado exige um ecossistema territorial viável para se sustentar no mundo real.
-- Apresente Indaiatuba/SP como estudo de caso concreto e defensável, sustentado pela evidência: "{cidade_evidencia}".
+- Mostre a verdade prática: para a cabeça descansar, o lugar onde a gente mora precisa ajudar. Não adianta tentar relaxar se a rua é barulhenta e perigosa.
+- Apresente Indaiatuba/SP como um exemplo real de cidade onde o verde, a segurança e a organização funcionam de verdade ({cidade_evidencia}).
 
 CAMADA 3: O MICROTERRITÓRIO COMO RESPOSTA TANGÍVEL (10% DA EXTENSÃO)
 - Concentre o foco no microterritório: **{bairro_nome}**.
-- INSTRUÇÃO CRÍTICA DE PESQUISA PRÉVIA: Antes de redigir este trecho, PESQUISE PROFUNDAMENTE em sua base de conhecimento os detalhes geográficos, topográficos, sensoriais e a dinâmica real do bairro "{bairro_nome}" em Indaiatuba.
-- Não use adjetivos vazios. Descreva a rotina concreta, a sensação de caminhar pelas vias de {bairro_nome}, a proximidade de conveniências ou da natureza.
+- INSTRUÇÃO CRÍTICA DE PESQUISA PRÉVIA: Pesquise os detalhes reais do bairro ou condomínio "{bairro_nome}" em Indaiatuba.
+- Não use adjetivos vagos. Descreva a rotina concreta, a sensação de caminhar pelas ruas de {bairro_nome}, a segurança, a brisa e as facilidades por perto.
 
 CAMADA 4: A ASSINATURA ELEGANTE E CONSULTIVA – IMOBILIÁRIA SABER (5% FINAL DA EXTENSÃO)
-- Encerre o artigo com máxima elegância e autoridade consultiva, integrando harmonicamente a frase:
+- Encerre o artigo com tranquilidade, acolhimento e autoridade, integrando de forma natural a frase:
   > "{ancora_frase}"
 - Imediatamente após a frase de encerramento, adicione o script do ConvertKit.
 
@@ -127,6 +132,6 @@ Entregue EXATAMENTE nesta ordem, sem explicações preliminares e sem comentári
 1. **Nome do arquivo em destaque**: `{kebab_slug}.md`
 2. **O bloco Markdown completo (.md)**, iniciando com o frontmatter YAML delimitado por `---` e seguido pelo corpo do artigo.
 
-Gere agora o documento .md completo:"""
+Gere agora o documento .md completo com linguagem simples, pura e profunda:"""
 
         return prompt.strip()
